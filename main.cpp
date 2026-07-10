@@ -2,6 +2,8 @@
 #include <iomanip>
 #include <windows.h>
 #include <vector>
+#include <string>
+#include <sstream>
 using namespace std ;
 
 #define red "\033[91m"
@@ -12,13 +14,17 @@ void enableColors() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     DWORD mode;
-    GetConsoleMode(hConsole, &mode);
-    SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+    if (GetConsoleMode(hConsole, &mode)) {
+        SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+    }
 }
-int getConsoleWidth() {
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    return csbi.srWindow.Right - csbi.srWindow.Left + 1;
+
+void MainPage() {
+    cout << setfill(' ') << endl;
+    cout << "Welcome to Grand Horizon Hotel" << endl;
+    cout << setw(30) << setfill('=') << '=' << endl;
+    cout << "Login" << endl;
+    cout << setw(20) << setfill('=') << "=" << endl;
 }
 
 void logo() {
@@ -55,5 +61,8 @@ void logo() {
 int main () {
     enableColors();
     logo();
+    MainPage();
+    cout << "\n\nPress Enter to exit...";
+    cin.get();
     return 0;
 }
