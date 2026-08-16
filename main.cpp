@@ -2,6 +2,9 @@
 #include <iostream>
 #include <iomanip>
 #include <windows.h>
+#ifdef _WIN32
+#include <conio.h>
+#endif
 #include <string>
 #include <vector>
 #include <cctype>
@@ -203,6 +206,10 @@ string twoDigits(int value);
 string makeDate(int day, int month, int year);
 string makeClockTime(int hour, int minute);
 string weekdayName(int day, int month, int year);
+int wrapClock(int value, int minVal, int maxVal);
+int readClockKey();
+void drawCheckInClock(int hour, int minute, const string& nowStamp, const string& warn);
+void pickCheckInClock(int& hour, int& minute, bool sameDay);
 bool parseDate(const string& text, int& day, int& month, int& year);
 bool isValidDate(int day, int month, int year);
 int dateCompare(int d1, int m1, int y1, int d2, int m2, int y2);
@@ -413,6 +420,121 @@ string weekdayName(int day, int month, int year) {
 		w += 7;
 	}
 	return names[w];
+}
+
+int wrapClock(int value, int minVal, int maxVal) {
+	if (value < minVal) {
+		return maxVal;
+	}
+	if (value > maxVal) {
+		return minVal;
+	}
+	return value;
+}
+
+int readClockKey() {
+#ifdef _WIN32
+	int ch = _getch();
+	if (ch == 0 || ch == 224) {
+		ch = _getch();
+		if (ch == 75) {
+			return 'a';
+		}
+		if (ch == 77) {
+			return 'd';
+		}
+		if (ch == 72) {
+			return 'w';
+		}
+		if (ch == 80) {
+			return 's';
+		}
+		return 0;
+	}
+	if (ch == 13) {
+		return '\n';
+	}
+	return ch;
+#else
+	int ch = cin.get();
+	if (ch == '\r') {
+		return '\n';
+	}
+	return ch;
+#endif
+}
+
+void drawCheckInClock(int hour, int minute, const string& nowStamp, const string& warn) {
+	int prevH = wrapClock(hour - 1, 0, 23);
+	int nextH = wrapClock(hour + 1, 0, 23);
+	int prevM = wrapClock(minute - 1, 0, 59);
+	int nextM = wrapClock(minute + 1, 0, 59);
+	boxTitle("Check-in Time");
+	boxRow("Now in Malaysia: " + nowStamp);
+	boxRow("");
+	boxCenter("Hour                    Minute");
+	boxCenter(twoDigits(prevH) + "                      " + twoDigits(prevM));
+	boxCenter("< " + twoDigits(hour) + " >                < " + twoDigits(minute) + " >");
+	boxCenter(twoDigits(nextH) + "                      " + twoDigits(nextM));
+	boxRow("");
+	if (warn.empty()) {
+		boxRow("A/D hour     W/S minute     Enter confirm");
+	}
+	else {
+		boxRow(warn);
+	}
+	boxLine();
+}
+
+void pickCheckInClock(int& hour, int& minute, bool sameDay) {
+	string warn = "";
+	bool first = true;
+	while (true) {
+		int y = 0;
+		int m = 0;
+		int d = 0;
+		int h = 0;
+		int nowMin = 0;
+		malaysiaNow(y, m, d, h, nowMin);
+		string nowStamp = makeDate(d, m, y) + "  " + makeClockTime(h, nowMin);
+		if (!first) {
+			cout << "\033[10A";
+		}
+		else {
+			cout << endl;
+			first = false;
+		}
+		drawCheckInClock(hour, minute, nowStamp, warn);
+		cout.flush();
+
+		int key = readClockKey();
+		if (key == 'a' || key == 'A') {
+			hour = wrapClock(hour - 1, 0, 23);
+			warn = "";
+		}
+		else if (key == 'd' || key == 'D') {
+			hour = wrapClock(hour + 1, 0, 23);
+			warn = "";
+		}
+		else if (key == 'w' || key == 'W') {
+			minute = wrapClock(minute + 1, 0, 59);
+			warn = "";
+		}
+		else if (key == 's' || key == 'S') {
+			minute = wrapClock(minute - 1, 0, 59);
+			warn = "";
+		}
+		else if (key == '\n') {
+			if (sameDay) {
+				malaysiaNow(y, m, d, h, nowMin);
+				if (hour * 60 + minute < h * 60 + nowMin) {
+					warn = "Time passed. Choose a later time.";
+					continue;
+				}
+			}
+			break;
+		}
+	}
 }
 
 int daysInMonth(int month, int year) {
@@ -655,13 +777,13 @@ void bookRoom() {
 bool createOneBooking() {
 	cout << endl;
 	boxTitle("Choose Room Type");
-	boxRow("1. All rooms     1XX Single / 2XX Twin / 3XX Deluxe");
-	boxRow("2. Single        1XX");
-	boxRow("3. Twin          2XX");
-	boxRow("4. Deluxe        3XX");
-	boxRow("5. Family        4XX");
-	boxRow("6. Suite         5XX");
-	boxRow("7. Presidential  6XX");
+	boxRow("1. All rooms");
+	boxRow("2. Single");
+	boxRow("3. Twin");
+	boxRow("4. Deluxe");
+	boxRow("5. Family");
+	boxRow("6. Suite");
+	boxRow("7. Presidential");
 	boxRow("0. Cancel booking");
 	boxLine();
 	cout << " Please choose 0-7: ";
@@ -698,7 +820,7 @@ bool createOneBooking() {
 	int roomIndex = -1;
 
 	while (true) {
-		cout << "\n Enter room number to book, or 0 to cancel: ";
+		cout << "\n Enter room number to book or 0 to cancel: ";
 		getline(cin, roomNumber);
 
 		if (roomNumber == "0") {
@@ -725,7 +847,7 @@ bool createOneBooking() {
 
 	int guests = 0;
 	while (true) {
-		cout << "\n Enter number of guests, 1-" << roomList[roomIndex].capacity << ", or 0 to cancel: ";
+		cout << "\n Enter number of guests (1-" << roomList[roomIndex].capacity << " or 0 to cancel): ";
 		guests = getIntInRange(0, 20);
 		if (guests == 0) {
 			cout << " Booking cancelled." << endl;
@@ -744,7 +866,7 @@ bool createOneBooking() {
 
 	offerRoomUpgrade(roomIndex, guests);
 
-	cout << "\n Enter number of nights, or 0 to cancel: ";
+	cout << "\n Enter number of nights or 0 to cancel: ";
 	int nights = getIntInRange(0, 30);
 	if (nights == 0) {
 		cout << " Booking cancelled." << endl;
@@ -771,7 +893,7 @@ bool createOneBooking() {
 		boxRow("Today Malaysia time: " + bookingDate + "  " + bookingTime);
 		boxRow("Today is " + weekdayName(nowD, nowM, nowY));
 		boxRow("Enter date as DD/MM/YYYY");
-		boxRow("Press Enter to use today, or 0 to cancel");
+		boxRow("Press Enter to use today or 0 to cancel");
 		boxLine();
 		cout << " Check-in date: ";
 		string dateText;
@@ -797,32 +919,15 @@ bool createOneBooking() {
 		break;
 	}
 
-	int checkHour = 14;
-	int checkMinute = 0;
-	while (true) {
-		malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
-		cout << endl;
-		boxTitle("Check-in Time");
-		boxRow("Now in Malaysia: " + makeDate(nowD, nowM, nowY) + "  " + makeClockTime(nowH, nowMin));
-		boxRow("Choose hour and minute like a phone clock.");
-		boxRow("Hour 0-23     Minute 0-59");
-		boxRow("Example: 14 then 30 means 14:30");
-		boxLine();
-		cout << " Enter hour 0-23: ";
-		checkHour = getIntInRange(0, 23);
-		cout << " Enter minute 0-59: ";
-		checkMinute = getIntInRange(0, 59);
-
-		if (dateCompare(inD, inM, inY, nowD, nowM, nowY) == 0) {
-			int chosen = checkHour * 60 + checkMinute;
-			int current = nowH * 60 + nowMin;
-			if (chosen < current) {
-				cout << " That time has already passed in Malaysia. Please choose a later time." << endl;
-				continue;
-			}
-		}
-		break;
+	malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
+	int checkHour = nowH;
+	int checkMinute = nowMin;
+	bool sameDay = dateCompare(inD, inM, inY, nowD, nowM, nowY) == 0;
+	if (!sameDay) {
+		checkHour = 14;
+		checkMinute = 0;
 	}
+	pickCheckInClock(checkHour, checkMinute, sameDay);
 
 	int outD = inD;
 	int outM = inM;
@@ -835,16 +940,10 @@ bool createOneBooking() {
 	string outWeek = weekdayName(outD, outM, outY);
 
 	cout << endl;
-	boxTitle("Check-out Rule");
-	boxRow("Check-out is always before 12:00 noon.");
-	boxRow("Example: Monday check-in + 2 night(s)");
-	boxRow("         = Wednesday before 12:00 noon");
-	boxRow("Check-in  : " + inWeek + " " + checkInDate + "  " + checkInTime);
-	boxRow("Stay      : " + to_string(nights) + " night(s)");
-	boxRow("Check-out : " + outWeek + " " + checkOutDate + "  before 12:00");
+	boxTitle("Check-out");
+	boxRow("Please check out before 12:00 noon");
+	boxRow(outWeek + " " + checkOutDate);
 	boxLine();
-	cout << " If you check in on " << inWeek << " " << checkInDate << " for " << nights << " night(s)," << endl;
-	cout << " you must check out before 12:00 noon on " << outWeek << " " << checkOutDate << "." << endl;
 
 	double estimated = roundMoney(roomList[roomIndex].price * nights);
 
@@ -921,7 +1020,6 @@ bool createOneBooking() {
 	cout << "\n Reservation confirmed! Your reservation ID is "
 		 << newBooking.reservationID << "." << endl;
 	maybeGiveWelcomeGift(static_cast<int>(reservations.size()) - 1);
-	cout << " Tip: first-time promo code WELCOME10 gives 10% off." << endl;
 	return true;
 }
 
@@ -1098,7 +1196,7 @@ void addOnsForReservation(int resIndex) {
 		}
 
 		const AddOnItem& item = addOnList[choice - 1];
-		cout << " Quantity for " << item.name << ", 1-20, or 0 to cancel: ";
+		cout << " Quantity for " << item.name << " (1-20 or 0 to cancel): ";
 		int qty = getIntInRange(0, 20);
 		if (qty == 0) {
 			continue;
@@ -1222,14 +1320,7 @@ void specialRequestMenu() {
 
 void applyPromoCode() {
 	cout << endl;
-	boxTitle("Promo Codes");
-	boxRow("WELCOME10  : 10% off");
-	boxRow("HORIZON15  : 15% off for 3+ nights");
-	boxRow("WEEKEND20  : 20% off stay");
-	boxRow("STUDENT5   : RM 5 off");
-	boxRow("GOLDEN50   : RM 50 off if RM400+");
-	boxLine();
-	cout << " Enter promo code, or 0 to cancel: ";
+	cout << " Enter promo code (0 to cancel): ";
 
 	string code;
 	getline(cin, code);
@@ -1312,7 +1403,7 @@ void redeemLoyaltyPoints() {
 	}
 
 	cout << " You can redeem up to " << (maxBlocks * REDEEM_BLOCK) << " points." << endl;
-	cout << " Enter points to redeem (multiples of " << REDEEM_BLOCK << ", 0 to cancel): ";
+	cout << " Enter points to redeem (multiples of " << REDEEM_BLOCK << " or 0 to cancel): ";
 	int redeem = getIntInRange(0, maxBlocks * REDEEM_BLOCK);
 	if (redeem == 0) {
 		return;
@@ -1459,7 +1550,7 @@ void processPayment() {
 
 	if (method == 1) {
 		while (true) {
-			cout << " Cash received RM, or 0 to cancel: ";
+			cout << " Cash received RM or 0 to cancel: ";
 			string cashStr;
 			getline(cin, cashStr);
 			if (cashStr == "0") {
@@ -1497,7 +1588,7 @@ void processPayment() {
 	}
 	else if (method == 2) {
 		while (true) {
-			cout << " Enter 16-digit card number, or 0 to cancel: ";
+			cout << " Enter 16-digit card number or 0 to cancel: ";
 			string card;
 			getline(cin, card);
 			if (card == "0") {
@@ -2231,7 +2322,7 @@ void customerRegister() {
 	}
 
 	while (true) {
-		cout << "\n Enter password (minimum 6 characters, or 0 to cancel): ";
+		cout << "\n Enter password (minimum 6 characters or 0 to cancel): ";
 		newCustomer.password = getSecurePassword(false);
 		if (newCustomer.password == "0") {
 			cout << " Registration cancelled." << endl;
@@ -2276,7 +2367,7 @@ void customerRegister() {
 	}
 
 	while (true) {
-		cout << "\n Enter Gmail address (example: yourname@gmail.com, or 0 to cancel): ";
+		cout << "\n Enter Gmail address (example: yourname@gmail.com or 0 to cancel): ";
 		getline(cin, newCustomer.email);
 		if (newCustomer.email == "0") {
 			cout << " Registration cancelled." << endl;
@@ -2295,7 +2386,7 @@ void customerRegister() {
 	}
 
 	while (true) {
-		cout << "\n Enter Malaysian phone number (+60xxxxxxxxx or 01xxxxxxxx, or 0 to cancel): ";
+		cout << "\n Enter Malaysian phone number (+60xxxxxxxxx or 01xxxxxxxx or 0 to cancel): ";
 		getline(cin, newCustomer.phoneNumber);
 		if (newCustomer.phoneNumber == "0") {
 			cout << " Registration cancelled." << endl;
@@ -2353,14 +2444,14 @@ bool customerLogin() {
 			cout << " Attempt " << attempts + 1 << " of " << MAX_ATTEMPTS << endl;
 		}
 
-		cout << " Username, or 0 to cancel: ";
+		cout << " Username or 0 to cancel: ";
 		getline(cin, username);
 		if (username == "0") {
 			cout << " Login cancelled." << endl;
 			return false;
 		}
 
-		cout << " Password, or 0 to cancel: ";
+		cout << " Password or 0 to cancel: ";
 		password = getSecurePassword(false);
 		if (password == "0") {
 			cout << " Login cancelled." << endl;
@@ -2411,14 +2502,14 @@ void staffLogin() {
 			boxLine();
 		}
 
-		cout << " Username, or 0 to cancel: ";
+		cout << " Username or 0 to cancel: ";
 		getline(cin, id);
 		if (id == "0") {
 			cout << " Login cancelled." << endl;
 			return;
 		}
 
-		cout << " Password, or 0 to cancel: ";
+		cout << " Password or 0 to cancel: ";
 		password = getSecurePassword(false);
 		if (password == "0") {
 			cout << " Login cancelled." << endl;
@@ -2454,7 +2545,7 @@ int getValidatedInput(int min, int max) {
 	while (true) {
 		getline(cin, inputStr);
 		if (inputStr.empty()) {
-			cout << " Please enter a number between " << min << "-" << max << ", or 0 to cancel: ";
+			cout << " Please enter a number between " << min << "-" << max << " or 0 to cancel: ";
 			continue;
 		}
 
@@ -2466,13 +2557,13 @@ int getValidatedInput(int min, int max) {
 			}
 		}
 		if (!isNumeric) {
-			cout << " Invalid input! Please enter a number between " << min << "-" << max << ", or 0 to cancel: ";
+			cout << " Invalid input! Please enter a number between " << min << "-" << max << " or 0 to cancel: ";
 			continue;
 		}
 
 		int input = stoi(inputStr);
 		if (input != 0 && (input < min || input > max)) {
-			cout << " Number out of range! Please enter a number between " << min << "-" << max << ", or 0 to cancel: ";
+			cout << " Number out of range! Please enter a number between " << min << "-" << max << " or 0 to cancel: ";
 			continue;
 		}
 		return input;
