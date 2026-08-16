@@ -26,8 +26,38 @@ struct Customer {
 	string icPassport;
 };
 
+struct Room {
+	string roomNumber;
+	string roomType;
+	int capacity;
+	double price;
+	string status;
+};
+
+struct BookingRecord {
+	string reservationID;
+	string customerUsername;
+	string roomNumber;
+	string roomType;
+	double pricePerNight;
+	int nights;
+	string status;
+};
+
 vector<Customer> customers;
 string currentLoggedInCustomer = "";
+
+vector<Room> roomList = {
+	{"101", "Single",  1, 120.00, "Available"},
+	{"102", "Single",  1, 120.00, "Occupied"},
+	{"201", "Deluxe",  2, 180.00, "Available"},
+	{"202", "Deluxe",  2, 180.00, "Cleaning"},
+	{"301", "Suite",   4, 320.00, "Available"},
+	{"302", "Suite",   4, 320.00, "Maintenance"}
+};
+
+vector <BookingRecord> reservations;
+int nextReservationID = 1;
 
 void enableColors();
 void logo();
@@ -38,6 +68,12 @@ bool customerLogin();
 void customerMenu();
 void staffLogin();
 void staffMenu();
+void displayAvailableRoom();
+void saveRoomsToFile();
+void loadRoomsFromFile();
+void saveCustomersToFile();
+void loadCustomersFromFile();
+void bookRoom();
 
 int getValidatedInput(int min, int max);
 bool isValidName(const string& name);
@@ -50,8 +86,6 @@ bool isValidPhoneNumber(const string& phone);
 bool isValidPassword(const string& password);
 bool customerExists(const string& username);
 string getSecurePassword(bool showPrompt = true);
-void saveCustomersToFile();
-void loadCustomersFromFile();
 
 int main() {
 	enableColors();
@@ -161,11 +195,185 @@ void customerAuthMenu() {
 }
 
 void customerMenu() {
-	cout << "\n  Logged in as: " << currentLoggedInCustomer << endl;
-	cout << "  [ Put your customer module menu here ]" << endl;
-	cout << "\n  Press Enter to logout and return to main menu...";
-	cin.get();
-	currentLoggedInCustomer = "";
+	int choice;
+
+	do {
+		cout << "\n +-------------------------- Menu Page --------------------------+" << endl;
+		cout << " | 1. View Available Rooms                                       |" << endl;
+		cout << " | 2. Booking Room                                               |" << endl;
+		cout << " | 3. View My Reservations                                       |" << endl;
+		cout << " | 4. Modify Reservations                                        |" << endl;
+		cout << " | 5. Cancel Reservations                                        |" << endl;
+		cout << " | 6. View My Profile                                            |" << endl;
+		cout << " | 0. Back to Main Menu                                          |" << endl;
+		cout << " +---------------------------------------------------------------+" << endl;
+
+		cout << " Please choose (0-6): ";
+		choice = getValidatedInput(0, 6);
+
+		switch (choice) {
+			case 1:
+				displayAvailableRoom();
+				break;
+
+			case 2:
+				bookRoom();
+				break;
+
+			case 3:
+				cout << " 3. Module. To be continues...";
+				break;
+
+			case 4:
+				cout << " 4. Module. To be continues..." << endl;
+				break;
+
+			case 5:
+				cout << " 5. Module. To be continues..." << endl;
+				break;
+
+			case 6:
+				cout << " 6. Module. To be continues..." << endl;
+				break;
+
+			case 0:
+				currentLoggedInCustomer = "";
+				cout << "\n Logged out successfully. " << endl;
+				return;
+		}
+
+	}while (choice != 0);
+}
+
+void displayAvailableRoom() {
+	int n1 = 0;
+	cout << setfill(' ');
+	cout << "\n +---------------------------------------------------------------+" << endl;
+	cout << " | " << left << setw(10) << "Room No" << setw(12) << "Type" << setw(10) << "Capacity" << setw(14) << "Price/Night" << setw(16) << "Status" << "|" << endl;
+	cout << " +---------------------------------------------------------------+" << endl;
+
+	for (const auto& room : roomList) {
+		cout << " | " << left << setw(10) << room.roomNumber << setw(12) << room.roomType << setw(10) << room.capacity << "RM" << fixed << setprecision(2) << setw(12) << room.price << setw(16) << room.status << "|";
+		n1++;
+
+		if (n1 < roomList.size()) {
+			cout << "\n";
+		}
+		else {
+			//nothing
+		}
+	}
+
+	cout << "\n +---------------------------------------------------------------+" << endl;
+}
+
+void bookRoom() {
+	displayAvailableRoom();
+
+	string roomNumber;
+	int roomIndex = -1;
+
+	while (true) {
+		cout << "\n  Enter room number to book (or 0 to cancel): ";
+		getline(cin, roomNumber);
+
+		if (roomNumber == "0") {
+			cout << "  Booking cancelled." << endl;
+			return;
+		}
+
+		roomIndex = -1;
+		for (size_t i = 0; i < roomList.size(); i++) {
+			if (roomList[i].roomNumber == roomNumber) {
+				roomIndex = i;
+				break;
+			}
+		}
+
+		if (roomIndex == -1) {
+			cout << "  Room not found! Please try again." << endl;
+			continue;
+		}
+
+		if (roomList[roomIndex].status != "Available") {
+			cout << "  This room is not available (status: "
+				 << roomList[roomIndex].status << "). Please choose another." << endl;
+			continue;
+		}
+
+		break;
+	}
+
+	string nightsStr;
+	int nights = 0;
+
+	while (true) {
+		cout << "\n  Enter number of nights (or 0 to cancel): ";
+		getline(cin, nightsStr);
+
+		if (nightsStr == "0") {
+			cout << "  Booking cancelled." << endl;
+			return;
+		}
+
+		bool numeric = !nightsStr.empty();
+		for (char c : nightsStr) if (!isdigit(c)) numeric = false;
+
+		if (!numeric) {
+			cout << "  Invalid input! Please enter a number." << endl;
+			continue;
+		}
+
+		nights = stoi(nightsStr);
+		if (nights <= 0) {
+			cout << "  Number of nights must be at least 1!" << endl;
+			continue;
+		}
+
+		break;
+	}
+
+	cout << "\n +------------------ Booking Summary ------------------+" << endl;
+	cout << "  Room Number : " << roomList[roomIndex].roomNumber << endl;
+	cout << "  Room Type   : " << roomList[roomIndex].roomType << endl;
+	cout << "  Nights      : " << nights << endl;
+	cout << " +-----------------------------------------------------+" << endl;
+
+	cout << "  Confirm booking? (y/n): ";
+	char confirm;
+	cin >> confirm;
+	cin.ignore();
+
+	if (confirm != 'y' && confirm != 'Y') {
+		cout << "  Booking cancelled." << endl;
+		return;
+	}
+
+	BookingRecord newBooking;
+	string idNumStr = to_string(nextReservationID);
+
+	while (idNumStr.length() < 4) {
+		idNumStr = "0" + idNumStr;
+	}
+	newBooking.reservationID = idNumStr;
+	nextReservationID++;
+
+	newBooking.customerUsername = currentLoggedInCustomer;
+	newBooking.roomNumber = roomList[roomIndex].roomNumber;
+	newBooking.roomType = roomList[roomIndex].roomType;
+	newBooking.pricePerNight = roomList[roomIndex].price;
+	newBooking.nights = nights;
+	newBooking.status = "Confirmed";
+
+	reservations.push_back(newBooking);
+
+	roomList[roomIndex].status = "Occupied";
+
+	// Step 6: confirmation message (add-ons and billing will hook in here later)
+	cout << "\n  Reservation confirmed! Your reservation ID is " << newBooking.reservationID << "." << endl;
+
+	// offerAddOns(...);       <- to be added later
+	// showBillingSummary(...); <- to be added later
 }
 
 void staffMenu() {
@@ -729,6 +937,54 @@ void loadCustomersFromFile() {
 			getline(file, separator);
 
 			customers.push_back(customer);
+		}
+
+		file.close();
+	}
+}
+
+void saveRoomsToFile() {
+	ofstream file("rooms.txt");
+	if (file.is_open()) {
+		file << roomList.size() << endl;
+
+		for (const auto& room : roomList) {
+			file << room.roomNumber << endl;
+			file << room.roomType << endl;
+			file << room.capacity << endl;
+			file << room.price << endl;
+			file << room.status << endl;
+			file << "---" << endl;
+		}
+
+		file.close();
+	}
+}
+
+void loadRoomsFromFile() {
+	ifstream file("rooms.txt");
+	if (file.is_open()) {
+		int numRooms;
+		file >> numRooms;
+		file.ignore();
+
+		roomList.clear();
+
+		for (int i = 0; i < numRooms; i++) {
+			Room room;
+			string capacityStr, priceStr, separator;
+
+			getline(file, room.roomNumber);
+			getline(file, room.roomType);
+			getline(file, capacityStr);
+			getline(file, priceStr);
+			getline(file, room.status);
+			getline(file, separator);
+
+			room.capacity = stoi(capacityStr);
+			room.price = stod(priceStr);
+
+			roomList.push_back(room);
 		}
 
 		file.close();
