@@ -2,9 +2,6 @@
 #include <iostream>
 #include <iomanip>
 #include <windows.h>
-#ifdef _WIN32
-#include <conio.h>
-#endif
 #include <string>
 #include <vector>
 #include <cctype>
@@ -207,7 +204,6 @@ string makeDate(int day, int month, int year);
 string makeClockTime(int hour, int minute);
 string weekdayName(int day, int month, int year);
 int wrapClock(int value, int minVal, int maxVal);
-int readClockKey();
 void drawCheckInClock(int hour, int minute, const string& nowStamp, const string& warn);
 void pickCheckInClock(int& hour, int& minute, bool sameDay);
 bool parseDate(const string& text, int& day, int& month, int& year);
@@ -432,38 +428,6 @@ int wrapClock(int value, int minVal, int maxVal) {
 	return value;
 }
 
-int readClockKey() {
-#ifdef _WIN32
-	int ch = _getch();
-	if (ch == 0 || ch == 224) {
-		ch = _getch();
-		if (ch == 75) {
-			return 'a';
-		}
-		if (ch == 77) {
-			return 'd';
-		}
-		if (ch == 72) {
-			return 'w';
-		}
-		if (ch == 80) {
-			return 's';
-		}
-		return 0;
-	}
-	if (ch == 13) {
-		return '\n';
-	}
-	return ch;
-#else
-	int ch = cin.get();
-	if (ch == '\r') {
-		return '\n';
-	}
-	return ch;
-#endif
-}
-
 void drawCheckInClock(int hour, int minute, const string& nowStamp, const string& warn) {
 	int prevH = wrapClock(hour - 1, 0, 23);
 	int nextH = wrapClock(hour + 1, 0, 23);
@@ -476,9 +440,8 @@ void drawCheckInClock(int hour, int minute, const string& nowStamp, const string
 	boxCenter(twoDigits(prevH) + "                      " + twoDigits(prevM));
 	boxCenter("< " + twoDigits(hour) + " >                < " + twoDigits(minute) + " >");
 	boxCenter(twoDigits(nextH) + "                      " + twoDigits(nextM));
-	boxRow("");
 	if (warn.empty()) {
-		boxRow("A/D hour     W/S minute     Enter confirm");
+		boxRow("");
 	}
 	else {
 		boxRow(warn);
@@ -487,8 +450,6 @@ void drawCheckInClock(int hour, int minute, const string& nowStamp, const string
 }
 
 void pickCheckInClock(int& hour, int& minute, bool sameDay) {
-	string warn = "";
-	bool first = true;
 	while (true) {
 		int y = 0;
 		int m = 0;
@@ -497,43 +458,30 @@ void pickCheckInClock(int& hour, int& minute, bool sameDay) {
 		int nowMin = 0;
 		malaysiaNow(y, m, d, h, nowMin);
 		string nowStamp = makeDate(d, m, y) + "  " + makeClockTime(h, nowMin);
-		if (!first) {
-			cout << "\033[10A";
-		}
-		else {
-			cout << endl;
-			first = false;
-		}
-		drawCheckInClock(hour, minute, nowStamp, warn);
-		cout.flush();
 
-		int key = readClockKey();
-		if (key == 'a' || key == 'A') {
-			hour = wrapClock(hour - 1, 0, 23);
-			warn = "";
+		cout << endl;
+		drawCheckInClock(hour, minute, nowStamp, "");
+		cout << " Hour (0-23): ";
+		hour = getIntInRange(0, 23);
+
+		malaysiaNow(y, m, d, h, nowMin);
+		nowStamp = makeDate(d, m, y) + "  " + makeClockTime(h, nowMin);
+		cout << endl;
+		drawCheckInClock(hour, minute, nowStamp, "");
+		cout << " Minute (0-59): ";
+		minute = getIntInRange(0, 59);
+
+		malaysiaNow(y, m, d, h, nowMin);
+		nowStamp = makeDate(d, m, y) + "  " + makeClockTime(h, nowMin);
+		if (sameDay && hour * 60 + minute < h * 60 + nowMin) {
+			cout << endl;
+			drawCheckInClock(hour, minute, nowStamp, "Time passed. Choose a later time.");
+			continue;
 		}
-		else if (key == 'd' || key == 'D') {
-			hour = wrapClock(hour + 1, 0, 23);
-			warn = "";
-		}
-		else if (key == 'w' || key == 'W') {
-			minute = wrapClock(minute + 1, 0, 59);
-			warn = "";
-		}
-		else if (key == 's' || key == 'S') {
-			minute = wrapClock(minute - 1, 0, 59);
-			warn = "";
-		}
-		else if (key == '\n') {
-			if (sameDay) {
-				malaysiaNow(y, m, d, h, nowMin);
-				if (hour * 60 + minute < h * 60 + nowMin) {
-					warn = "Time passed. Choose a later time.";
-					continue;
-				}
-			}
-			break;
-		}
+
+		cout << endl;
+		drawCheckInClock(hour, minute, nowStamp, "");
+		break;
 	}
 }
 
