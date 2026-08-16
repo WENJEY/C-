@@ -101,12 +101,29 @@ vector<Customer> customers;
 string currentLoggedInCustomer = "";
 
 vector<Room> roomList = {
-	{"101", "Single",  1, 120.00, "Available"},
-	{"102", "Single",  1, 120.00, "Occupied"},
-	{"201", "Deluxe",  2, 180.00, "Available"},
-	{"202", "Deluxe",  2, 180.00, "Cleaning"},
-	{"301", "Suite",   4, 320.00, "Available"},
-	{"302", "Suite",   4, 320.00, "Maintenance"}
+	{"101", "Single",        1, 120.00, "Available"},
+	{"102", "Single",        1, 120.00, "Available"},
+	{"103", "Single",        1, 125.00, "Available"},
+	{"104", "Single",        1, 125.00, "Available"},
+	{"105", "Single",        1, 130.00, "Cleaning"},
+	{"111", "Twin",          2, 150.00, "Available"},
+	{"112", "Twin",          2, 150.00, "Available"},
+	{"113", "Twin",          2, 155.00, "Available"},
+	{"114", "Twin",          2, 155.00, "Available"},
+	{"201", "Deluxe",        2, 180.00, "Available"},
+	{"202", "Deluxe",        2, 180.00, "Available"},
+	{"203", "Deluxe",        2, 190.00, "Available"},
+	{"204", "Deluxe",        2, 190.00, "Available"},
+	{"205", "Deluxe",        2, 195.00, "Cleaning"},
+	{"401", "Family",        4, 250.00, "Available"},
+	{"402", "Family",        4, 250.00, "Available"},
+	{"403", "Family",        4, 260.00, "Available"},
+	{"301", "Suite",         4, 320.00, "Available"},
+	{"302", "Suite",         4, 320.00, "Available"},
+	{"303", "Suite",         4, 350.00, "Available"},
+	{"304", "Suite",         4, 350.00, "Maintenance"},
+	{"501", "Presidential",  6, 580.00, "Available"},
+	{"502", "Presidential",  6, 620.00, "Available"}
 };
 
 vector<BookingRecord> reservations;
@@ -120,7 +137,7 @@ double sessionPromoFlat = 0.0;
 int sessionRedeemedPoints = 0;
 bool sessionSurpriseGiven = false;
 
-const vector<AddOnItem> ADDON_CATALOG = {
+vector<AddOnItem> addOnList = {
 	{"Breakfast Buffet", 35.00, "per person / night"},
 	{"Airport Pickup", 80.00, "per stay"},
 	{"Extra Bed", 50.00, "per night"},
@@ -165,6 +182,7 @@ void viewMyProfile();
 void offerRoomUpgrade(int& roomIndex);
 void maybeGiveWelcomeGift(int resIndex);
 void loadUnpaidIntoSession();
+void showUnpaidReminder();
 void resetSessionExtras();
 void pauseEnter();
 string generateReservationID();
@@ -199,8 +217,6 @@ int main() {
 	enableColors();
 	srand(static_cast<unsigned int>(time(0)));
 	loadCustomersFromFile();
-	loadRoomsFromFile();
-	loadReservationsFromFile();
 
 	while (true) {
 		logo();
@@ -304,6 +320,7 @@ void customerMenu() {
 	int choice;
 
 	do {
+		showUnpaidReminder();
 		cout << "\n +-------------------------- Menu Page --------------------------+" << endl;
 		cout << " | 1. View Available Rooms                                       |" << endl;
 		cout << " | 2. Booking Room                                               |" << endl;
@@ -350,10 +367,10 @@ void displayAvailableRoom() {
 void displayRoomsByType(const string& typeFilter) {
 	int shown = 0;
 	cout << setfill(' ') << left;
-	cout << "\n +---------------------------------------------------------------+" << endl;
-	cout << " | " << setw(10) << "Room No" << setw(12) << "Type" << setw(10) << "Capacity"
+	cout << "\n +--------------------------------------------------------------------+" << endl;
+	cout << " | " << setw(10) << "Room No" << setw(16) << "Type" << setw(10) << "Capacity"
 		 << setw(14) << "Price/Night" << setw(16) << "Status" << "|" << endl;
-	cout << " +---------------------------------------------------------------+" << endl;
+	cout << " +--------------------------------------------------------------------+" << endl;
 
 	for (size_t i = 0; i < roomList.size(); i++) {
 		if (typeFilter != "ALL" && roomList[i].roomType != typeFilter) {
@@ -363,7 +380,7 @@ void displayRoomsByType(const string& typeFilter) {
 			cout << endl;
 		}
 		cout << " | " << setw(10) << roomList[i].roomNumber
-			 << setw(12) << roomList[i].roomType
+			 << setw(16) << roomList[i].roomType
 			 << setw(10) << roomList[i].capacity
 			 << "RM" << setw(12) << fixed << setprecision(2) << roomList[i].price
 			 << setw(16) << roomList[i].status << "|";
@@ -371,9 +388,9 @@ void displayRoomsByType(const string& typeFilter) {
 	}
 
 	if (shown == 0) {
-		cout << " | No rooms found for this type.                                 |";
+		cout << " | No rooms found for this type.                                      |";
 	}
-	cout << "\n +---------------------------------------------------------------+" << endl;
+	cout << "\n +--------------------------------------------------------------------+" << endl;
 }
 
 void bookRoom() {
@@ -419,12 +436,15 @@ bool createOneBooking() {
 	cout << "\n +---------- Choose Room Type ----------+" << endl;
 	cout << " | 1. All rooms                         |" << endl;
 	cout << " | 2. Single                            |" << endl;
-	cout << " | 3. Deluxe                            |" << endl;
-	cout << " | 4. Suite                             |" << endl;
+	cout << " | 3. Twin                              |" << endl;
+	cout << " | 4. Deluxe                            |" << endl;
+	cout << " | 5. Family                            |" << endl;
+	cout << " | 6. Suite                             |" << endl;
+	cout << " | 7. Presidential                      |" << endl;
 	cout << " | 0. Cancel booking                    |" << endl;
 	cout << " +--------------------------------------+" << endl;
-	cout << "  Please choose (0-4): ";
-	int typeChoice = getValidatedInput(0, 4);
+	cout << "  Please choose (0-7): ";
+	int typeChoice = getValidatedInput(0, 7);
 
 	if (typeChoice == 0) {
 		cout << "  Booking cancelled." << endl;
@@ -436,10 +456,19 @@ bool createOneBooking() {
 		typeFilter = "Single";
 	}
 	if (typeChoice == 3) {
-		typeFilter = "Deluxe";
+		typeFilter = "Twin";
 	}
 	if (typeChoice == 4) {
+		typeFilter = "Deluxe";
+	}
+	if (typeChoice == 5) {
+		typeFilter = "Family";
+	}
+	if (typeChoice == 6) {
 		typeFilter = "Suite";
+	}
+	if (typeChoice == 7) {
+		typeFilter = "Presidential";
 	}
 
 	displayRoomsByType(typeFilter);
@@ -543,8 +572,6 @@ bool createOneBooking() {
 	reservations.push_back(newBooking);
 	currentSessionIDs.push_back(newBooking.reservationID);
 	roomList[roomIndex].status = "Occupied";
-	saveRoomsToFile();
-	saveReservationsToFile();
 
 	cout << green << "\n  Reservation confirmed! Your reservation ID is "
 		 << newBooking.reservationID << "." << original << endl;
@@ -584,7 +611,7 @@ void afterBookingMenu() {
 		cout << " | 4. Special Requests (high floor, birthday...)       |" << endl;
 		cout << " | 5. Apply Promo Code                                 |" << endl;
 		cout << " | 6. Redeem Loyalty Points                            |" << endl;
-		cout << " | 0. Back to Customer Menu                            |" << endl;
+		cout << " | 0. I'll continue later (booking is saved)           |" << endl;
 		cout << " +-----------------------------------------------------+" << endl;
 		cout << "  Please choose (0-6): ";
 		choice = getValidatedInput(0, 6);
@@ -623,9 +650,25 @@ void afterBookingMenu() {
 					break;
 				}
 			}
-			if (unpaid) {
-				cout << yellow << "\n  Your booking is saved, but payment is still unpaid." << original << endl;
-				cout << "  You can continue add-ons / payment anytime from Booking Room." << endl;
+			if (!unpaid) {
+				return;
+			}
+
+			cout << yellow << "\n  Your booking is still here. It is not cancelled." << original << endl;
+			for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+				int idx = findReservationIndex(currentSessionIDs[i]);
+				if (idx == -1) {
+					continue;
+				}
+				cout << "   Reservation #" << reservations[idx].reservationID
+					 << "  Room " << reservations[idx].roomNumber
+					 << "  [" << reservations[idx].paymentStatus << "]" << endl;
+			}
+			cout << "  From the next menu:" << endl;
+			cout << "   - Choose 2. Booking Room to continue add-ons / payment" << endl;
+			cout << "   - Choose 3. View My Reservations to see this booking" << endl;
+			if (!confirmYesNo("  Go to the customer menu now? (y/n): ")) {
+				break;
 			}
 			return;
 		}
@@ -674,10 +717,10 @@ void addOnsForReservation(int resIndex) {
 			 << "  |  Guests: " << reservations[resIndex].guests
 			 << "  |  Nights: " << reservations[resIndex].nights << endl;
 		cout << " +-----------------------------------------------+" << endl;
-		for (size_t i = 0; i < ADDON_CATALOG.size(); i++) {
-			cout << " | " << (i + 1) << ". " << setw(24) << ADDON_CATALOG[i].name
-				 << " RM " << setw(7) << fixed << setprecision(2) << ADDON_CATALOG[i].price
-				 << ADDON_CATALOG[i].unit << endl;
+		for (size_t i = 0; i < addOnList.size(); i++) {
+			cout << " | " << (i + 1) << ". " << setw(24) << addOnList[i].name
+				 << " RM " << setw(7) << fixed << setprecision(2) << addOnList[i].price
+				 << addOnList[i].unit << endl;
 		}
 		cout << " | 0. Done with add-ons" << endl;
 		cout << " +-----------------------------------------------+" << endl;
@@ -691,14 +734,14 @@ void addOnsForReservation(int resIndex) {
 			}
 		}
 
-		cout << "  Choose add-on (0-9): ";
-		choice = getIntInRange(0, static_cast<int>(ADDON_CATALOG.size()));
+		cout << "  Choose add-on (0-" << addOnList.size() << "): ";
+		choice = getIntInRange(0, static_cast<int>(addOnList.size()));
 		if (choice == 0) {
 			saveReservationsToFile();
 			return;
 		}
 
-		const AddOnItem& item = ADDON_CATALOG[choice - 1];
+		const AddOnItem& item = addOnList[choice - 1];
 		cout << "  Quantity for " << item.name << " (1-20, 0 to cancel): ";
 		int qty = getIntInRange(0, 20);
 		if (qty == 0) {
@@ -1221,6 +1264,9 @@ void viewMyReservations() {
 			 << "  " << reservations[i].nights << " night(s)" << endl;
 		cout << " |    Status: " << reservations[i].status
 			 << "  |  Payment: " << reservations[i].paymentStatus << endl;
+		if (reservations[i].paymentStatus == "Unpaid") {
+			cout << " |    Continue this booking from 2. Booking Room" << endl;
+		}
 		if (reservations[i].paymentStatus == "Paid") {
 			cout << " |    Paid RM " << fixed << setprecision(2) << reservations[i].totalAmount
 				 << " via " << reservations[i].paymentMethod << endl;
@@ -1283,13 +1329,24 @@ void viewMyProfile() {
 }
 
 void offerRoomUpgrade(int& roomIndex) {
-	if (roomList[roomIndex].roomType == "Suite") {
-		return;
-	}
-
-	string nextType = "Suite";
+	string nextType = "";
 	if (roomList[roomIndex].roomType == "Single") {
+		nextType = "Twin";
+	}
+	else if (roomList[roomIndex].roomType == "Twin") {
 		nextType = "Deluxe";
+	}
+	else if (roomList[roomIndex].roomType == "Deluxe") {
+		nextType = "Family";
+	}
+	else if (roomList[roomIndex].roomType == "Family") {
+		nextType = "Suite";
+	}
+	else if (roomList[roomIndex].roomType == "Suite") {
+		nextType = "Presidential";
+	}
+	else {
+		return;
 	}
 
 	int upgradeIndex = -1;
@@ -1341,6 +1398,34 @@ void loadUnpaidIntoSession() {
 			&& reservations[i].status != "Cancelled") {
 			currentSessionIDs.push_back(reservations[i].reservationID);
 		}
+	}
+}
+
+void showUnpaidReminder() {
+	bool any = false;
+	for (size_t i = 0; i < reservations.size(); i++) {
+		if (reservations[i].customerUsername != currentLoggedInCustomer) {
+			continue;
+		}
+		if (reservations[i].paymentStatus != "Unpaid") {
+			continue;
+		}
+		if (reservations[i].status == "Cancelled") {
+			continue;
+		}
+		if (!any) {
+			cout << yellow << "\n  You still have a booking in progress:" << original << endl;
+			any = true;
+		}
+		cout << "   #" << reservations[i].reservationID
+			 << "  Room " << reservations[i].roomNumber
+			 << "  " << reservations[i].roomType
+			 << "  [" << reservations[i].paymentStatus << "]" << endl;
+	}
+	if (any) {
+		cout << "  This booking is still yours. It did not disappear." << endl;
+		cout << "  Choose 2. Booking Room to continue add-ons / payment." << endl;
+		cout << "  Choose 3. View My Reservations to see the details." << endl;
 	}
 }
 
