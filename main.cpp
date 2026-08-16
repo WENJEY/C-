@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 #include <cctype>
-#include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <ctime>
@@ -184,7 +183,6 @@ void addLoyaltyPoints(int points);
 void refreshMembershipTier(int customerIndex);
 double membershipRate(const string& status);
 string currentCustomerName();
-
 int getValidatedInput(int min, int max);
 bool isValidName(const string& name);
 bool isValidAge(const string& age);
@@ -226,7 +224,6 @@ int main() {
 
 void enableColors() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
 	DWORD mode;
 	if (GetConsoleMode(hConsole, &mode)) {
 		SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
@@ -254,23 +251,20 @@ void logo() {
 
 	cout << string(22, '=') << setw(window_width) << setfill('=') << "=" << string(22, '=') << endl;
 	cout << red;
-
 	while (getline(ss, line)) {
 		cout << string(22, ' ') << setw(2) << setfill(' ') << " " << line << '\n';
 	}
-
 	cout << original;
 	while (getline(s, line)) {
 		cout << string(25, ' ') << setw(10) << setfill(' ') << " " << line << '\n';
 	}
-
 	cout << string(22, '=') << setw(window_width) << setfill('=') << "=" << string(22, '=') << endl;
 }
 
 void displayUserTypeMenu() {
 	cout << setfill(' ') << endl;
 	cout << " Welcome to Grand Horizon Hotel" << endl;
-	cout << " " <<  setw(30) << setfill('=') << '=' << endl;
+	cout << " " << setw(30) << setfill('=') << '=' << endl;
 	cout << "\n +---------------- Hotel Reservation System ----------------+" << endl;
 	cout << " | 1. Customer                                              |" << endl;
 	cout << " | 2. Staff                                                 |" << endl;
@@ -289,7 +283,6 @@ void customerAuthMenu() {
 		cout << " | 0. Back to Main Menu                   |" << endl;
 		cout << " +----------------------------------------+" << endl;
 		cout << "  Please choose (0-2): ";
-
 		choice = getValidatedInput(0, 2);
 
 		switch (choice) {
@@ -320,42 +313,34 @@ void customerMenu() {
 		cout << " | 6. View My Profile                                            |" << endl;
 		cout << " | 0. Back to Main Menu                                          |" << endl;
 		cout << " +---------------------------------------------------------------+" << endl;
-
 		cout << " Please choose (0-6): ";
 		choice = getValidatedInput(0, 6);
 
 		switch (choice) {
-			case 1:
-				displayAvailableRoom();
-				break;
-
-			case 2:
-				bookRoom();
-				break;
-
-			case 3:
-				viewMyReservations();
-				break;
-
-			case 4:
-				cout << " 4. Module. To be continues..." << endl;
-				break;
-
-			case 5:
-				cout << " 5. Module. To be continues..." << endl;
-				break;
-
-			case 6:
-				viewMyProfile();
-				break;
-
-			case 0:
-				currentLoggedInCustomer = "";
-				cout << "\n Logged out successfully. " << endl;
-				return;
+		case 1:
+			displayAvailableRoom();
+			break;
+		case 2:
+			bookRoom();
+			break;
+		case 3:
+			viewMyReservations();
+			break;
+		case 4:
+			cout << "  4. Module. To be continued..." << endl;
+			break;
+		case 5:
+			cout << "  5. Module. To be continued..." << endl;
+			break;
+		case 6:
+			viewMyProfile();
+			break;
+		case 0:
+			currentLoggedInCustomer = "";
+			cout << "\n Logged out successfully." << endl;
+			return;
 		}
-
-	}while (choice != 0);
+	} while (choice != 0);
 }
 
 void displayAvailableRoom() {
@@ -364,31 +349,30 @@ void displayAvailableRoom() {
 
 void displayRoomsByType(const string& typeFilter) {
 	int shown = 0;
-	cout << setfill(' ');
+	cout << setfill(' ') << left;
 	cout << "\n +---------------------------------------------------------------+" << endl;
-	cout << " | " << left << setw(10) << "Room No" << setw(12) << "Type" << setw(10) << "Capacity"
+	cout << " | " << setw(10) << "Room No" << setw(12) << "Type" << setw(10) << "Capacity"
 		 << setw(14) << "Price/Night" << setw(16) << "Status" << "|" << endl;
 	cout << " +---------------------------------------------------------------+" << endl;
 
-	for (const auto& room : roomList) {
-		if (typeFilter != "ALL" && room.roomType != typeFilter) {
+	for (size_t i = 0; i < roomList.size(); i++) {
+		if (typeFilter != "ALL" && roomList[i].roomType != typeFilter) {
 			continue;
 		}
-
 		if (shown > 0) {
-			cout << "\n";
+			cout << endl;
 		}
-
-		cout << " | " << left << setw(10) << room.roomNumber << setw(12) << room.roomType
-			 << setw(10) << room.capacity << "RM" << fixed << setprecision(2)
-			 << setw(12) << room.price << setw(16) << room.status << "|";
+		cout << " | " << setw(10) << roomList[i].roomNumber
+			 << setw(12) << roomList[i].roomType
+			 << setw(10) << roomList[i].capacity
+			 << "RM" << setw(12) << fixed << setprecision(2) << roomList[i].price
+			 << setw(16) << roomList[i].status << "|";
 		shown++;
 	}
 
 	if (shown == 0) {
 		cout << " | No rooms found for this type.                                 |";
 	}
-
 	cout << "\n +---------------------------------------------------------------+" << endl;
 }
 
@@ -396,12 +380,12 @@ void bookRoom() {
 	loadUnpaidIntoSession();
 
 	if (!currentSessionIDs.empty()) {
-		cout << yellow;
-		cout << "\n  You still have unpaid booking(s) from this stay:" << endl;
-		cout << original;
-		for (const string& id : currentSessionIDs) {
-			int idx = findReservationIndex(id);
-			if (idx == -1) continue;
+		cout << yellow << "\n  You still have unpaid booking(s) from this stay:" << original << endl;
+		for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+			int idx = findReservationIndex(currentSessionIDs[i]);
+			if (idx == -1) {
+				continue;
+			}
 			cout << "   - #" << reservations[idx].reservationID
 				 << "  Room " << reservations[idx].roomNumber
 				 << "  (" << reservations[idx].roomType << ", "
@@ -448,9 +432,15 @@ bool createOneBooking() {
 	}
 
 	string typeFilter = "ALL";
-	if (typeChoice == 2) typeFilter = "Single";
-	if (typeChoice == 3) typeFilter = "Deluxe";
-	if (typeChoice == 4) typeFilter = "Suite";
+	if (typeChoice == 2) {
+		typeFilter = "Single";
+	}
+	if (typeChoice == 3) {
+		typeFilter = "Deluxe";
+	}
+	if (typeChoice == 4) {
+		typeFilter = "Suite";
+	}
 
 	displayRoomsByType(typeFilter);
 
@@ -471,18 +461,15 @@ bool createOneBooking() {
 			cout << red << "  Room not found! Please try again." << original << endl;
 			continue;
 		}
-
 		if (typeFilter != "ALL" && roomList[roomIndex].roomType != typeFilter) {
 			cout << "  That room is not in the " << typeFilter << " list. Please choose again." << endl;
 			continue;
 		}
-
 		if (roomList[roomIndex].status != "Available") {
 			cout << red << "  This room is not available (status: "
 				 << roomList[roomIndex].status << "). Please choose another." << original << endl;
 			continue;
 		}
-
 		break;
 	}
 
@@ -490,8 +477,7 @@ bool createOneBooking() {
 
 	int guests = 0;
 	while (true) {
-		cout << "\n  Enter number of guests (1-" << roomList[roomIndex].capacity
-			 << ", or 0 to cancel): ";
+		cout << "\n  Enter number of guests (1-" << roomList[roomIndex].capacity << ", or 0 to cancel): ";
 		guests = getIntInRange(0, 20);
 		if (guests == 0) {
 			cout << "  Booking cancelled." << endl;
@@ -500,7 +486,7 @@ bool createOneBooking() {
 		if (guests > roomList[roomIndex].capacity) {
 			cout << yellow << "  This " << roomList[roomIndex].roomType << " only fits "
 				 << roomList[roomIndex].capacity << " guest(s)." << original << endl;
-			cout << "  Tip: you can still continue and add an Extra Bed after confirming." << endl;
+			cout << "  You can continue and add an Extra Bed after confirming." << endl;
 			if (!confirmYesNo("  Continue with this room anyway? (y/n): ")) {
 				continue;
 			}
@@ -508,48 +494,23 @@ bool createOneBooking() {
 		break;
 	}
 
-	string nightsStr;
-	int nights = 0;
-
-	while (true) {
-		cout << "\n  Enter number of nights (or 0 to cancel): ";
-		getline(cin, nightsStr);
-
-		if (nightsStr == "0") {
-			cout << "  Booking cancelled." << endl;
-			return false;
-		}
-
-		bool numeric = !nightsStr.empty();
-		for (char c : nightsStr) if (!isdigit(c)) numeric = false;
-
-		if (!numeric) {
-			cout << "  Invalid input! Please enter a number." << endl;
-			continue;
-		}
-
-		nights = stoi(nightsStr);
-		if (nights <= 0) {
-			cout << "  Number of nights must be at least 1!" << endl;
-			continue;
-		}
-		if (nights > 30) {
-			cout << "  Maximum stay is 30 nights per booking. Please enter again." << endl;
-			continue;
-		}
-
-		break;
+	cout << "\n  Enter number of nights (or 0 to cancel): ";
+	int nights = getIntInRange(0, 30);
+	if (nights == 0) {
+		cout << "  Booking cancelled." << endl;
+		return false;
 	}
 
 	double estimated = roundMoney(roomList[roomIndex].price * nights);
 
+	cout << fixed << setprecision(2);
 	cout << "\n +------------------ Booking Summary ------------------+" << endl;
 	cout << "  Guest        : " << currentCustomerName() << endl;
 	cout << "  Room Number  : " << roomList[roomIndex].roomNumber << endl;
 	cout << "  Room Type    : " << roomList[roomIndex].roomType << endl;
 	cout << "  Guests       : " << guests << endl;
 	cout << "  Nights       : " << nights << endl;
-	cout << "  Price/Night  : RM " << fixed << setprecision(2) << roomList[roomIndex].price << endl;
+	cout << "  Price/Night  : RM " << roomList[roomIndex].price << endl;
 	cout << "  Room Charge  : RM " << estimated << endl;
 	cout << " +-----------------------------------------------------+" << endl;
 	cout << "  Add-ons, promo codes and payment will appear after you confirm." << endl;
@@ -587,7 +548,6 @@ bool createOneBooking() {
 
 	cout << green << "\n  Reservation confirmed! Your reservation ID is "
 		 << newBooking.reservationID << "." << original << endl;
-
 	maybeGiveWelcomeGift(static_cast<int>(reservations.size()) - 1);
 	cout << cyan << "  Tip: first-time promo code WELCOME10 gives 10% off." << original << endl;
 	return true;
@@ -597,16 +557,16 @@ void afterBookingMenu() {
 	int choice;
 
 	do {
-		cout << setfill(' ');
-		cout << cyan;
-		cout << "\n +---------------- After Booking Menu ----------------+" << endl;
-		cout << original;
+		cout << setfill(' ') << left;
+		cout << cyan << "\n +---------------- After Booking Menu ----------------+" << original << endl;
 		cout << " | Your confirmed stay is ready. Choose what to do next.|" << endl;
 		cout << " +-----------------------------------------------------+" << endl;
 
 		for (size_t i = 0; i < currentSessionIDs.size(); i++) {
 			int idx = findReservationIndex(currentSessionIDs[i]);
-			if (idx == -1) continue;
+			if (idx == -1) {
+				continue;
+			}
 			cout << " |  #" << reservations[idx].reservationID
 				 << "  Room " << reservations[idx].roomNumber
 				 << "  " << reservations[idx].roomType
@@ -616,8 +576,7 @@ void afterBookingMenu() {
 
 		BillBreakdown preview = calculateSessionBill();
 		cout << " +-----------------------------------------------------+" << endl;
-		cout << " | Estimated total now : RM " << left << setw(24) << fixed << setprecision(2)
-			 << preview.total << "|" << endl;
+		cout << " | Estimated total now : RM " << fixed << setprecision(2) << preview.total << endl;
 		cout << " +-----------------------------------------------------+" << endl;
 		cout << " | 1. Hotel Add-ons (breakfast, spa, pickup...)        |" << endl;
 		cout << " | 2. View Bill / Make Payment                         |" << endl;
@@ -657,8 +616,8 @@ void afterBookingMenu() {
 			break;
 		case 0: {
 			bool unpaid = false;
-			for (const string& id : currentSessionIDs) {
-				int idx = findReservationIndex(id);
+			for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+				int idx = findReservationIndex(currentSessionIDs[i]);
 				if (idx != -1 && reservations[idx].paymentStatus == "Unpaid") {
 					unpaid = true;
 					break;
@@ -685,7 +644,9 @@ void offerAddOns() {
 		cout << "\n  Which room should receive the add-ons?" << endl;
 		for (size_t i = 0; i < currentSessionIDs.size(); i++) {
 			int idx = findReservationIndex(currentSessionIDs[i]);
-			if (idx == -1) continue;
+			if (idx == -1) {
+				continue;
+			}
 			cout << "  " << (i + 1) << ". Room " << reservations[idx].roomNumber
 				 << " (" << reservations[idx].roomType << ")" << endl;
 		}
@@ -705,15 +666,16 @@ void offerAddOns() {
 
 void addOnsForReservation(int resIndex) {
 	int choice;
+
 	do {
+		cout << left << setfill(' ');
 		cout << "\n +---------------- Hotel Add-ons ----------------+" << endl;
 		cout << " | Room " << reservations[resIndex].roomNumber
 			 << "  |  Guests: " << reservations[resIndex].guests
 			 << "  |  Nights: " << reservations[resIndex].nights << endl;
 		cout << " +-----------------------------------------------+" << endl;
-
 		for (size_t i = 0; i < ADDON_CATALOG.size(); i++) {
-			cout << " | " << (i + 1) << ". " << left << setw(24) << ADDON_CATALOG[i].name
+			cout << " | " << (i + 1) << ". " << setw(24) << ADDON_CATALOG[i].name
 				 << " RM " << setw(7) << fixed << setprecision(2) << ADDON_CATALOG[i].price
 				 << ADDON_CATALOG[i].unit << endl;
 		}
@@ -722,9 +684,10 @@ void addOnsForReservation(int resIndex) {
 
 		if (!reservations[resIndex].addOns.empty()) {
 			cout << "  Already added:" << endl;
-			for (const auto& item : reservations[resIndex].addOns) {
-				cout << "   - " << item.name << " x" << item.quantity
-					 << "  RM " << fixed << setprecision(2) << item.lineTotal << endl;
+			for (size_t i = 0; i < reservations[resIndex].addOns.size(); i++) {
+				cout << "   - " << reservations[resIndex].addOns[i].name
+					 << " x" << reservations[resIndex].addOns[i].quantity
+					 << "  RM " << fixed << setprecision(2) << reservations[resIndex].addOns[i].lineTotal << endl;
 			}
 		}
 
@@ -744,14 +707,16 @@ void addOnsForReservation(int resIndex) {
 
 		double line = roundMoney(item.price * qty);
 		bool merged = false;
-		for (auto& existing : reservations[resIndex].addOns) {
-			if (existing.name == item.name) {
-				existing.quantity += qty;
-				existing.lineTotal = roundMoney(existing.unitPrice * existing.quantity);
+		for (size_t i = 0; i < reservations[resIndex].addOns.size(); i++) {
+			if (reservations[resIndex].addOns[i].name == item.name) {
+				reservations[resIndex].addOns[i].quantity += qty;
+				reservations[resIndex].addOns[i].lineTotal = roundMoney(
+					reservations[resIndex].addOns[i].unitPrice * reservations[resIndex].addOns[i].quantity);
 				merged = true;
 				break;
 			}
 		}
+
 		if (!merged) {
 			SelectedAddOn selected;
 			selected.name = item.name;
@@ -778,14 +743,23 @@ void specialRequestMenu() {
 		cout << "\n  Which room is this request for?" << endl;
 		for (size_t i = 0; i < currentSessionIDs.size(); i++) {
 			int idx = findReservationIndex(currentSessionIDs[i]);
-			if (idx == -1) continue;
+			if (idx == -1) {
+				continue;
+			}
 			cout << "  " << (i + 1) << ". Room " << reservations[idx].roomNumber << endl;
 		}
+		cout << "  0. Cancel" << endl;
 		cout << "  Choose: ";
-		int pick = getIntInRange(1, static_cast<int>(currentSessionIDs.size()));
+		int pick = getIntInRange(0, static_cast<int>(currentSessionIDs.size()));
+		if (pick == 0) {
+			return;
+		}
 		resIndex = findReservationIndex(currentSessionIDs[pick - 1]);
 	}
-	if (resIndex == -1) return;
+
+	if (resIndex == -1) {
+		return;
+	}
 
 	cout << "\n +---------- Special Requests ----------+" << endl;
 	cout << " | 1. High floor                        |" << endl;
@@ -800,15 +774,27 @@ void specialRequestMenu() {
 	int choice = getValidatedInput(0, 6);
 
 	string request = reservations[resIndex].specialRequest;
-	if (request == "-") request = "";
+	if (request == "-") {
+		request = "";
+	}
 
 	string extra;
 	switch (choice) {
-	case 1: extra = "High floor"; break;
-	case 2: extra = "Quiet room"; break;
-	case 3: extra = "Extra pillows"; break;
-	case 4: extra = "Baby crib"; break;
-	case 5: extra = "Connecting rooms"; break;
+	case 1:
+		extra = "High floor";
+		break;
+	case 2:
+		extra = "Quiet room";
+		break;
+	case 3:
+		extra = "Extra pillows";
+		break;
+	case 4:
+		extra = "Baby crib";
+		break;
+	case 5:
+		extra = "Connecting rooms";
+		break;
 	case 6:
 		cout << "  Type your request: ";
 		getline(cin, extra);
@@ -826,8 +812,9 @@ void specialRequestMenu() {
 		request = extra;
 	}
 	else {
-		request += ", " + extra;
+		request = request + ", " + extra;
 	}
+
 	reservations[resIndex].specialRequest = request;
 	saveReservationsToFile();
 	cout << green << "  Noted! We will try our best: " << request << original << endl;
@@ -849,15 +836,17 @@ void applyPromoCode() {
 		return;
 	}
 
-	for (char& c : code) {
-		c = static_cast<char>(toupper(static_cast<unsigned char>(c)));
+	for (size_t i = 0; i < code.length(); i++) {
+		code[i] = static_cast<char>(toupper(static_cast<unsigned char>(code[i])));
 	}
 
 	int totalNights = 0;
 	double roomCharge = 0;
-	for (const string& id : currentSessionIDs) {
-		int idx = findReservationIndex(id);
-		if (idx == -1) continue;
+	for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+		int idx = findReservationIndex(currentSessionIDs[i]);
+		if (idx == -1) {
+			continue;
+		}
 		totalNights += reservations[idx].nights;
 		roomCharge += reservations[idx].pricePerNight * reservations[idx].nights;
 		roomCharge += addOnTotal(reservations[idx]);
@@ -917,7 +906,9 @@ void redeemLoyaltyPoints() {
 		cout << "  Current bill is too small to redeem points." << endl;
 		return;
 	}
-	if (maxBlocks > affordable) maxBlocks = affordable;
+	if (maxBlocks > affordable) {
+		maxBlocks = affordable;
+	}
 
 	cout << "  You can redeem up to " << (maxBlocks * REDEEM_BLOCK) << " points." << endl;
 	cout << "  Enter points to redeem (multiples of " << REDEEM_BLOCK << ", 0 to cancel): ";
@@ -937,50 +928,48 @@ void redeemLoyaltyPoints() {
 
 void showSessionBill(bool showPayHint) {
 	BillBreakdown bill = calculateSessionBill();
-
-	cout << setfill(' ');
+	cout << setfill(' ') << left << fixed << setprecision(2);
 	cout << "\n +---------------------- Your Bill ----------------------+" << endl;
-	cout << " | Guest : " << left << setw(45) << currentCustomerName() << "|" << endl;
-	cout << " | Member: " << setw(45) << membershipOfCurrentUser() << "|" << endl;
+	cout << "  Guest           : " << currentCustomerName() << endl;
+	cout << "  Member          : " << membershipOfCurrentUser() << endl;
 	cout << " +-------------------------------------------------------+" << endl;
 
-	for (const string& id : currentSessionIDs) {
-		int idx = findReservationIndex(id);
-		if (idx == -1) continue;
+	for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+		int idx = findReservationIndex(currentSessionIDs[i]);
+		if (idx == -1) {
+			continue;
+		}
 		double roomCharge = roundMoney(reservations[idx].pricePerNight * reservations[idx].nights);
-		cout << " | #" << reservations[idx].reservationID
-			 << " Room " << reservations[idx].roomNumber << " " << reservations[idx].roomType
+		cout << "  #" << reservations[idx].reservationID
+			 << " Room " << reservations[idx].roomNumber
+			 << " " << reservations[idx].roomType
 			 << "  " << reservations[idx].nights << " night(s)" << endl;
-		cout << " |    Room charge                         RM " << setw(10) << right << fixed << setprecision(2) << roomCharge << endl;
-		for (const auto& item : reservations[idx].addOns) {
-			cout << " |    + " << left << setw(31) << (item.name + " x" + to_string(item.quantity))
-				 << " RM " << setw(10) << right << item.lineTotal << endl;
+		cout << "    Room charge   : RM " << roomCharge << endl;
+		for (size_t j = 0; j < reservations[idx].addOns.size(); j++) {
+			cout << "    + " << reservations[idx].addOns[j].name
+				 << " x" << reservations[idx].addOns[j].quantity
+				 << " : RM " << reservations[idx].addOns[j].lineTotal << endl;
 		}
 		if (reservations[idx].specialRequest != "-") {
-			cout << " |    Request: " << reservations[idx].specialRequest << endl;
+			cout << "    Request       : " << reservations[idx].specialRequest << endl;
 		}
 	}
 
 	cout << " +-------------------------------------------------------+" << endl;
-	cout << left;
-	cout << " | Subtotal                               RM " << setw(10) << right << bill.subtotal << endl;
+	cout << "  Subtotal        : RM " << bill.subtotal << endl;
 	if (bill.promoDiscount > 0) {
-		cout << " | Promo " << setw(8) << left << sessionPromoCode
-			 << "                     -RM " << setw(10) << right << bill.promoDiscount << endl;
+		cout << "  Promo " << sessionPromoCode << "      : -RM " << bill.promoDiscount << endl;
 	}
 	if (bill.memberDiscount > 0) {
-		cout << " | " << membershipOfCurrentUser() << " member discount"
-			 << "                 -RM " << setw(10) << right << bill.memberDiscount << endl;
+		cout << "  Member discount : -RM " << bill.memberDiscount << endl;
 	}
 	if (bill.loyaltyDiscount > 0) {
-		cout << " | Loyalty points                         -RM " << setw(10) << right << bill.loyaltyDiscount << endl;
+		cout << "  Loyalty points  : -RM " << bill.loyaltyDiscount << endl;
 	}
-	cout << " | Service charge (10%)                    RM " << setw(10) << right << bill.serviceCharge << endl;
-	cout << " | SST (8%)                                RM " << setw(10) << right << bill.sst << endl;
+	cout << "  Service 10%     : RM " << bill.serviceCharge << endl;
+	cout << "  SST 8%          : RM " << bill.sst << endl;
 	cout << " +-------------------------------------------------------+" << endl;
-	cout << green;
-	cout << " | TOTAL PAYABLE                           RM " << setw(10) << right << bill.total << endl;
-	cout << original;
+	cout << green << "  TOTAL PAYABLE   : RM " << bill.total << original << endl;
 	cout << " +-------------------------------------------------------+" << endl;
 
 	if (showPayHint) {
@@ -990,8 +979,8 @@ void showSessionBill(bool showPayHint) {
 
 void processPayment() {
 	bool alreadyPaid = true;
-	for (const string& id : currentSessionIDs) {
-		int idx = findReservationIndex(id);
+	for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+		int idx = findReservationIndex(currentSessionIDs[i]);
 		if (idx != -1 && reservations[idx].paymentStatus == "Unpaid") {
 			alreadyPaid = false;
 			break;
@@ -1021,11 +1010,21 @@ void processPayment() {
 	}
 
 	string methodName;
-	if (method == 1) methodName = "Cash";
-	else if (method == 2) methodName = "Card";
-	else if (method == 3) methodName = "Touch n Go";
-	else if (method == 4) methodName = "GrabPay";
-	else methodName = "Boost";
+	if (method == 1) {
+		methodName = "Cash";
+	}
+	else if (method == 2) {
+		methodName = "Card";
+	}
+	else if (method == 3) {
+		methodName = "Touch n Go";
+	}
+	else if (method == 4) {
+		methodName = "GrabPay";
+	}
+	else {
+		methodName = "Boost";
+	}
 
 	if (method == 1) {
 		while (true) {
@@ -1039,9 +1038,13 @@ void processPayment() {
 
 			bool valid = !cashStr.empty();
 			int dotCount = 0;
-			for (char c : cashStr) {
-				if (c == '.') dotCount++;
-				else if (!isdigit(c)) valid = false;
+			for (size_t i = 0; i < cashStr.length(); i++) {
+				if (cashStr[i] == '.') {
+					dotCount++;
+				}
+				else if (!isdigit(cashStr[i])) {
+					valid = false;
+				}
 			}
 			if (!valid || dotCount > 1) {
 				cout << "  Invalid amount." << endl;
@@ -1062,16 +1065,21 @@ void processPayment() {
 		}
 	}
 	else if (method == 2) {
-		string card;
 		while (true) {
 			cout << "  Enter 16-digit card number (or 0 to cancel): ";
+			string card;
 			getline(cin, card);
 			if (card == "0") {
 				cout << "  Payment cancelled." << endl;
 				return;
 			}
-			string digits;
-			for (char c : card) if (isdigit(c)) digits += c;
+
+			string digits = "";
+			for (size_t i = 0; i < card.length(); i++) {
+				if (isdigit(card[i])) {
+					digits += card[i];
+				}
+			}
 			if (digits.length() != 16) {
 				cout << "  Card number must contain 16 digits." << endl;
 				continue;
@@ -1098,13 +1106,16 @@ void processPayment() {
 		}
 	}
 
-	for (const string& id : currentSessionIDs) {
-		int idx = findReservationIndex(id);
-		if (idx == -1) continue;
-		double ownSubtotal = reservations[idx].pricePerNight * reservations[idx].nights
-			+ addOnTotal(reservations[idx]);
-		double share = (bill.subtotal > 0.0) ? (ownSubtotal / bill.subtotal) : 0.0;
-
+	for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+		int idx = findReservationIndex(currentSessionIDs[i]);
+		if (idx == -1) {
+			continue;
+		}
+		double ownSubtotal = reservations[idx].pricePerNight * reservations[idx].nights + addOnTotal(reservations[idx]);
+		double share = 0.0;
+		if (bill.subtotal > 0.0) {
+			share = ownSubtotal / bill.subtotal;
+		}
 		reservations[idx].paymentStatus = "Paid";
 		reservations[idx].status = "Paid";
 		reservations[idx].paymentMethod = methodName;
@@ -1127,7 +1138,6 @@ void processPayment() {
 		cout << "  Membership: " << customers[custIndex].membershipStatus
 			 << "  |  Points: " << customers[custIndex].loyaltyPoints << endl;
 	}
-
 	if (rand() % 5 == 0) {
 		cout << yellow << "  Lucky draw: complimentary late checkout voucher for your next stay!" << original << endl;
 	}
@@ -1156,19 +1166,24 @@ void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
 	receipt << " Guest      : " << currentCustomerName() << "\n";
 	receipt << " Member     : " << membershipOfCurrentUser() << "\n";
 	receipt << "------------------------------------------------------\n";
-	for (const string& id : currentSessionIDs) {
-		int idx = findReservationIndex(id);
-		if (idx == -1) continue;
+
+	for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+		int idx = findReservationIndex(currentSessionIDs[i]);
+		if (idx == -1) {
+			continue;
+		}
 		receipt << " #" << reservations[idx].reservationID
 				<< " Room " << reservations[idx].roomNumber
 				<< " " << reservations[idx].roomType
 				<< " x" << reservations[idx].nights << " night(s)\n";
 		receipt << "   Room     RM " << (reservations[idx].pricePerNight * reservations[idx].nights) << "\n";
-		for (const auto& item : reservations[idx].addOns) {
-			receipt << "   " << item.name << " x" << item.quantity
-					<< "  RM " << item.lineTotal << "\n";
+		for (size_t j = 0; j < reservations[idx].addOns.size(); j++) {
+			receipt << "   " << reservations[idx].addOns[j].name
+					<< " x" << reservations[idx].addOns[j].quantity
+					<< "  RM " << reservations[idx].addOns[j].lineTotal << "\n";
 		}
 	}
+
 	receipt << "------------------------------------------------------\n";
 	receipt << " Subtotal              RM " << bill.subtotal << "\n";
 	receipt << " Promo / Member        -RM " << (bill.promoDiscount + bill.memberDiscount) << "\n";
@@ -1194,24 +1209,29 @@ void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
 void viewMyReservations() {
 	cout << "\n +---------------- My Reservations ----------------+" << endl;
 	bool found = false;
-	for (const auto& booking : reservations) {
-		if (booking.customerUsername != currentLoggedInCustomer) continue;
-		found = true;
-		cout << " | #" << booking.reservationID
-			 << "  Room " << booking.roomNumber
-			 << "  " << booking.roomType
-			 << "  " << booking.nights << " night(s)" << endl;
-		cout << " |    Status: " << booking.status
-			 << "  |  Payment: " << booking.paymentStatus << endl;
-		if (booking.paymentStatus == "Paid") {
-			cout << " |    Paid RM " << fixed << setprecision(2) << booking.totalAmount
-				 << " via " << booking.paymentMethod << endl;
+
+	for (size_t i = 0; i < reservations.size(); i++) {
+		if (reservations[i].customerUsername != currentLoggedInCustomer) {
+			continue;
 		}
-		if (!booking.addOns.empty()) {
+		found = true;
+		cout << " | #" << reservations[i].reservationID
+			 << "  Room " << reservations[i].roomNumber
+			 << "  " << reservations[i].roomType
+			 << "  " << reservations[i].nights << " night(s)" << endl;
+		cout << " |    Status: " << reservations[i].status
+			 << "  |  Payment: " << reservations[i].paymentStatus << endl;
+		if (reservations[i].paymentStatus == "Paid") {
+			cout << " |    Paid RM " << fixed << setprecision(2) << reservations[i].totalAmount
+				 << " via " << reservations[i].paymentMethod << endl;
+		}
+		if (!reservations[i].addOns.empty()) {
 			cout << " |    Add-ons: ";
-			for (size_t i = 0; i < booking.addOns.size(); i++) {
-				if (i > 0) cout << ", ";
-				cout << booking.addOns[i].name << " x" << booking.addOns[i].quantity;
+			for (size_t j = 0; j < reservations[i].addOns.size(); j++) {
+				if (j > 0) {
+					cout << ", ";
+				}
+				cout << reservations[i].addOns[j].name << " x" << reservations[i].addOns[j].quantity;
 			}
 			cout << endl;
 		}
@@ -1231,7 +1251,7 @@ void viewMyProfile() {
 		return;
 	}
 
-	const Customer& c = customers[idx];
+	Customer c = customers[idx];
 	int nextNeed = 0;
 	string nextTier = "Silver";
 	if (c.membershipStatus == "Regular") {
@@ -1267,7 +1287,11 @@ void offerRoomUpgrade(int& roomIndex) {
 		return;
 	}
 
-	string nextType = (roomList[roomIndex].roomType == "Single") ? "Deluxe" : "Suite";
+	string nextType = "Suite";
+	if (roomList[roomIndex].roomType == "Single") {
+		nextType = "Deluxe";
+	}
+
 	int upgradeIndex = -1;
 	for (size_t i = 0; i < roomList.size(); i++) {
 		if (roomList[i].roomType == nextType && roomList[i].status == "Available") {
@@ -1291,9 +1315,10 @@ void offerRoomUpgrade(int& roomIndex) {
 }
 
 void maybeGiveWelcomeGift(int resIndex) {
-	if (sessionSurpriseGiven) return;
+	if (sessionSurpriseGiven) {
+		return;
+	}
 	sessionSurpriseGiven = true;
-
 	if (rand() % 4 != 0) {
 		return;
 	}
@@ -1305,17 +1330,16 @@ void maybeGiveWelcomeGift(int resIndex) {
 	gift.lineTotal = 0;
 	reservations[resIndex].addOns.push_back(gift);
 	saveReservationsToFile();
-	cout << yellow << "  Surprise gift: complimentary welcome fruit platter added to your room!"
-		 << original << endl;
+	cout << yellow << "  Surprise gift: complimentary welcome fruit platter added to your room!" << original << endl;
 }
 
 void loadUnpaidIntoSession() {
 	currentSessionIDs.clear();
-	for (const auto& booking : reservations) {
-		if (booking.customerUsername == currentLoggedInCustomer
-			&& booking.paymentStatus == "Unpaid"
-			&& booking.status != "Cancelled") {
-			currentSessionIDs.push_back(booking.reservationID);
+	for (size_t i = 0; i < reservations.size(); i++) {
+		if (reservations[i].customerUsername == currentLoggedInCustomer
+			&& reservations[i].paymentStatus == "Unpaid"
+			&& reservations[i].status != "Cancelled") {
+			currentSessionIDs.push_back(reservations[i].reservationID);
 		}
 	}
 }
@@ -1378,20 +1402,18 @@ int getIntInRange(int minVal, int maxVal) {
 
 	while (true) {
 		getline(cin, inputStr);
-
 		if (inputStr.empty()) {
 			cout << "  Please enter a number between " << minVal << "-" << maxVal << ": ";
 			continue;
 		}
 
 		bool isNumeric = true;
-		for (char c : inputStr) {
-			if (!isdigit(c)) {
+		for (size_t i = 0; i < inputStr.length(); i++) {
+			if (!isdigit(inputStr[i])) {
 				isNumeric = false;
 				break;
 			}
 		}
-
 		if (!isNumeric) {
 			cout << "  Invalid input! Please enter a number between " << minVal << "-" << maxVal << ": ";
 			continue;
@@ -1416,8 +1438,12 @@ bool confirmYesNo(const string& prompt) {
 			continue;
 		}
 		char c = static_cast<char>(tolower(static_cast<unsigned char>(answer[0])));
-		if (c == 'y') return true;
-		if (c == 'n') return false;
+		if (c == 'y') {
+			return true;
+		}
+		if (c == 'n') {
+			return false;
+		}
 		cout << "  Please enter y or n." << endl;
 	}
 }
@@ -1428,8 +1454,8 @@ double roundMoney(double amount) {
 
 double addOnTotal(const BookingRecord& booking) {
 	double total = 0;
-	for (const auto& item : booking.addOns) {
-		total += item.lineTotal;
+	for (size_t i = 0; i < booking.addOns.size(); i++) {
+		total += booking.addOns[i].lineTotal;
 	}
 	return roundMoney(total);
 }
@@ -1439,9 +1465,11 @@ BillBreakdown calculateSessionBill() {
 	bill.roomCharge = 0;
 	bill.addOnCharge = 0;
 
-	for (const string& id : currentSessionIDs) {
-		int idx = findReservationIndex(id);
-		if (idx == -1) continue;
+	for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+		int idx = findReservationIndex(currentSessionIDs[i]);
+		if (idx == -1) {
+			continue;
+		}
 		bill.roomCharge += reservations[idx].pricePerNight * reservations[idx].nights;
 		bill.addOnCharge += addOnTotal(reservations[idx]);
 	}
@@ -1470,19 +1498,25 @@ BillBreakdown calculateSessionBill() {
 
 string membershipOfCurrentUser() {
 	int idx = findCustomerIndex(currentLoggedInCustomer);
-	if (idx == -1) return "Regular";
+	if (idx == -1) {
+		return "Regular";
+	}
 	return customers[idx].membershipStatus;
 }
 
 int loyaltyPointsOfCurrentUser() {
 	int idx = findCustomerIndex(currentLoggedInCustomer);
-	if (idx == -1) return 0;
+	if (idx == -1) {
+		return 0;
+	}
 	return customers[idx].loyaltyPoints;
 }
 
 void addLoyaltyPoints(int points) {
 	int idx = findCustomerIndex(currentLoggedInCustomer);
-	if (idx == -1) return;
+	if (idx == -1) {
+		return;
+	}
 	customers[idx].loyaltyPoints += points;
 	refreshMembershipTier(idx);
 }
@@ -1500,21 +1534,26 @@ void refreshMembershipTier(int customerIndex) {
 }
 
 double membershipRate(const string& status) {
-	if (status == "Gold") return 0.10;
-	if (status == "Silver") return 0.05;
+	if (status == "Gold") {
+		return 0.10;
+	}
+	if (status == "Silver") {
+		return 0.05;
+	}
 	return 0.0;
 }
 
 string currentCustomerName() {
 	int idx = findCustomerIndex(currentLoggedInCustomer);
-	if (idx == -1) return currentLoggedInCustomer;
+	if (idx == -1) {
+		return currentLoggedInCustomer;
+	}
 	return customers[idx].fullName;
 }
 
 void staffMenu() {
-	cout << "\n  [ Put your staff module menu here ]" << endl;
-	cout << "\n  Press Enter to return to main menu...";
-	cin.get();
+	cout << "\n  Staff module. To be continued..." << endl;
+	pauseEnter();
 }
 
 void customerRegister() {
@@ -1536,47 +1575,40 @@ void customerRegister() {
 			cout << "  Registration cancelled." << endl;
 			return;
 		}
-
 		if (newCustomer.username.empty()) {
 			cout << "  Username cannot be empty!" << endl;
 			continue;
 		}
-
 		if (newCustomer.username.length() < 3 || newCustomer.username.length() > 20) {
 			cout << "  Username must be 3-20 characters long!" << endl;
 			continue;
 		}
 
 		bool validUsername = true;
-		for (char c : newCustomer.username) {
-			if (!isalnum(c)) {
+		for (size_t i = 0; i < newCustomer.username.length(); i++) {
+			if (!isalnum(newCustomer.username[i])) {
 				validUsername = false;
 				break;
 			}
 		}
-
 		if (!validUsername) {
 			cout << "  Username can only contain letters and numbers!" << endl;
 			continue;
 		}
-
 		if (customerExists(newCustomer.username)) {
 			cout << "  Username already exists! Please choose another." << endl;
 			continue;
 		}
-
 		break;
 	}
 
 	while (true) {
 		cout << "\n  Enter your age (or 0 to cancel): ";
 		getline(cin, newCustomer.age);
-
 		if (newCustomer.age == "0") {
 			cout << "  Registration cancelled." << endl;
 			return;
 		}
-
 		if (!isValidAge(newCustomer.age)) {
 			cout << "  You must be 18 years old and above to book our hotel." << endl;
 			continue;
@@ -1587,12 +1619,10 @@ void customerRegister() {
 	while (true) {
 		cout << "\n  Enter password (minimum 6 characters, or 0 to cancel): ";
 		newCustomer.password = getSecurePassword(false);
-
 		if (newCustomer.password == "0") {
 			cout << "  Registration cancelled." << endl;
 			return;
 		}
-
 		if (!isValidPassword(newCustomer.password)) {
 			cout << "  Password must be at least 6 characters long!" << endl;
 			continue;
@@ -1600,17 +1630,14 @@ void customerRegister() {
 
 		cout << "\n  Confirm password (or 0 to cancel): ";
 		confirmPassword = getSecurePassword(false);
-
 		if (confirmPassword == "0") {
 			cout << "  Registration cancelled." << endl;
 			return;
 		}
-
 		if (newCustomer.password != confirmPassword) {
 			cout << "  Passwords do not match! Please try again." << endl;
 			continue;
 		}
-
 		cout << "  Password confirmed successfully!" << endl;
 		break;
 	}
@@ -1618,22 +1645,18 @@ void customerRegister() {
 	while (true) {
 		cout << "\n  Enter full name (or 0 to cancel): ";
 		getline(cin, newCustomer.fullName);
-
 		if (newCustomer.fullName == "0") {
 			cout << "  Registration cancelled." << endl;
 			return;
 		}
-
 		if (newCustomer.fullName.empty()) {
 			cout << "  Full name cannot be empty!" << endl;
 			continue;
 		}
-
 		if (!isValidName(newCustomer.fullName)) {
 			cout << "  Invalid name format! Names should contain only letters and spaces (2-50 characters)." << endl;
 			continue;
 		}
-
 		formatName(newCustomer.fullName);
 		break;
 	}
@@ -1641,17 +1664,14 @@ void customerRegister() {
 	while (true) {
 		cout << "\n  Enter Gmail address (example: yourname@gmail.com, or 0 to cancel): ";
 		getline(cin, newCustomer.email);
-
 		if (newCustomer.email == "0") {
 			cout << "  Registration cancelled." << endl;
 			return;
 		}
-
 		if (newCustomer.email.empty()) {
 			cout << "  Email cannot be empty!" << endl;
 			continue;
 		}
-
 		if (!isValidEmail(newCustomer.email)) {
 			cout << "  Invalid email! Please use Gmail format: yourname@gmail.com" << endl;
 			continue;
@@ -1663,22 +1683,18 @@ void customerRegister() {
 	while (true) {
 		cout << "\n  Enter Malaysian phone number (+60xxxxxxxxx or 01xxxxxxxx, or 0 to cancel): ";
 		getline(cin, newCustomer.phoneNumber);
-
 		if (newCustomer.phoneNumber == "0") {
 			cout << "  Registration cancelled." << endl;
 			return;
 		}
-
 		if (newCustomer.phoneNumber.empty()) {
 			cout << "  Phone number cannot be empty!" << endl;
 			continue;
 		}
-
 		if (!isValidPhoneNumber(newCustomer.phoneNumber)) {
 			cout << "  Invalid format! Use: +60123456789 or 0123456789" << endl;
 			continue;
 		}
-
 		cout << "  Valid Malaysian phone number!" << endl;
 		break;
 	}
@@ -1686,25 +1702,19 @@ void customerRegister() {
 	while (true) {
 		cout << "\n  Enter IC number (12 digits) or Passport number (or 0 to cancel): ";
 		getline(cin, newCustomer.icPassport);
-
 		if (newCustomer.icPassport == "0") {
 			cout << "  Registration cancelled." << endl;
 			return;
 		}
-
 		if (newCustomer.icPassport.empty()) {
 			cout << "  IC/Passport cannot be empty!" << endl;
 			continue;
 		}
-
 		if (isValidMalaysianIC(newCustomer.icPassport) || isValidPassport(newCustomer.icPassport)) {
 			cout << "  Valid IC/Passport!" << endl;
 			break;
 		}
-		else {
-			cout << "  Invalid IC/Passport format!" << endl;
-			continue;
-		}
+		cout << "  Invalid IC/Passport format!" << endl;
 	}
 
 	newCustomer.membershipStatus = "Regular";
@@ -1718,7 +1728,8 @@ void customerRegister() {
 }
 
 bool customerLogin() {
-	string username, password;
+	string username;
+	string password;
 	int attempts = 0;
 	const int MAX_ATTEMPTS = 3;
 
@@ -1730,7 +1741,6 @@ bool customerLogin() {
 
 		cout << "  Username (or 0 to cancel): ";
 		getline(cin, username);
-
 		if (username == "0") {
 			cout << "  Login cancelled." << endl;
 			return false;
@@ -1738,18 +1748,17 @@ bool customerLogin() {
 
 		cout << "  Password (or 0 to cancel): ";
 		password = getSecurePassword(false);
-
 		if (password == "0") {
 			cout << "  Login cancelled." << endl;
 			return false;
 		}
 
-		for (const auto& customer : customers) {
-			if (customer.username == username && customer.password == password) {
-				currentLoggedInCustomer = customer.username;
-				cout << "\n  Login successful! Welcome back, " << customer.fullName << "!" << endl;
-				cout << "  Membership: " << customer.membershipStatus
-					 << "  |  Points: " << customer.loyaltyPoints << endl;
+		for (size_t i = 0; i < customers.size(); i++) {
+			if (customers[i].username == username && customers[i].password == password) {
+				currentLoggedInCustomer = customers[i].username;
+				cout << "\n  Login successful! Welcome back, " << customers[i].fullName << "!" << endl;
+				cout << "  Membership: " << customers[i].membershipStatus
+					 << "  |  Points: " << customers[i].loyaltyPoints << endl;
 				return true;
 			}
 		}
@@ -1758,12 +1767,7 @@ bool customerLogin() {
 		if (attempts < MAX_ATTEMPTS) {
 			cout << "  Login failed! Invalid username or password." << endl;
 			cout << "  You have " << (MAX_ATTEMPTS - attempts) << " attempt(s) remaining." << endl;
-			cout << "\n  Would you like to try again? (y/n): ";
-			char choice;
-			cin >> choice;
-			cin.ignore();
-
-			if (choice != 'y' && choice != 'Y') {
+			if (!confirmYesNo("  Would you like to try again? (y/n): ")) {
 				cout << "  Login cancelled." << endl;
 				return false;
 			}
@@ -1778,7 +1782,8 @@ bool customerLogin() {
 }
 
 void staffLogin() {
-	string id, password;
+	string id;
+	string password;
 	int attempts = 0;
 	const int MAX_ATTEMPTS = 3;
 
@@ -1790,7 +1795,6 @@ void staffLogin() {
 
 		cout << " Username (or 0 to cancel): ";
 		getline(cin, id);
-
 		if (id == "0") {
 			cout << "  Login cancelled." << endl;
 			return;
@@ -1798,7 +1802,6 @@ void staffLogin() {
 
 		cout << " Password (or 0 to cancel): ";
 		password = getSecurePassword(false);
-
 		if (password == "0") {
 			cout << " Login cancelled." << endl;
 			return;
@@ -1809,26 +1812,20 @@ void staffLogin() {
 			staffMenu();
 			return;
 		}
-		else {
-			attempts++;
-			if (attempts < MAX_ATTEMPTS) {
-				cout << " Login failed! Invalid username or password." << endl;
-				cout << " You have " << (MAX_ATTEMPTS - attempts) << " attempt(s) remaining." << endl;
-				cout << " Would you like to try again? (y/n): ";
-				char choice;
-				cin >> choice;
-				cin.ignore();
 
-				if (choice != 'y' && choice != 'Y') {
-					cout << "  Login cancelled." << endl;
-					return;
-				}
-			}
-			else {
-				cout << "  Login failed! Maximum attempts exceeded." << endl;
-				cout << "  Access denied. Returning to main menu." << endl;
+		attempts++;
+		if (attempts < MAX_ATTEMPTS) {
+			cout << " Login failed! Invalid username or password." << endl;
+			cout << " You have " << (MAX_ATTEMPTS - attempts) << " attempt(s) remaining." << endl;
+			if (!confirmYesNo(" Would you like to try again? (y/n): ")) {
+				cout << "  Login cancelled." << endl;
 				return;
 			}
+		}
+		else {
+			cout << "  Login failed! Maximum attempts exceeded." << endl;
+			cout << "  Access denied. Returning to main menu." << endl;
+			return;
 		}
 	}
 }
@@ -1838,36 +1835,29 @@ int getValidatedInput(int min, int max) {
 
 	while (true) {
 		getline(cin, inputStr);
-
 		if (inputStr.empty()) {
-			cout << "  Please enter a number between " << min << "-" << max
-				<< " (or 0 to cancel): ";
+			cout << "  Please enter a number between " << min << "-" << max << " (or 0 to cancel): ";
 			continue;
 		}
 
 		bool isNumeric = true;
-		for (char c : inputStr) {
-			if (!isdigit(c)) {
+		for (size_t i = 0; i < inputStr.length(); i++) {
+			if (!isdigit(inputStr[i])) {
 				isNumeric = false;
 				break;
 			}
 		}
-
 		if (!isNumeric) {
-			cout << "  Invalid input! Please enter a number between " << min << "-" << max
-				<< " (or 0 to cancel): ";
+			cout << "  Invalid input! Please enter a number between " << min << "-" << max << " (or 0 to cancel): ";
 			continue;
 		}
 
 		int input = stoi(inputStr);
 		if (input != 0 && (input < min || input > max)) {
-			cout << "  Number out of range! Please enter a number between " << min << "-" << max
-				<< " (or 0 to cancel): ";
+			cout << "  Number out of range! Please enter a number between " << min << "-" << max << " (or 0 to cancel): ";
 			continue;
 		}
-		else {
-			return input;
-		}
+		return input;
 	}
 }
 
@@ -1875,9 +1865,8 @@ bool isValidName(const string& name) {
 	if (name.length() < 2 || name.length() > 50) {
 		return false;
 	}
-
-	for (char c : name) {
-		if (!isalpha(c) && c != ' ' && c != '\'' && c != '-') {
+	for (size_t i = 0; i < name.length(); i++) {
+		if (!isalpha(name[i]) && name[i] != ' ' && name[i] != '\'' && name[i] != '-') {
 			return false;
 		}
 	}
@@ -1888,33 +1877,28 @@ bool isValidAge(const string& age) {
 	if (age.empty()) {
 		return false;
 	}
-
-	for (char c : age) {
-		if (!isdigit(c)) {
+	for (size_t i = 0; i < age.length(); i++) {
+		if (!isdigit(age[i])) {
 			return false;
 		}
 	}
-
 	int ageValue = stoi(age);
 	if (ageValue < 18 || ageValue > 120) {
 		return false;
 	}
-
 	return true;
 }
 
 bool isValidMalaysianIC(const string& ic) {
 	int digitCount = 0;
-
-	for (char c : ic) {
-		if (isdigit(c)) {
+	for (size_t i = 0; i < ic.length(); i++) {
+		if (isdigit(ic[i])) {
 			digitCount++;
 		}
-		else if (c != '-') {
+		else if (ic[i] != '-') {
 			return false;
 		}
 	}
-
 	return (digitCount == 12);
 }
 
@@ -1922,25 +1906,22 @@ bool isValidPassport(const string& passport) {
 	if (passport.length() < 6 || passport.length() > 12) {
 		return false;
 	}
-
 	if (!isalpha(passport[0])) {
 		return false;
 	}
-
-	for (char c : passport) {
-		if (!isalnum(c)) {
+	for (size_t i = 0; i < passport.length(); i++) {
+		if (!isalnum(passport[i])) {
 			return false;
 		}
 	}
-
 	return true;
 }
 
 void formatName(string& name) {
-	if (name.empty()) return;
-
+	if (name.empty()) {
+		return;
+	}
 	name[0] = toupper(name[0]);
-
 	for (size_t i = 1; i < name.length(); i++) {
 		if (name[i - 1] == ' ') {
 			name[i] = toupper(name[i]);
@@ -1970,25 +1951,22 @@ bool isValidEmail(const string& email) {
 	if (username.empty()) {
 		return false;
 	}
-
-	for (char c : username) {
-		if (!isalnum(c) && c != '.' && c != '_') {
+	for (size_t i = 0; i < username.length(); i++) {
+		if (!isalnum(username[i]) && username[i] != '.' && username[i] != '_') {
 			return false;
 		}
 	}
-
 	if (username[0] == '.' || username[username.length() - 1] == '.') {
 		return false;
 	}
-
 	return true;
 }
 
 bool isValidPhoneNumber(const string& phone) {
-	string cleanPhone;
-	for (char c : phone) {
-		if (isdigit(c)) {
-			cleanPhone += c;
+	string cleanPhone = "";
+	for (size_t i = 0; i < phone.length(); i++) {
+		if (isdigit(phone[i])) {
+			cleanPhone += phone[i];
 		}
 	}
 
@@ -1997,13 +1975,11 @@ bool isValidPhoneNumber(const string& phone) {
 			return true;
 		}
 	}
-
 	if (cleanPhone.length() >= 10 && cleanPhone.length() <= 11) {
 		if (cleanPhone.substr(0, 2) == "01") {
 			return true;
 		}
 	}
-
 	return false;
 }
 
@@ -2012,8 +1988,8 @@ bool isValidPassword(const string& password) {
 }
 
 bool customerExists(const string& username) {
-	for (const auto& customer : customers) {
-		if (customer.username == username) {
+	for (size_t i = 0; i < customers.size(); i++) {
+		if (customers[i].username == username) {
 			return true;
 		}
 	}
@@ -2025,13 +2001,10 @@ string getSecurePassword(bool showPrompt) {
 	if (showPrompt) {
 		cout << "  Enter password (min 6 characters): ";
 	}
-
 	getline(cin, password);
-
 	if (!password.empty() && password != "0") {
 		cout << "\n  Password entered: " << string(password.length(), '*') << endl;
 	}
-
 	return password;
 }
 
@@ -2039,120 +2012,110 @@ void saveCustomersToFile() {
 	ofstream file("customers.txt");
 	if (file.is_open()) {
 		file << customers.size() << endl;
-
-		for (const auto& customer : customers) {
-			file << customer.username << endl;
-			file << customer.age << endl;
-			file << customer.password << endl;
-			file << customer.fullName << endl;
-			file << customer.email << endl;
-			file << customer.phoneNumber << endl;
-			file << customer.icPassport << endl;
-			file << customer.membershipStatus << endl;
-			file << customer.loyaltyPoints << endl;
+		for (size_t i = 0; i < customers.size(); i++) {
+			file << customers[i].username << endl;
+			file << customers[i].age << endl;
+			file << customers[i].password << endl;
+			file << customers[i].fullName << endl;
+			file << customers[i].email << endl;
+			file << customers[i].phoneNumber << endl;
+			file << customers[i].icPassport << endl;
+			file << customers[i].membershipStatus << endl;
+			file << customers[i].loyaltyPoints << endl;
 			file << "---" << endl;
 		}
-
 		file.close();
 	}
 }
 
 void loadCustomersFromFile() {
 	ifstream file("customers.txt");
-	if (file.is_open()) {
-		int numCustomers;
-		file >> numCustomers;
-		file.ignore();
-
-		customers.clear();
-
-		for (int i = 0; i < numCustomers; i++) {
-			Customer customer;
-			string separator;
-			string pointsStr;
-
-			getline(file, customer.username);
-			getline(file, customer.age);
-			getline(file, customer.password);
-			getline(file, customer.fullName);
-			getline(file, customer.email);
-			getline(file, customer.phoneNumber);
-			getline(file, customer.icPassport);
-			getline(file, customer.membershipStatus);
-			getline(file, pointsStr);
-			getline(file, separator);
-
-			if (customer.membershipStatus.empty() || customer.membershipStatus == "---") {
-				customer.membershipStatus = "Regular";
-				customer.loyaltyPoints = 0;
-			}
-			else {
-				try {
-					customer.loyaltyPoints = stoi(pointsStr);
-				}
-				catch (...) {
-					customer.loyaltyPoints = 0;
-				}
-			}
-
-			customers.push_back(customer);
-		}
-
-		file.close();
+	if (!file.is_open()) {
+		return;
 	}
+
+	int numCustomers = 0;
+	file >> numCustomers;
+	file.ignore();
+	customers.clear();
+
+	for (int i = 0; i < numCustomers; i++) {
+		Customer customer;
+		string separator;
+		string pointsStr;
+		getline(file, customer.username);
+		getline(file, customer.age);
+		getline(file, customer.password);
+		getline(file, customer.fullName);
+		getline(file, customer.email);
+		getline(file, customer.phoneNumber);
+		getline(file, customer.icPassport);
+		getline(file, customer.membershipStatus);
+		getline(file, pointsStr);
+		getline(file, separator);
+
+		if (customer.membershipStatus.empty() || customer.membershipStatus == "---") {
+			customer.membershipStatus = "Regular";
+			customer.loyaltyPoints = 0;
+		}
+		else if (pointsStr.empty()) {
+			customer.loyaltyPoints = 0;
+		}
+		else {
+			customer.loyaltyPoints = stoi(pointsStr);
+		}
+		customers.push_back(customer);
+	}
+	file.close();
 }
 
 void saveRoomsToFile() {
 	ofstream file("rooms.txt");
 	if (file.is_open()) {
 		file << roomList.size() << endl;
-
-		for (const auto& room : roomList) {
-			file << room.roomNumber << endl;
-			file << room.roomType << endl;
-			file << room.capacity << endl;
-			file << room.price << endl;
-			file << room.status << endl;
+		for (size_t i = 0; i < roomList.size(); i++) {
+			file << roomList[i].roomNumber << endl;
+			file << roomList[i].roomType << endl;
+			file << roomList[i].capacity << endl;
+			file << roomList[i].price << endl;
+			file << roomList[i].status << endl;
 			file << "---" << endl;
 		}
-
 		file.close();
 	}
 }
 
 void loadRoomsFromFile() {
 	ifstream file("rooms.txt");
-	if (file.is_open()) {
-		int numRooms;
-		file >> numRooms;
-		file.ignore();
-
-		if (numRooms <= 0) {
-			file.close();
-			return;
-		}
-
-		roomList.clear();
-
-		for (int i = 0; i < numRooms; i++) {
-			Room room;
-			string capacityStr, priceStr, separator;
-
-			getline(file, room.roomNumber);
-			getline(file, room.roomType);
-			getline(file, capacityStr);
-			getline(file, priceStr);
-			getline(file, room.status);
-			getline(file, separator);
-
-			room.capacity = stoi(capacityStr);
-			room.price = stod(priceStr);
-
-			roomList.push_back(room);
-		}
-
-		file.close();
+	if (!file.is_open()) {
+		return;
 	}
+
+	int numRooms = 0;
+	file >> numRooms;
+	file.ignore();
+	if (numRooms <= 0) {
+		file.close();
+		return;
+	}
+
+	roomList.clear();
+	for (int i = 0; i < numRooms; i++) {
+		Room room;
+		string capacityStr;
+		string priceStr;
+		string separator;
+		getline(file, room.roomNumber);
+		getline(file, room.roomType);
+		getline(file, capacityStr);
+		getline(file, priceStr);
+		getline(file, room.status);
+		getline(file, separator);
+		room.capacity = stoi(capacityStr);
+		room.price = stod(priceStr);
+		roomList.push_back(room);
+	}
+	file.close();
 }
 
 void saveReservationsToFile() {
@@ -2165,32 +2128,33 @@ void saveReservationsToFile() {
 	file << nextReservationID << endl;
 	file << nextInvoiceNo << endl;
 
-	for (const auto& booking : reservations) {
-		file << booking.reservationID << endl;
-		file << booking.customerUsername << endl;
-		file << booking.roomNumber << endl;
-		file << booking.roomType << endl;
-		file << booking.pricePerNight << endl;
-		file << booking.nights << endl;
-		file << booking.guests << endl;
-		file << booking.status << endl;
-		file << booking.paymentStatus << endl;
-		file << booking.paymentMethod << endl;
-		file << booking.promoCode << endl;
-		file << booking.specialRequest << endl;
-		file << booking.discount << endl;
-		file << booking.loyaltyDiscount << endl;
-		file << booking.serviceCharge << endl;
-		file << booking.sst << endl;
-		file << booking.totalAmount << endl;
-		file << booking.addOns.size() << endl;
-		for (const auto& item : booking.addOns) {
-			file << item.name << "|" << item.unitPrice << "|"
-				 << item.quantity << "|" << item.lineTotal << endl;
+	for (size_t i = 0; i < reservations.size(); i++) {
+		file << reservations[i].reservationID << endl;
+		file << reservations[i].customerUsername << endl;
+		file << reservations[i].roomNumber << endl;
+		file << reservations[i].roomType << endl;
+		file << reservations[i].pricePerNight << endl;
+		file << reservations[i].nights << endl;
+		file << reservations[i].guests << endl;
+		file << reservations[i].status << endl;
+		file << reservations[i].paymentStatus << endl;
+		file << reservations[i].paymentMethod << endl;
+		file << reservations[i].promoCode << endl;
+		file << reservations[i].specialRequest << endl;
+		file << reservations[i].discount << endl;
+		file << reservations[i].loyaltyDiscount << endl;
+		file << reservations[i].serviceCharge << endl;
+		file << reservations[i].sst << endl;
+		file << reservations[i].totalAmount << endl;
+		file << reservations[i].addOns.size() << endl;
+		for (size_t j = 0; j < reservations[i].addOns.size(); j++) {
+			file << reservations[i].addOns[j].name << "|"
+				 << reservations[i].addOns[j].unitPrice << "|"
+				 << reservations[i].addOns[j].quantity << "|"
+				 << reservations[i].addOns[j].lineTotal << endl;
 		}
 		file << "---" << endl;
 	}
-
 	file.close();
 }
 
@@ -2205,13 +2169,20 @@ void loadReservationsFromFile() {
 	file >> nextReservationID;
 	file >> nextInvoiceNo;
 	file.ignore();
-
 	reservations.clear();
 
 	for (int i = 0; i < numReservations; i++) {
 		BookingRecord booking;
-		string priceStr, nightsStr, guestsStr, discountStr, loyaltyStr;
-		string serviceStr, sstStr, totalStr, addonCountStr, separator;
+		string priceStr;
+		string nightsStr;
+		string guestsStr;
+		string discountStr;
+		string loyaltyStr;
+		string serviceStr;
+		string sstStr;
+		string totalStr;
+		string addonCountStr;
+		string separator;
 
 		getline(file, booking.reservationID);
 		getline(file, booking.customerUsername);
@@ -2247,7 +2218,9 @@ void loadReservationsFromFile() {
 			getline(file, line);
 			SelectedAddOn item;
 			stringstream ss(line);
-			string pricePart, qtyPart, totalPart;
+			string pricePart;
+			string qtyPart;
+			string totalPart;
 			getline(ss, item.name, '|');
 			getline(ss, pricePart, '|');
 			getline(ss, qtyPart, '|');
@@ -2257,10 +2230,8 @@ void loadReservationsFromFile() {
 			item.lineTotal = stod(totalPart);
 			booking.addOns.push_back(item);
 		}
-
 		getline(file, separator);
 		reservations.push_back(booking);
 	}
-
 	file.close();
 }
