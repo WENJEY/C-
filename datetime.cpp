@@ -41,70 +41,55 @@ string weekdayName(int day, int month, int year) {
 	return names[w];
 }
 
-int wrapClock(int value, int minVal, int maxVal) {
-	if (value < minVal) {
-		return maxVal;
-	}
-	if (value > maxVal) {
-		return minVal;
-	}
-	return value;
-}
-
-void drawCheckInClock(int hour, int minute, const string& nowStamp, const string& warn) {
-	int prevH = wrapClock(hour - 1, 0, 23);
-	int nextH = wrapClock(hour + 1, 0, 23);
-	int prevM = wrapClock(minute - 1, 0, 59);
-	int nextM = wrapClock(minute + 1, 0, 59);
-	boxTitle("Check-in Time");
-	boxRow("Now in Malaysia: " + nowStamp);
-	boxRow("");
-	boxCenter("Hour                    Minute");
-	boxCenter(twoDigits(prevH) + "                      " + twoDigits(prevM));
-	boxCenter("< " + twoDigits(hour) + " >                < " + twoDigits(minute) + " >");
-	boxCenter(twoDigits(nextH) + "                      " + twoDigits(nextM));
-	if (warn.empty()) {
-		boxRow("");
-	}
-	else {
-		boxRow(warn);
-	}
-	boxLine();
-}
-
-void pickCheckInClock(int& hour, int& minute, bool sameDay) {
+bool askCheckInDate(int& day, int& month, int& year) {
 	while (true) {
-		int y = 0;
-		int m = 0;
-		int d = 0;
-		int h = 0;
+		int nowY = 0;
+		int nowM = 0;
+		int nowD = 0;
+		int nowH = 0;
 		int nowMin = 0;
-		malaysiaNow(y, m, d, h, nowMin);
-		string nowStamp = makeDate(d, m, y) + "  " + makeClockTime(h, nowMin);
+		malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
 
 		cout << endl;
-		drawCheckInClock(hour, minute, nowStamp, "");
-		cout << " Hour (0-23): ";
-		hour = getIntInRange(0, 23);
+		boxTitle("Check-in Date");
+		boxRow("Today Malaysia time: " + makeDate(nowD, nowM, nowY) + "  " + makeClockTime(nowH, nowMin));
+		boxRow("Today is " + weekdayName(nowD, nowM, nowY));
+		boxRow("Enter day, then month, then year");
+		boxRow("You can check in any time on that date");
+		boxRow("Enter 0 at any step to cancel");
+		boxLine();
 
-		malaysiaNow(y, m, d, h, nowMin);
-		nowStamp = makeDate(d, m, y) + "  " + makeClockTime(h, nowMin);
-		cout << endl;
-		drawCheckInClock(hour, minute, nowStamp, "");
-		cout << " Minute (0-59): ";
-		minute = getIntInRange(0, 59);
+		cout << " Day (1-31): ";
+		int d = getIntInRange(0, 31);
+		if (d == 0) {
+			return false;
+		}
 
-		malaysiaNow(y, m, d, h, nowMin);
-		nowStamp = makeDate(d, m, y) + "  " + makeClockTime(h, nowMin);
-		if (sameDay && hour * 60 + minute < h * 60 + nowMin) {
-			cout << endl;
-			drawCheckInClock(hour, minute, nowStamp, "Time passed. Choose a later time.");
+		cout << " Month (1-12): ";
+		int m = getIntInRange(0, 12);
+		if (m == 0) {
+			return false;
+		}
+
+		cout << " Year (e.g. 2026): ";
+		int y = getIntInRange(0, 2100);
+		if (y == 0) {
+			return false;
+		}
+
+		if (!isValidDate(d, m, y)) {
+			cout << " That date does not exist. Please enter again." << endl;
+			continue;
+		}
+		if (dateCompare(d, m, y, nowD, nowM, nowY) < 0) {
+			cout << " Check-in date cannot be before today." << endl;
 			continue;
 		}
 
-		cout << endl;
-		drawCheckInClock(hour, minute, nowStamp, "");
-		break;
+		day = d;
+		month = m;
+		year = y;
+		return true;
 	}
 }
 

@@ -150,57 +150,17 @@ bool createOneBooking() {
 	int inD = 0;
 	int inM = 0;
 	int inY = 0;
-	while (true) {
-		malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
-		bookingDate = makeDate(nowD, nowM, nowY);
-		bookingTime = makeClockTime(nowH, nowMin);
-		cout << endl;
-		boxTitle("Check-in Date");
-		boxRow("Today Malaysia time: " + bookingDate + "  " + bookingTime);
-		boxRow("Today is " + weekdayName(nowD, nowM, nowY));
-		boxRow("Enter date as DD/MM/YYYY");
-		boxRow("Press Enter to use today or 0 to cancel");
-		boxLine();
-		cout << " Check-in date: ";
-		string dateText;
-		getline(cin, dateText);
-		if (dateText == "0") {
-			cout << " Booking cancelled." << endl;
-			return false;
-		}
-		if (dateText.empty()) {
-			inD = nowD;
-			inM = nowM;
-			inY = nowY;
-			break;
-		}
-		if (!parseDate(dateText, inD, inM, inY)) {
-			cout << " Invalid date. Use DD/MM/YYYY." << endl;
-			continue;
-		}
-		if (dateCompare(inD, inM, inY, nowD, nowM, nowY) < 0) {
-			cout << " Check-in date cannot be before today." << endl;
-			continue;
-		}
-		break;
+	if (!askCheckInDate(inD, inM, inY)) {
+		cout << " Booking cancelled." << endl;
+		return false;
 	}
-
-	malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
-	int checkHour = nowH;
-	int checkMinute = nowMin;
-	bool sameDay = dateCompare(inD, inM, inY, nowD, nowM, nowY) == 0;
-	if (!sameDay) {
-		checkHour = 14;
-		checkMinute = 0;
-	}
-	pickCheckInClock(checkHour, checkMinute, sameDay);
 
 	int outD = inD;
 	int outM = inM;
 	int outY = inY;
 	addDays(outD, outM, outY, nights);
 	string checkInDate = makeDate(inD, inM, inY);
-	string checkInTime = makeClockTime(checkHour, checkMinute);
+	string checkInTime = "Any time";
 	string checkOutDate = makeDate(outD, outM, outY);
 	string inWeek = weekdayName(inD, inM, inY);
 	string outWeek = weekdayName(outD, outM, outY);
@@ -234,7 +194,7 @@ bool createOneBooking() {
 		boxRow(line.str());
 	}
 	boxRow("Booking Date : " + bookingDate + "  " + bookingTime);
-	boxRow("Check-in     : " + inWeek + " " + checkInDate + "  " + checkInTime);
+	boxRow("Check-in     : " + inWeek + " " + checkInDate + "  (any time)");
 	boxRow("Check-out    : " + outWeek + " " + checkOutDate + "  before 12:00");
 	{
 		ostringstream line;
