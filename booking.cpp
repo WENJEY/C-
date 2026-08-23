@@ -1,11 +1,4 @@
-#include "booking.h"
-#include "globals.h"
-#include "ui.h"
-#include "validation.h"
-#include "datetime.h"
-#include "storage.h"
-#include "rooms.h"
-#include "payment.h"
+#include "hotel.h"
 
 void bookRoom() {
 	loadUnpaidIntoSession();

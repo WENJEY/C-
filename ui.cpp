@@ -1,16 +1,11 @@
-#include "ui.h"
-#ifdef _WIN32
-#include <windows.h>
-#endif
+#include "hotel.h"
 
 void enableColors() {
-#ifdef _WIN32
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD mode;
 	if (GetConsoleMode(hConsole, &mode)) {
 		SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 	}
-#endif
 }
 
 void logo() {

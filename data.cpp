@@ -1,5 +1,4 @@
-#include "globals.h"
-#include "validation.h"
+#include "hotel.h"
 
 vector<Customer> customers;
 string currentLoggedInCustomer = "";

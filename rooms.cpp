@@ -1,6 +1,4 @@
-#include "rooms.h"
-#include "globals.h"
-#include "ui.h"
+#include "hotel.h"
 
 void displayAvailableRoom() {
 	displayRoomsByType("ALL");

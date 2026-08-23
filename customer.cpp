@@ -1,12 +1,4 @@
-#include "customer.h"
-#include "globals.h"
-#include "ui.h"
-#include "validation.h"
-#include "storage.h"
-#include "rooms.h"
-#include "booking.h"
-#include "datetime.h"
-#include "payment.h"
+#include "hotel.h"
 
 void customerAuthMenu() {
 	int choice;

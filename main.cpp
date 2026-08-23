@@ -1,9 +1,4 @@
-#include "common.h"
-#include "ui.h"
-#include "validation.h"
-#include "storage.h"
-#include "customer.h"
-#include "staff.h"
+#include "hotel.h"
 
 int main() {
 	enableColors();

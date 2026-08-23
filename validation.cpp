@@ -1,4 +1,4 @@
-#include "validation.h"
+#include "hotel.h"
 
 int getValidatedInput(int min, int max) {
 	string inputStr;

@@ -1,8 +1,4 @@
-#include "staff.h"
-#include "common.h"
-#include "globals.h"
-#include "ui.h"
-#include "validation.h"
+#include "hotel.h"
 
 void staffLogin() {
 	string id;
