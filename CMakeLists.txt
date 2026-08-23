@@ -12,6 +12,9 @@ add_executable(C___Assignment
         customer.cpp
         rooms.cpp
         booking.cpp
+        reservations.cpp
+        profile.cpp
+        addons.cpp
         payment.cpp
         storage.cpp
         staff.cpp

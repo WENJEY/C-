@@ -3,6 +3,11 @@
 
 // Shared header. Every .cpp includes this so the program can split
 // across files and still use the same structs, globals, and functions.
+//
+// Not created yet (functions not done):
+//   modify reservations  -> later add modify.cpp
+//   cancel reservations  -> later add cancel.cpp
+//   staff extra features -> later add into staff.cpp
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
