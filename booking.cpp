@@ -1,0 +1,650 @@
+#include "booking.h"
+#include "globals.h"
+#include "ui.h"
+#include "validation.h"
+#include "datetime.h"
+#include "storage.h"
+#include "rooms.h"
+#include "payment.h"
+
+void bookRoom() {
+	loadUnpaidIntoSession();
+
+	if (!currentSessionIDs.empty()) {
+		cout << "\n You still have unpaid booking(s) from this stay:" << endl;
+		for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+			int idx = findReservationIndex(currentSessionIDs[i]);
+			if (idx == -1) {
+				continue;
+			}
+			cout << " - #" << reservations[idx].reservationID
+				 << "  Room " << reservations[idx].roomNumber
+				 << "  " << reservations[idx].roomType
+				 << "  " << reservations[idx].nights << " night(s)" << endl;
+		}
+
+		cout << endl;
+		boxTitle("Continue Your Stay");
+		boxRow("1. Continue to Add-ons / Payment");
+		boxRow("2. Book another room first");
+		boxRow("0. Back to Menu Page");
+		boxLine();
+		cout << " Please choose 0-2: ";
+		int pendingChoice = getValidatedInput(0, 2);
+
+		if (pendingChoice == 0) {
+			return;
+		}
+		if (pendingChoice == 1) {
+			afterBookingMenu();
+			return;
+		}
+	}
+
+	bool created = createOneBooking();
+	if (created || !currentSessionIDs.empty()) {
+		afterBookingMenu();
+	}
+}
+
+bool createOneBooking() {
+	cout << endl;
+	boxTitle("Choose Room Type");
+	boxRow("1. All rooms");
+	boxRow("2. Single");
+	boxRow("3. Twin");
+	boxRow("4. Deluxe");
+	boxRow("5. Family");
+	boxRow("6. Suite");
+	boxRow("7. Presidential");
+	boxRow("0. Cancel booking");
+	boxLine();
+	cout << " Please choose 0-7: ";
+	int typeChoice = getValidatedInput(0, 7);
+
+	if (typeChoice == 0) {
+		cout << " Booking cancelled." << endl;
+		return false;
+	}
+
+	string typeFilter = "ALL";
+	if (typeChoice == 2) {
+		typeFilter = "Single";
+	}
+	if (typeChoice == 3) {
+		typeFilter = "Twin";
+	}
+	if (typeChoice == 4) {
+		typeFilter = "Deluxe";
+	}
+	if (typeChoice == 5) {
+		typeFilter = "Family";
+	}
+	if (typeChoice == 6) {
+		typeFilter = "Suite";
+	}
+	if (typeChoice == 7) {
+		typeFilter = "Presidential";
+	}
+
+	displayRoomsByType(typeFilter);
+
+	string roomNumber;
+	int roomIndex = -1;
+
+	while (true) {
+		cout << "\n Enter room number to book or 0 to cancel: ";
+		getline(cin, roomNumber);
+
+		if (roomNumber == "0") {
+			cout << " Booking cancelled." << endl;
+			return false;
+		}
+
+		roomIndex = findRoomIndex(roomNumber);
+		if (roomIndex == -1) {
+			cout << " Room not found! Please try again." << endl;
+			continue;
+		}
+		if (typeFilter != "ALL" && roomList[roomIndex].roomType != typeFilter) {
+			cout << " That room is not in the " << typeFilter << " list. Please choose again." << endl;
+			continue;
+		}
+		if (roomList[roomIndex].status != "Available") {
+			cout << " This room is not available. Status: "
+				 << roomList[roomIndex].status << ". Please choose another." << endl;
+			continue;
+		}
+		break;
+	}
+
+	int guests = 0;
+	while (true) {
+		cout << "\n Enter number of guests (1-" << roomList[roomIndex].capacity << " or 0 to cancel): ";
+		guests = getIntInRange(0, 20);
+		if (guests == 0) {
+			cout << " Booking cancelled." << endl;
+			return false;
+		}
+		if (guests > roomList[roomIndex].capacity) {
+			cout << " This " << roomList[roomIndex].roomType << " only fits "
+				 << roomList[roomIndex].capacity << " guest(s)." << endl;
+			cout << " You can continue and add an Extra Bed after confirming." << endl;
+			if (!confirmYesNo(" Continue with this room anyway? y/n: ")) {
+				continue;
+			}
+		}
+		break;
+	}
+
+	offerRoomUpgrade(roomIndex, guests);
+
+	cout << "\n Enter number of nights or 0 to cancel: ";
+	int nights = getIntInRange(0, 30);
+	if (nights == 0) {
+		cout << " Booking cancelled." << endl;
+		return false;
+	}
+
+	int nowY = 0;
+	int nowM = 0;
+	int nowD = 0;
+	int nowH = 0;
+	int nowMin = 0;
+	string bookingDate;
+	string bookingTime;
+
+	int inD = 0;
+	int inM = 0;
+	int inY = 0;
+	while (true) {
+		malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
+		bookingDate = makeDate(nowD, nowM, nowY);
+		bookingTime = makeClockTime(nowH, nowMin);
+		cout << endl;
+		boxTitle("Check-in Date");
+		boxRow("Today Malaysia time: " + bookingDate + "  " + bookingTime);
+		boxRow("Today is " + weekdayName(nowD, nowM, nowY));
+		boxRow("Enter date as DD/MM/YYYY");
+		boxRow("Press Enter to use today or 0 to cancel");
+		boxLine();
+		cout << " Check-in date: ";
+		string dateText;
+		getline(cin, dateText);
+		if (dateText == "0") {
+			cout << " Booking cancelled." << endl;
+			return false;
+		}
+		if (dateText.empty()) {
+			inD = nowD;
+			inM = nowM;
+			inY = nowY;
+			break;
+		}
+		if (!parseDate(dateText, inD, inM, inY)) {
+			cout << " Invalid date. Use DD/MM/YYYY." << endl;
+			continue;
+		}
+		if (dateCompare(inD, inM, inY, nowD, nowM, nowY) < 0) {
+			cout << " Check-in date cannot be before today." << endl;
+			continue;
+		}
+		break;
+	}
+
+	malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
+	int checkHour = nowH;
+	int checkMinute = nowMin;
+	bool sameDay = dateCompare(inD, inM, inY, nowD, nowM, nowY) == 0;
+	if (!sameDay) {
+		checkHour = 14;
+		checkMinute = 0;
+	}
+	pickCheckInClock(checkHour, checkMinute, sameDay);
+
+	int outD = inD;
+	int outM = inM;
+	int outY = inY;
+	addDays(outD, outM, outY, nights);
+	string checkInDate = makeDate(inD, inM, inY);
+	string checkInTime = makeClockTime(checkHour, checkMinute);
+	string checkOutDate = makeDate(outD, outM, outY);
+	string inWeek = weekdayName(inD, inM, inY);
+	string outWeek = weekdayName(outD, outM, outY);
+
+	cout << endl;
+	boxTitle("Check-out");
+	boxRow("Please check out before 12:00 noon");
+	boxRow(outWeek + " " + checkOutDate);
+	boxLine();
+
+	double estimated = roundMoney(roomList[roomIndex].price * nights);
+
+	malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
+	bookingDate = makeDate(nowD, nowM, nowY);
+	bookingTime = makeClockTime(nowH, nowMin);
+
+	cout << fixed << setprecision(2);
+	cout << endl;
+	boxTitle("Booking Summary");
+	boxRow("Guest        : " + currentCustomerName());
+	boxRow("Room Number  : " + roomList[roomIndex].roomNumber);
+	boxRow("Room Type    : " + roomList[roomIndex].roomType);
+	{
+		ostringstream line;
+		line << "Guests       : " << guests;
+		boxRow(line.str());
+	}
+	{
+		ostringstream line;
+		line << "Nights       : " << nights;
+		boxRow(line.str());
+	}
+	boxRow("Booking Date : " + bookingDate + "  " + bookingTime);
+	boxRow("Check-in     : " + inWeek + " " + checkInDate + "  " + checkInTime);
+	boxRow("Check-out    : " + outWeek + " " + checkOutDate + "  before 12:00");
+	{
+		ostringstream line;
+		line << fixed << setprecision(2) << "Price/Night  : RM " << roomList[roomIndex].price;
+		boxRow(line.str());
+	}
+	{
+		ostringstream line;
+		line << fixed << setprecision(2) << "Room Charge  : RM " << estimated;
+		boxRow(line.str());
+	}
+	boxLine();
+	cout << " Add-ons, promo codes and payment will appear after you confirm." << endl;
+
+	if (!confirmYesNo(" Confirm booking? y/n: ")) {
+		cout << " Booking cancelled." << endl;
+		return false;
+	}
+
+	BookingRecord newBooking;
+	newBooking.reservationID = generateReservationID();
+	nextReservationID++;
+	newBooking.customerUsername = currentLoggedInCustomer;
+	newBooking.roomNumber = roomList[roomIndex].roomNumber;
+	newBooking.roomType = roomList[roomIndex].roomType;
+	newBooking.pricePerNight = roomList[roomIndex].price;
+	newBooking.nights = nights;
+	newBooking.guests = guests;
+	newBooking.bookingDate = bookingDate;
+	newBooking.bookingTime = bookingTime;
+	newBooking.checkInDate = checkInDate;
+	newBooking.checkInTime = checkInTime;
+	newBooking.checkOutDate = checkOutDate;
+	newBooking.status = "Confirmed";
+	newBooking.paymentStatus = "Unpaid";
+	newBooking.paymentMethod = "-";
+	newBooking.promoCode = "";
+	newBooking.specialRequest = "-";
+	newBooking.discount = 0;
+	newBooking.loyaltyDiscount = 0;
+	newBooking.serviceCharge = 0;
+	newBooking.sst = 0;
+	newBooking.totalAmount = 0;
+
+	reservations.push_back(newBooking);
+	currentSessionIDs.push_back(newBooking.reservationID);
+	roomList[roomIndex].status = "Occupied";
+
+	cout << "\n Reservation confirmed! Your reservation ID is "
+		 << newBooking.reservationID << "." << endl;
+	maybeGiveWelcomeGift(static_cast<int>(reservations.size()) - 1);
+	return true;
+}
+
+void afterBookingMenu() {
+	int choice;
+
+	do {
+		cout << endl;
+		boxTitle("After Booking Menu");
+		boxRow("Your confirmed stay is ready. Choose what to do next.");
+		boxLine();
+
+		for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+			int idx = findReservationIndex(currentSessionIDs[i]);
+			if (idx == -1) {
+				continue;
+			}
+			ostringstream line;
+			line << "#" << reservations[idx].reservationID
+				 << "  Room " << reservations[idx].roomNumber
+				 << "  " << reservations[idx].roomType
+				 << "  x" << reservations[idx].nights << " night(s)"
+				 << "  " << reservations[idx].paymentStatus;
+			boxRow(line.str());
+		}
+
+		BillBreakdown preview = calculateSessionBill();
+		{
+			ostringstream line;
+			line << fixed << setprecision(2) << "Estimated total now : RM " << preview.total;
+			boxRow(line.str());
+		}
+		boxLine();
+		boxRow("1. Hotel Add-ons");
+		boxRow("2. View Bill / Make Payment");
+		boxRow("3. Book Another Room");
+		boxRow("4. Special Requests");
+		boxRow("5. Apply Promo Code");
+		boxRow("6. Redeem Loyalty Points");
+		boxRow("0. I'll continue later");
+		boxLine();
+		cout << " Please choose 0-6: ";
+		choice = getValidatedInput(0, 6);
+
+		switch (choice) {
+		case 1:
+			offerAddOns();
+			break;
+		case 2:
+			showSessionBill(true);
+			if (confirmYesNo(" Proceed to payment now? y/n: ")) {
+				processPayment();
+				if (currentSessionIDs.empty()) {
+					return;
+				}
+			}
+			break;
+		case 3:
+			createOneBooking();
+			break;
+		case 4:
+			specialRequestMenu();
+			break;
+		case 5:
+			applyPromoCode();
+			break;
+		case 6:
+			redeemLoyaltyPoints();
+			break;
+		case 0: {
+			bool unpaid = false;
+			for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+				int idx = findReservationIndex(currentSessionIDs[i]);
+				if (idx != -1 && reservations[idx].paymentStatus == "Unpaid") {
+					unpaid = true;
+					break;
+				}
+			}
+			if (!unpaid) {
+				return;
+			}
+
+			cout << "\n Your booking is still here. It is not cancelled." << endl;
+			for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+				int idx = findReservationIndex(currentSessionIDs[i]);
+				if (idx == -1) {
+					continue;
+				}
+				cout << " Reservation #" << reservations[idx].reservationID
+					 << "  Room " << reservations[idx].roomNumber
+					 << "  " << reservations[idx].paymentStatus << endl;
+			}
+			cout << " From the next menu:" << endl;
+			cout << " - Choose 2. Booking Room to continue add-ons / payment" << endl;
+			cout << " - Choose 3. View My Reservations to see this booking" << endl;
+			if (!confirmYesNo(" Go to the customer menu now? y/n: ")) {
+				break;
+			}
+			return;
+		}
+		}
+	} while (true);
+}
+
+void offerAddOns() {
+	if (currentSessionIDs.empty()) {
+		cout << " No booking in this session." << endl;
+		return;
+	}
+
+	int targetIndex = findReservationIndex(currentSessionIDs[0]);
+	if (currentSessionIDs.size() > 1) {
+		cout << "\n Which room should receive the add-ons?" << endl;
+		for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+			int idx = findReservationIndex(currentSessionIDs[i]);
+			if (idx == -1) {
+				continue;
+			}
+			cout << " " << (i + 1) << ". Room " << reservations[idx].roomNumber
+				 << " " << reservations[idx].roomType << endl;
+		}
+		cout << " 0. Cancel" << endl;
+		cout << " Choose: ";
+		int pick = getIntInRange(0, static_cast<int>(currentSessionIDs.size()));
+		if (pick == 0) {
+			return;
+		}
+		targetIndex = findReservationIndex(currentSessionIDs[pick - 1]);
+	}
+
+	if (targetIndex != -1) {
+		addOnsForReservation(targetIndex);
+	}
+}
+
+void addOnsForReservation(int resIndex) {
+	int choice;
+
+	do {
+		cout << endl;
+		boxTitle("Hotel Add-ons");
+		{
+			ostringstream line;
+			line << "Room " << reservations[resIndex].roomNumber
+				 << "   Guests: " << reservations[resIndex].guests
+				 << "   Nights: " << reservations[resIndex].nights;
+			boxRow(line.str());
+		}
+		boxLine();
+		for (size_t i = 0; i < addOnList.size(); i++) {
+			ostringstream line;
+			line << (i + 1) << ". " << left << setw(22) << addOnList[i].name
+				 << " RM " << setw(6) << fixed << setprecision(2) << addOnList[i].price
+				 << " " << addOnList[i].unit;
+			boxRow(line.str());
+		}
+		boxRow("0. Done with add-ons");
+		boxLine();
+
+		if (!reservations[resIndex].addOns.empty()) {
+			cout << " Already added:" << endl;
+			for (size_t i = 0; i < reservations[resIndex].addOns.size(); i++) {
+				cout << " - " << reservations[resIndex].addOns[i].name
+					 << " x" << reservations[resIndex].addOns[i].quantity
+					 << "  RM " << fixed << setprecision(2) << reservations[resIndex].addOns[i].lineTotal << endl;
+			}
+		}
+
+		cout << " Choose add-on 0-" << addOnList.size() << ": ";
+		choice = getIntInRange(0, static_cast<int>(addOnList.size()));
+		if (choice == 0) {
+			saveReservationsToFile();
+			return;
+		}
+
+		const AddOnItem& item = addOnList[choice - 1];
+		cout << " Quantity for " << item.name << " (1-20 or 0 to cancel): ";
+		int qty = getIntInRange(0, 20);
+		if (qty == 0) {
+			continue;
+		}
+
+		double line = roundMoney(item.price * qty);
+		bool merged = false;
+		for (size_t i = 0; i < reservations[resIndex].addOns.size(); i++) {
+			if (reservations[resIndex].addOns[i].name == item.name) {
+				reservations[resIndex].addOns[i].quantity += qty;
+				reservations[resIndex].addOns[i].lineTotal = roundMoney(
+					reservations[resIndex].addOns[i].unitPrice * reservations[resIndex].addOns[i].quantity);
+				merged = true;
+				break;
+			}
+		}
+
+		if (!merged) {
+			SelectedAddOn selected;
+			selected.name = item.name;
+			selected.unitPrice = item.price;
+			selected.quantity = qty;
+			selected.lineTotal = line;
+			reservations[resIndex].addOns.push_back(selected);
+		}
+
+		cout << " Added " << item.name << " x" << qty
+			 << "  RM " << fixed << setprecision(2) << line << "." << endl;
+		saveReservationsToFile();
+	} while (true);
+}
+
+void specialRequestMenu() {
+	if (currentSessionIDs.empty()) {
+		cout << " No booking in this session." << endl;
+		return;
+	}
+
+	int resIndex = findReservationIndex(currentSessionIDs.back());
+	if (currentSessionIDs.size() > 1) {
+		cout << "\n Which room is this request for?" << endl;
+		for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+			int idx = findReservationIndex(currentSessionIDs[i]);
+			if (idx == -1) {
+				continue;
+			}
+			cout << " " << (i + 1) << ". Room " << reservations[idx].roomNumber << endl;
+		}
+		cout << " 0. Cancel" << endl;
+		cout << " Choose: ";
+		int pick = getIntInRange(0, static_cast<int>(currentSessionIDs.size()));
+		if (pick == 0) {
+			return;
+		}
+		resIndex = findReservationIndex(currentSessionIDs[pick - 1]);
+	}
+
+	if (resIndex == -1) {
+		return;
+	}
+
+	cout << endl;
+	boxTitle("Special Requests");
+	boxRow("1. High floor");
+	boxRow("2. Quiet room / away from lift");
+	boxRow("3. Extra pillows");
+	boxRow("4. Baby crib");
+	boxRow("5. Connecting rooms");
+	boxRow("6. Type my own request");
+	boxRow("0. Cancel");
+	boxLine();
+	cout << " Please choose 0-6: ";
+	int choice = getValidatedInput(0, 6);
+
+	string request = reservations[resIndex].specialRequest;
+	if (request == "-") {
+		request = "";
+	}
+
+	string extra;
+	switch (choice) {
+	case 1:
+		extra = "High floor";
+		break;
+	case 2:
+		extra = "Quiet room";
+		break;
+	case 3:
+		extra = "Extra pillows";
+		break;
+	case 4:
+		extra = "Baby crib";
+		break;
+	case 5:
+		extra = "Connecting rooms";
+		break;
+	case 6:
+		cout << " Type your request: ";
+		getline(cin, extra);
+		break;
+	case 0:
+		return;
+	}
+
+	if (extra.empty()) {
+		cout << " No request added." << endl;
+		return;
+	}
+
+	if (request.empty()) {
+		request = extra;
+	}
+	else {
+		request = request + ", " + extra;
+	}
+
+	reservations[resIndex].specialRequest = request;
+	saveReservationsToFile();
+	cout << " Noted! We will try our best: " << request << endl;
+}
+
+void offerRoomUpgrade(int& roomIndex, int guests) {
+	string nextType = "";
+	if (roomList[roomIndex].roomType == "Twin" && guests >= 2) {
+		nextType = "Deluxe";
+	}
+	else if (roomList[roomIndex].roomType == "Family" && guests >= 4) {
+		nextType = "Suite";
+	}
+	else {
+		return;
+	}
+
+	int upgradeIndex = -1;
+	for (size_t i = 0; i < roomList.size(); i++) {
+		if (roomList[i].roomType == nextType
+			&& roomList[i].status == "Available"
+			&& roomList[i].capacity >= guests) {
+			upgradeIndex = static_cast<int>(i);
+			break;
+		}
+	}
+	if (upgradeIndex == -1) {
+		return;
+	}
+
+	double extra = roomList[upgradeIndex].price - roomList[roomIndex].price;
+	cout << "\n Upgrade offer: " << nextType << " Room "
+		 << roomList[upgradeIndex].roomNumber << " is available." << endl;
+	cout << " Your " << roomList[roomIndex].roomType << " is RM "
+		 << fixed << setprecision(2) << roomList[roomIndex].price << " per night." << endl;
+	cout << " " << nextType << " is RM " << roomList[upgradeIndex].price
+		 << " per night. Extra RM " << extra << " for a nicer stay." << endl;
+	if (confirmYesNo(" Upgrade now? y/n: ")) {
+		roomIndex = upgradeIndex;
+		cout << " Upgraded to Room " << roomList[roomIndex].roomNumber
+			 << " " << roomList[roomIndex].roomType << "." << endl;
+	}
+}
+
+void maybeGiveWelcomeGift(int resIndex) {
+	if (sessionSurpriseGiven) {
+		return;
+	}
+	sessionSurpriseGiven = true;
+	if (rand() % 4 != 0) {
+		return;
+	}
+
+	SelectedAddOn gift;
+	gift.name = "Welcome Fruit Platter Complimentary";
+	gift.unitPrice = 0;
+	gift.quantity = 1;
+	gift.lineTotal = 0;
+	reservations[resIndex].addOns.push_back(gift);
+	saveReservationsToFile();
+	cout << " Surprise gift: complimentary welcome fruit platter added to your room!" << endl;
+}
