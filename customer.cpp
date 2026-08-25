@@ -197,6 +197,7 @@ void customerRegister() {
 	cout << " You can now login with username: " << newCustomer.username << endl;
 	cout << " Loyalty membership started at Regular (0 points)." << endl;
 	cout << " Earn 1 point for every RM 10 spent. Silver = 5% off, Gold = 10% off." << endl;
+	loadingPause();
 }
 
 bool customerLogin() {
@@ -234,6 +235,7 @@ bool customerLogin() {
 				cout << "\n Login successful! Welcome back, " << currentCustomerName() << "!" << endl;
 				cout << " Membership: " << customers[i].membershipStatus
 					 << "  |  Points: " << customers[i].loyaltyPoints << endl;
+				loadingPause();
 				return true;
 			}
 		}

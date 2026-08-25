@@ -179,6 +179,16 @@ void pauseEnter() {
 	getline(cin, dummy);
 }
 
+void loadingPause() {
+	cout << endl;
+	cout << " Loading next page";
+	for (int i = 0; i < 8; i++) {
+		cout << "." << flush;
+		Sleep(500);
+	}
+	cout << endl;
+}
+
 string padNumber(int value, int width) {
 	string text = to_string(value);
 	while (static_cast<int>(text.length()) < width) {

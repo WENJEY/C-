@@ -57,6 +57,7 @@ void staffLogin() {
 
 		if (id == STAFF_ID && password == STAFF_PASSWORD) {
 			cout << " Login successful! Welcome, " << id << "!" << endl;
+			loadingPause();
 			staffMenu();
 			return;
 		}

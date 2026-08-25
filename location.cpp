@@ -263,7 +263,7 @@ bool applyHotel(int hotelIndex) {
 	boxField("Address : ", currentHotelAddress);
 	boxLine();
 	cout << " You can now view rooms and book at this hotel." << endl;
-	pauseEnter();
+	loadingPause();
 	return true;
 }
 

@@ -201,6 +201,7 @@ void removeFromCurrentSession(const string& reservationID);
 void syncRoomOccupancy();
 int daysFromToday(int day, int month, int year);
 void pauseEnter();
+void loadingPause();
 void boxLine();
 void boxTitle(const string& title);
 void boxRow(const string& text);

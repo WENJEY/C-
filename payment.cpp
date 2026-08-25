@@ -309,7 +309,7 @@ void processPayment() {
 
 	currentSessionIDs.clear();
 	resetSessionExtras();
-	pauseEnter();
+	loadingPause();
 }
 
 void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
