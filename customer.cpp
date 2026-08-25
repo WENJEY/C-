@@ -228,7 +228,10 @@ bool customerLogin() {
 		for (size_t i = 0; i < customers.size(); i++) {
 			if (customers[i].username == username && customers[i].password == password) {
 				currentLoggedInCustomer = customers[i].username;
-				cout << "\n Login successful! Welcome back, " << customers[i].fullName << "!" << endl;
+				if (customers[i].fullName.empty() || customers[i].fullName == "---") {
+					customers[i].fullName = customers[i].username;
+				}
+				cout << "\n Login successful! Welcome back, " << currentCustomerName() << "!" << endl;
 				cout << " Membership: " << customers[i].membershipStatus
 					 << "  |  Points: " << customers[i].loyaltyPoints << endl;
 				return true;

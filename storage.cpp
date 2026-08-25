@@ -20,6 +20,21 @@ void saveCustomersToFile() {
 	}
 }
 
+void trimFileField(string& text) {
+	if (!text.empty() && text[text.length() - 1] == '\r') {
+		text.erase(text.length() - 1);
+	}
+	size_t start = 0;
+	while (start < text.length() && isspace(static_cast<unsigned char>(text[start]))) {
+		start++;
+	}
+	size_t end = text.length();
+	while (end > start && isspace(static_cast<unsigned char>(text[end - 1]))) {
+		end--;
+	}
+	text = text.substr(start, end - start);
+}
+
 void loadCustomersFromFile() {
 	ifstream file("customers.txt");
 	if (!file.is_open()) {
@@ -45,6 +60,20 @@ void loadCustomersFromFile() {
 		getline(file, customer.membershipStatus);
 		getline(file, pointsStr);
 		getline(file, separator);
+
+		trimFileField(customer.username);
+		trimFileField(customer.age);
+		trimFileField(customer.password);
+		trimFileField(customer.fullName);
+		trimFileField(customer.email);
+		trimFileField(customer.phoneNumber);
+		trimFileField(customer.icPassport);
+		trimFileField(customer.membershipStatus);
+		trimFileField(pointsStr);
+
+		if (customer.fullName.empty() || customer.fullName == "---") {
+			customer.fullName = customer.username;
+		}
 
 		if (customer.membershipStatus.empty() || customer.membershipStatus == "---") {
 			customer.membershipStatus = "Regular";

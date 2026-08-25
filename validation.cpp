@@ -35,12 +35,16 @@ bool isValidName(const string& name) {
 	if (name.length() < 2 || name.length() > 50) {
 		return false;
 	}
+	bool hasLetter = false;
 	for (size_t i = 0; i < name.length(); i++) {
-		if (!isalpha(name[i]) && name[i] != ' ' && name[i] != '\'' && name[i] != '-') {
+		if (isalpha(static_cast<unsigned char>(name[i]))) {
+			hasLetter = true;
+		}
+		else if (name[i] != ' ' && name[i] != '\'' && name[i] != '-') {
 			return false;
 		}
 	}
-	return true;
+	return hasLetter;
 }
 
 bool isValidAge(const string& age) {

@@ -446,5 +446,8 @@ string currentCustomerName() {
 	if (idx == -1) {
 		return currentLoggedInCustomer;
 	}
+	if (customers[idx].fullName.empty() || customers[idx].fullName == "---") {
+		return customers[idx].username;
+	}
 	return customers[idx].fullName;
 }
