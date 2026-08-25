@@ -29,8 +29,8 @@ void afterBookingMenu() {
 
 			boxRow("Booking ID   : #" + reservations[idx].reservationID);
 			if (!reservations[idx].hotelName.empty()) {
-				boxWrap("Hotel        : " + reservations[idx].hotelName);
-				boxWrap("Address      : " + reservations[idx].hotelAddress);
+				boxField("Hotel        : ", reservations[idx].hotelName);
+				boxField("Address      : ", reservations[idx].hotelAddress);
 			}
 			boxRow("Room         : " + reservations[idx].roomNumber
 				 + "  " + reservations[idx].roomType);

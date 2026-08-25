@@ -73,8 +73,8 @@ void showModifySummary(int resIndex) {
 	cout << endl;
 	boxTitle("Modify #" + b.reservationID);
 	if (!b.hotelName.empty()) {
-		boxWrap("Hotel        : " + b.hotelName);
-		boxWrap("Address      : " + b.hotelAddress);
+		boxField("Hotel        : ", b.hotelName);
+		boxField("Address      : ", b.hotelAddress);
 	}
 	boxRow("Room         : " + b.roomNumber + "  " + b.roomType);
 	{

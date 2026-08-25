@@ -107,8 +107,8 @@ void showSessionBill(bool showPayHint) {
 	boxRow("Guest           : " + currentCustomerName());
 	boxRow("Member          : " + membershipOfCurrentUser());
 	if (!currentHotelName.empty()) {
-		boxWrap("Hotel           : " + currentHotelName);
-		boxWrap("Address         : " + currentHotelAddress);
+		boxField("Hotel           : ", currentHotelName);
+		boxField("Address         : ", currentHotelAddress);
 	}
 	boxLine();
 

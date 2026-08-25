@@ -62,7 +62,7 @@ int displayBookableRooms(int guests) {
 	boxTitle("Rooms that fit " + to_string(guests) + " guest(s)");
 	if (!currentHotelName.empty()) {
 		boxWrap(currentHotelName);
-		boxWrap(currentHotelAddress);
+		boxWrapHang(currentHotelAddress, 0);
 		boxWrap(currentHotelArea + ", " + currentHotelState);
 	}
 	boxRow("Any Available room with enough space can be booked.");

@@ -63,30 +63,64 @@ void boxRow(const string& text) {
 	cout << setfill(' ') << " |" << left << setw(BOX_W) << t << "|" << endl;
 }
 
-void boxWrap(const string& text) {
+string optionText(int number) {
+	ostringstream line;
+	line << setfill(' ') << right << setw(2) << number << ". ";
+	return line.str();
+}
+
+void boxWrapHang(const string& text, int hang) {
 	string rest = text;
 	int width = BOX_W - 1;
 	if (width < 8) {
 		width = 8;
 	}
+	if (hang < 0) {
+		hang = 0;
+	}
+	if (hang > width - 8) {
+		hang = width - 8;
+	}
+
+	bool first = true;
 	while (!rest.empty()) {
-		if (static_cast<int>(rest.length()) <= width) {
-			boxRow(rest);
+		int lineWidth = width;
+		string prefix = "";
+		if (!first) {
+			prefix = string(static_cast<size_t>(hang), ' ');
+			lineWidth = width - hang;
+			if (lineWidth < 8) {
+				lineWidth = 8;
+			}
+		}
+		first = false;
+
+		if (static_cast<int>(rest.length()) <= lineWidth) {
+			boxRow(prefix + rest);
 			return;
 		}
-		int cut = width;
-		for (int i = width - 1; i >= width / 2; i--) {
+
+		int cut = lineWidth;
+		for (int i = lineWidth - 1; i >= lineWidth / 2; i--) {
 			if (rest[static_cast<size_t>(i)] == ' ') {
 				cut = i;
 				break;
 			}
 		}
-		boxRow(rest.substr(0, static_cast<size_t>(cut)));
+		boxRow(prefix + rest.substr(0, static_cast<size_t>(cut)));
 		rest = rest.substr(static_cast<size_t>(cut));
 		while (!rest.empty() && rest[0] == ' ') {
 			rest = rest.substr(1);
 		}
 	}
+}
+
+void boxWrap(const string& text) {
+	boxWrapHang(text, 0);
+}
+
+void boxField(const string& label, const string& value) {
+	boxWrapHang(label + value, static_cast<int>(label.length()));
 }
 
 void boxLineEq() {

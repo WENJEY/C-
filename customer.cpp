@@ -261,24 +261,24 @@ void customerMenu() {
 		cout << endl;
 		boxTitle("Menu Page");
 		if (!currentHotelName.empty()) {
-			boxWrap("Hotel : " + currentHotelName);
-			boxWrap("Area  : " + currentHotelArea + ", " + currentHotelState);
-			boxWrap("Addr  : " + currentHotelAddress);
+			boxField("Hotel : ", currentHotelName);
+			boxField("Area  : ", currentHotelArea + ", " + currentHotelState);
+			boxField("Addr  : ", currentHotelAddress);
 			boxLine();
 		}
-		boxRow("1. View Available Rooms");
+		boxRow(optionText(1) + "View Available Rooms");
 		if (currentUserHasUnpaid()) {
-			boxRow("2. Continue Payment / Book Another Room");
+			boxRow(optionText(2) + "Continue Payment / Book Another Room");
 		}
 		else {
-			boxRow("2. Booking Room");
+			boxRow(optionText(2) + "Booking Room");
 		}
-		boxRow("3. View My Reservations");
-		boxRow("4. Modify Reservations");
-		boxRow("5. Cancel Reservations");
-		boxRow("6. View My Profile");
-		boxRow("7. Change Destination");
-		boxRow("0. Back to Main Menu");
+		boxRow(optionText(3) + "View My Reservations");
+		boxRow(optionText(4) + "Modify Reservations");
+		boxRow(optionText(5) + "Cancel Reservations");
+		boxRow(optionText(6) + "View My Profile");
+		boxRow(optionText(7) + "Change Destination");
+		boxRow(optionText(0) + "Back to Main Menu");
 		boxLine();
 		cout << " Please choose 0-7: ";
 		choice = getValidatedInput(0, 7);
@@ -305,6 +305,9 @@ void customerMenu() {
 			break;
 		case 6:
 			viewMyProfile();
+			if (currentLoggedInCustomer.empty()) {
+				return;
+			}
 			break;
 		case 7:
 			changeDestination();

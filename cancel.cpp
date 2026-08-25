@@ -88,8 +88,8 @@ void showCancelSummary(int resIndex) {
 	boxTitle("Cancel #" + b.reservationID);
 	boxRow("Guest        : " + currentCustomerName());
 	if (!b.hotelName.empty()) {
-		boxWrap("Hotel        : " + b.hotelName);
-		boxWrap("Address      : " + b.hotelAddress);
+		boxField("Hotel        : ", b.hotelName);
+		boxField("Address      : ", b.hotelAddress);
 	}
 	boxRow("Room         : " + b.roomNumber + "  " + b.roomType);
 	{

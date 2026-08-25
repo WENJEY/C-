@@ -37,9 +37,9 @@ bool restoreHotelFromUnpaid() {
 
 		cout << endl;
 		boxTitle("Unpaid booking");
-		boxWrap("Hotel   : " + currentHotelName);
-		boxWrap("Area    : " + currentHotelArea + ", " + currentHotelState);
-		boxWrap("Address : " + currentHotelAddress);
+		boxField("Hotel   : ", currentHotelName);
+		boxField("Area    : ", currentHotelArea + ", " + currentHotelState);
+		boxField("Address : ", currentHotelAddress);
 		boxRow("Finish payment or cancel it before choosing another hotel.");
 		boxLine();
 		return true;
@@ -92,7 +92,12 @@ bool requireHotelSelected() {
 
 void changeDestination() {
 	if (currentHotelName.empty()) {
-		findHotelByDestination();
+		cout << endl;
+		boxTitle("Change destination");
+		boxRow("You have not chosen a hotel yet.");
+		boxRow("Use 1. View Rooms or 2. Booking Room first.");
+		boxRow("Choose a state, area and hotel there.");
+		boxLine();
 		return;
 	}
 	if (unpaidBlocksHotelChange()) {
@@ -101,13 +106,13 @@ void changeDestination() {
 
 	cout << endl;
 	boxTitle("Change destination");
-	boxWrap("Now     : " + currentHotelName);
-	boxWrap("Area    : " + currentHotelArea + ", " + currentHotelState);
+	boxField("Now     : ", currentHotelName);
+	boxField("Area    : ", currentHotelArea + ", " + currentHotelState);
 	boxLine();
-	boxRow("1. Change state");
-	boxRow("2. Change area");
-	boxRow("3. Change hotel");
-	boxRow("0. Keep this hotel");
+	boxRow(optionText(1) + "Change state");
+	boxRow(optionText(2) + "Change area");
+	boxRow(optionText(3) + "Change hotel");
+	boxRow(optionText(0) + "Keep this hotel");
 	boxLine();
 	cout << " Please choose 0-3: ";
 	int choice = getIntInRange(0, 3);
@@ -136,9 +141,9 @@ string chooseState() {
 	cout << endl;
 	boxTitle("Which state?");
 	for (int i = 0; i < STATE_COUNT; i++) {
-		boxRow(to_string(i + 1) + ". " + STATE_ORDER[i]);
+		boxRow(optionText(i + 1) + STATE_ORDER[i]);
 	}
-	boxRow("0. Cancel");
+	boxRow(optionText(0) + "Cancel");
 	boxLine();
 	cout << " Please choose 0-" << STATE_COUNT << ": ";
 	int choice = getIntInRange(0, STATE_COUNT);
@@ -158,9 +163,9 @@ string chooseArea(const string& state) {
 	cout << endl;
 	boxTitle("Which area in " + state + "?");
 	for (size_t i = 0; i < areas.size(); i++) {
-		boxRow(to_string(i + 1) + ". " + areas[i]);
+		boxRow(optionText(static_cast<int>(i + 1)) + areas[i]);
 	}
-	boxRow("0. Cancel");
+	boxRow(optionText(0) + "Cancel");
 	boxLine();
 	cout << " Please choose 0-" << areas.size() << ": ";
 	int choice = getIntInRange(0, static_cast<int>(areas.size()));
@@ -188,10 +193,11 @@ bool chooseHotel(const string& state, const string& area) {
 
 	for (size_t i = 0; i < list.size(); i++) {
 		int idx = list[i];
-		boxWrap(to_string(i + 1) + ". " + hotelBranches[static_cast<size_t>(idx)].name);
-		boxWrap("   " + hotelBranches[static_cast<size_t>(idx)].address);
+		string number = optionText(static_cast<int>(i + 1));
+		boxRow(number + hotelBranches[static_cast<size_t>(idx)].name);
+		boxWrapHang(string(4, ' ') + hotelBranches[static_cast<size_t>(idx)].address, 4);
 		if (i + 1 < list.size()) {
-			boxLine();
+			boxRow("");
 		}
 	}
 	boxLine();
@@ -220,9 +226,9 @@ bool applyHotel(int hotelIndex) {
 
 	cout << endl;
 	boxTitle("Hotel selected");
-	boxWrap("Hotel   : " + currentHotelName);
-	boxWrap("Area    : " + currentHotelArea + ", " + currentHotelState);
-	boxWrap("Address : " + currentHotelAddress);
+	boxField("Hotel   : ", currentHotelName);
+	boxField("Area    : ", currentHotelArea + ", " + currentHotelState);
+	boxField("Address : ", currentHotelAddress);
 	boxLine();
 	cout << " You can now view rooms and book at this hotel." << endl;
 	pauseEnter();
