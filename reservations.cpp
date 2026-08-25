@@ -61,7 +61,8 @@ void viewMyReservations() {
 		if (reservations[i].specialRequest != "-" && !reservations[i].specialRequest.empty()) {
 			boxSplitRow("Request:", reservations[i].specialRequest);
 		}
-		if (reservations[i].paymentStatus == "Unpaid") {
+		if (reservations[i].paymentStatus == "Unpaid"
+			&& reservations[i].status != "Cancelled") {
 			boxSplitRow("Note:", "Choose 2 on Menu Page to pay");
 		}
 		boxSplitLine();

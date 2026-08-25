@@ -163,3 +163,33 @@ void addDays(int& day, int& month, int& year, int extraDays) {
 		}
 	}
 }
+
+int daysFromToday(int day, int month, int year) {
+	int nowY = 0;
+	int nowM = 0;
+	int nowD = 0;
+	int nowH = 0;
+	int nowMin = 0;
+	malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
+
+	int cmp = dateCompare(day, month, year, nowD, nowM, nowY);
+	if (cmp == 0) {
+		return 0;
+	}
+	if (cmp < 0) {
+		return -1;
+	}
+
+	int d = nowD;
+	int m = nowM;
+	int y = nowY;
+	int count = 0;
+	while (dateCompare(d, m, y, day, month, year) < 0) {
+		addDays(d, m, y, 1);
+		count++;
+		if (count > 5000) {
+			break;
+		}
+	}
+	return count;
+}

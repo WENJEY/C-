@@ -224,6 +224,8 @@ bool createOneBooking() {
 	reservations.push_back(newBooking);
 	currentSessionIDs.push_back(newBooking.reservationID);
 	roomList[roomIndex].status = "Occupied";
+	saveReservationsToFile();
+	saveRoomsToFile();
 
 	cout << "\n Reservation confirmed! Your reservation ID is "
 		 << newBooking.reservationID << "." << endl;

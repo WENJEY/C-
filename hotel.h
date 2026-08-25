@@ -5,8 +5,6 @@
 // across files and still use the same structs, globals, and functions.
 //
 // Not created yet (functions not done):
-//   modify reservations  -> later add modify.cpp
-//   cancel reservations  -> later add cancel.cpp
 //   staff extra features -> later add into staff.cpp
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -142,6 +140,7 @@ void staffMenu();
 void displayAvailableRoom();
 void displayRoomsByType(const string& typeFilter);
 int displayBookableRooms(int guests, bool largerRooms);
+int displayRoomsForModify(int guests, const string& currentRoomNumber);
 void saveRoomsToFile();
 void loadRoomsFromFile();
 void saveCustomersToFile();
@@ -160,6 +159,8 @@ void showSessionBill(bool showPayHint);
 void processPayment();
 void printAndSaveInvoice(const BillBreakdown& bill, const string& method);
 void viewMyReservations();
+void modifyReservations();
+void cancelReservations();
 void viewMyProfile();
 void offerRoomUpgrade(int& roomIndex, int guests);
 void maybeGiveWelcomeGift(int resIndex);
@@ -167,6 +168,9 @@ void loadUnpaidIntoSession();
 void showUnpaidReminder();
 bool currentUserHasUnpaid();
 void resetSessionExtras();
+void setRoomStatus(const string& roomNumber, const string& status);
+void removeFromCurrentSession(const string& reservationID);
+int daysFromToday(int day, int month, int year);
 void pauseEnter();
 void boxLine();
 void boxTitle(const string& title);

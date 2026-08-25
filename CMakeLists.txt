@@ -13,6 +13,8 @@ add_executable(C___Assignment
         rooms.cpp
         booking.cpp
         reservations.cpp
+        modify.cpp
+        cancel.cpp
         profile.cpp
         addons.cpp
         payment.cpp

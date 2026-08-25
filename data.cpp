@@ -80,6 +80,26 @@ void resetSessionExtras() {
 	sessionSurpriseGiven = false;
 }
 
+void setRoomStatus(const string& roomNumber, const string& status) {
+	int idx = findRoomIndex(roomNumber);
+	if (idx != -1) {
+		roomList[idx].status = status;
+	}
+}
+
+void removeFromCurrentSession(const string& reservationID) {
+	vector<string> kept;
+	for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+		if (currentSessionIDs[i] != reservationID) {
+			kept.push_back(currentSessionIDs[i]);
+		}
+	}
+	currentSessionIDs = kept;
+	if (currentSessionIDs.empty()) {
+		resetSessionExtras();
+	}
+}
+
 string generateReservationID() {
 	return padNumber(nextReservationID, 4);
 }

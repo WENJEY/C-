@@ -286,10 +286,10 @@ void customerMenu() {
 			viewMyReservations();
 			break;
 		case 4:
-			cout << " 4. Module. To be continued..." << endl;
+			modifyReservations();
 			break;
 		case 5:
-			cout << " 5. Module. To be continued..." << endl;
+			cancelReservations();
 			break;
 		case 6:
 			viewMyProfile();
