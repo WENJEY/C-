@@ -106,6 +106,10 @@ void showSessionBill(bool showPayHint) {
 	boxTitle("Your Bill");
 	boxRow("Guest           : " + currentCustomerName());
 	boxRow("Member          : " + membershipOfCurrentUser());
+	if (!currentHotelName.empty()) {
+		boxRow("Hotel           : " + currentHotelName);
+		boxRow("Address         : " + currentHotelAddress);
+	}
 	boxLine();
 
 	for (size_t i = 0; i < currentSessionIDs.size(); i++) {
@@ -368,6 +372,9 @@ void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
 	receipt << endl;
 	lineEq();
 	center("GRAND HORIZON HOTEL");
+	if (!currentHotelName.empty()) {
+		center(currentHotelName);
+	}
 	center("** RECEIPT **");
 	lineEq();
 	inner(" Date: " + payDate, "Time: " + payTime + " ");
@@ -382,6 +389,10 @@ void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
 			continue;
 		}
 		inner(" Reservation ID : " + reservations[idx].reservationID, "");
+		if (!reservations[idx].hotelName.empty()) {
+			inner(" Hotel          : " + reservations[idx].hotelName, "");
+			inner(" Address        : " + reservations[idx].hotelAddress, "");
+		}
 		inner(" Room           : " + reservations[idx].roomNumber + " " + reservations[idx].roomType, "");
 		inner(" Booking Date   : " + reservations[idx].bookingDate + "  " + reservations[idx].bookingTime, "");
 		{

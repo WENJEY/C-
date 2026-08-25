@@ -46,6 +46,9 @@ int pickBookingToModify() {
 			 << "  Room " << reservations[i].roomNumber
 			 << "  " << reservations[i].roomType;
 		boxRow(line.str());
+		if (!reservations[i].hotelName.empty()) {
+			boxRow("   " + reservations[i].hotelName);
+		}
 		boxRow("   Check-in " + reservations[i].checkInDate
 			 + "   " + reservations[i].paymentStatus);
 	}
@@ -69,6 +72,10 @@ void showModifySummary(int resIndex) {
 	const BookingRecord& b = reservations[resIndex];
 	cout << endl;
 	boxTitle("Modify #" + b.reservationID);
+	if (!b.hotelName.empty()) {
+		boxRow("Hotel        : " + b.hotelName);
+		boxRow("Address      : " + b.hotelAddress);
+	}
 	boxRow("Room         : " + b.roomNumber + "  " + b.roomType);
 	{
 		ostringstream line;

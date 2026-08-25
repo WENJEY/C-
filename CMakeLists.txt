@@ -10,6 +10,7 @@ add_executable(C___Assignment
         datetime.cpp
         validation.cpp
         customer.cpp
+        location.cpp
         rooms.cpp
         booking.cpp
         reservations.cpp

@@ -32,6 +32,11 @@ void displayAvailableRoom() {
 void displayRoomsByType(const string& typeFilter) {
 	int shown = 0;
 	cout << endl;
+	if (!currentHotelName.empty()) {
+		boxTitle(currentHotelName);
+		boxRow(currentHotelAddress);
+		boxRow(currentHotelArea + ", " + currentHotelState);
+	}
 	boxLine();
 	printRoomColumns();
 	boxLine();
@@ -55,6 +60,11 @@ int displayBookableRooms(int guests) {
 	int shown = 0;
 	cout << endl;
 	boxTitle("Rooms that fit " + to_string(guests) + " guest(s)");
+	if (!currentHotelName.empty()) {
+		boxRow(currentHotelName);
+		boxRow(currentHotelAddress);
+		boxRow(currentHotelArea + ", " + currentHotelState);
+	}
 	boxRow("Any Available room with enough space can be booked.");
 	boxRow("Occupied, cleaning and maintenance rooms stay hidden.");
 	boxRow("");

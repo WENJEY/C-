@@ -52,6 +52,9 @@ int pickBookingToCancel() {
 			 << "  Room " << reservations[i].roomNumber
 			 << "  " << reservations[i].roomType;
 		boxRow(line.str());
+		if (!reservations[i].hotelName.empty()) {
+			boxRow("   " + reservations[i].hotelName);
+		}
 		boxRow("   Check-in " + reservations[i].checkInDate
 			 + "   " + reservations[i].paymentStatus);
 	}
@@ -84,6 +87,10 @@ void showCancelSummary(int resIndex) {
 	cout << endl;
 	boxTitle("Cancel #" + b.reservationID);
 	boxRow("Guest        : " + currentCustomerName());
+	if (!b.hotelName.empty()) {
+		boxRow("Hotel        : " + b.hotelName);
+		boxRow("Address      : " + b.hotelAddress);
+	}
 	boxRow("Room         : " + b.roomNumber + "  " + b.roomType);
 	{
 		ostringstream line;
@@ -150,7 +157,13 @@ void printCancelSlip(int resIndex, double refund, const string& policyText) {
 
 	cout << endl;
 	boxTitle("Cancellation Slip");
-	boxRow("Grand Horizon Hotel");
+	if (!b.hotelName.empty()) {
+		boxRow(b.hotelName);
+		boxRow(b.hotelAddress);
+	}
+	else {
+		boxRow("Grand Horizon Hotel");
+	}
 	boxRow("Date         : " + makeDate(d, m, y) + "  " + makeClockTime(h, min));
 	boxRow("Guest        : " + currentCustomerName());
 	boxRow("Reservation  : #" + b.reservationID);

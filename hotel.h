@@ -66,9 +66,21 @@ struct SelectedAddOn {
 	double lineTotal;
 };
 
+struct HotelBranch {
+	string name;
+	int stateIndex;
+	int areaIndex;
+	string address;
+	double localKm;
+};
+
 struct BookingRecord {
 	string reservationID;
 	string customerUsername;
+	string hotelName;
+	string hotelAddress;
+	string hotelArea;
+	string hotelState;
 	string roomNumber;
 	string roomType;
 	double pricePerNight;
@@ -127,6 +139,11 @@ extern int sessionRedeemedPoints;
 extern bool sessionSurpriseGiven;
 
 extern vector<AddOnItem> addOnList;
+extern vector<HotelBranch> hotelBranches;
+extern string currentHotelName;
+extern string currentHotelAddress;
+extern string currentHotelArea;
+extern string currentHotelState;
 
 void enableColors();
 void logo();
@@ -135,6 +152,11 @@ void customerAuthMenu();
 void customerRegister();
 bool customerLogin();
 void customerMenu();
+bool findHotelByDestination();
+bool requireHotelSelected();
+bool restoreHotelFromUnpaid();
+void clearCurrentHotel();
+void resetOccupiedRooms();
 void staffLogin();
 void staffMenu();
 void displayAvailableRoom();

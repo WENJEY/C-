@@ -13,6 +13,11 @@ void viewMyReservations() {
 		}
 		count++;
 		boxSplitRow("Reservation #" + to_string(count), "ID: " + reservations[i].reservationID);
+		if (!reservations[i].hotelName.empty()) {
+			boxSplitRow("Hotel:", reservations[i].hotelName);
+			boxSplitRow("Area:", reservations[i].hotelArea + ", " + reservations[i].hotelState);
+			boxSplitRow("Address:", reservations[i].hotelAddress);
+		}
 		boxSplitRow("Room:", reservations[i].roomNumber + " " + reservations[i].roomType);
 		boxSplitRow("Guests:", to_string(reservations[i].guests));
 		boxSplitRow("Nights:", to_string(reservations[i].nights) + " night(s)");

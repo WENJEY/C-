@@ -19,6 +19,9 @@ void customerAuthMenu() {
 			break;
 		case 2:
 			if (customerLogin()) {
+				if (!restoreHotelFromUnpaid()) {
+					findHotelByDestination();
+				}
 				customerMenu();
 			}
 			break;
@@ -259,6 +262,12 @@ void customerMenu() {
 		showUnpaidReminder();
 		cout << endl;
 		boxTitle("Menu Page");
+		if (!currentHotelName.empty()) {
+			boxRow("Hotel : " + currentHotelName);
+			boxRow("Area  : " + currentHotelArea + ", " + currentHotelState);
+			boxRow("Addr  : " + currentHotelAddress);
+			boxLine();
+		}
 		boxRow("1. View Available Rooms");
 		if (currentUserHasUnpaid()) {
 			boxRow("2. Continue Payment / Book Another Room");
@@ -270,17 +279,22 @@ void customerMenu() {
 		boxRow("4. Modify Reservations");
 		boxRow("5. Cancel Reservations");
 		boxRow("6. View My Profile");
+		boxRow("7. Find Hotel by Destination");
 		boxRow("0. Back to Main Menu");
 		boxLine();
-		cout << " Please choose 0-6: ";
-		choice = getValidatedInput(0, 6);
+		cout << " Please choose 0-7: ";
+		choice = getValidatedInput(0, 7);
 
 		switch (choice) {
 		case 1:
-			displayAvailableRoom();
+			if (requireHotelSelected()) {
+				displayAvailableRoom();
+			}
 			break;
 		case 2:
-			bookRoom();
+			if (requireHotelSelected()) {
+				bookRoom();
+			}
 			break;
 		case 3:
 			viewMyReservations();
@@ -294,8 +308,15 @@ void customerMenu() {
 		case 6:
 			viewMyProfile();
 			break;
+		case 7:
+			findHotelByDestination();
+			break;
 		case 0:
 			currentLoggedInCustomer = "";
+			clearCurrentHotel();
+			resetOccupiedRooms();
+			resetSessionExtras();
+			currentSessionIDs.clear();
 			cout << "\n Logged out successfully." << endl;
 			return;
 		}

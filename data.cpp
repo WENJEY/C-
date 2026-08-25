@@ -41,6 +41,28 @@ double sessionPromoFlat = 0.0;
 int sessionRedeemedPoints = 0;
 bool sessionSurpriseGiven = false;
 
+vector<HotelBranch> hotelBranches = {
+	{"Grand Horizon Petaling Jaya", 0, 0, "2A, Jalan Universiti, 46200 Petaling Jaya", 1.6},
+	{"Grand Horizon Shah Alam", 0, 1, "8, Persiaran Tasik, 40000 Shah Alam", 2.1},
+	{"Grand Horizon Subang Jaya", 0, 2, "1, Jalan SS16/1, 47500 Subang Jaya", 1.2},
+	{"Grand Horizon Kajang", 0, 3, "21, Jalan Semenyih, 43000 Kajang", 1.8},
+	{"Grand Horizon Kepong", 1, 0, "88, Jalan Kepong, 52100 Kuala Lumpur", 1.4},
+	{"Grand Horizon KLCC", 1, 1, "18, Jalan Ampang, 50450 Kuala Lumpur", 0.9},
+	{"Grand Horizon Bukit Bintang", 1, 2, "5, Jalan Bukit Bintang, 55100 Kuala Lumpur", 1.1},
+	{"Grand Horizon Cheras", 1, 3, "3, Jalan Cheras, 56000 Kuala Lumpur", 2.0},
+	{"Grand Horizon Georgetown", 2, 0, "25, Lebuh Farquhar, 10200 George Town", 1.3},
+	{"Grand Horizon Batu Ferringhi", 2, 1, "10, Jalan Batu Ferringhi, 11100 Penang", 1.7},
+	{"Grand Horizon Bayan Lepas", 2, 2, "2, Jalan Bayan Lepas, 11900 Bayan Lepas", 2.4},
+	{"Grand Horizon Johor Bahru", 3, 0, "11, Jalan Wong Ah Fook, 80000 Johor Bahru", 1.5},
+	{"Grand Horizon Iskandar", 3, 1, "7, Persiaran Laksamana, 79200 Puteri", 2.2},
+	{"Grand Horizon Skudai", 3, 2, "9, Jalan Pendidikan, 81300 Skudai", 1.9}
+};
+
+string currentHotelName = "";
+string currentHotelAddress = "";
+string currentHotelArea = "";
+string currentHotelState = "";
+
 vector<AddOnItem> addOnList = {
 	{"Breakfast Buffet", 35.00, "per person / night"},
 	{"Airport Pickup", 80.00, "per stay"},
@@ -79,6 +101,21 @@ void resetSessionExtras() {
 	sessionPromoFlat = 0.0;
 	sessionRedeemedPoints = 0;
 	sessionSurpriseGiven = false;
+}
+
+void clearCurrentHotel() {
+	currentHotelName = "";
+	currentHotelAddress = "";
+	currentHotelArea = "";
+	currentHotelState = "";
+}
+
+void resetOccupiedRooms() {
+	for (size_t i = 0; i < roomList.size(); i++) {
+		if (roomList[i].status == "Occupied") {
+			roomList[i].status = "Available";
+		}
+	}
 }
 
 void setRoomStatus(const string& roomNumber, const string& status) {

@@ -137,6 +137,9 @@ bool createOneBooking() {
 	cout << fixed << setprecision(2);
 	cout << endl;
 	boxTitle("Booking Summary");
+	boxRow("Hotel        : " + currentHotelName);
+	boxRow("Address      : " + currentHotelAddress);
+	boxRow("Area         : " + currentHotelArea + ", " + currentHotelState);
 	boxRow("Guest        : " + currentCustomerName());
 	boxRow("Room Number  : " + roomList[roomIndex].roomNumber);
 	boxRow("Room Type    : " + roomList[roomIndex].roomType);
@@ -175,6 +178,10 @@ bool createOneBooking() {
 	newBooking.reservationID = generateReservationID();
 	nextReservationID++;
 	newBooking.customerUsername = currentLoggedInCustomer;
+	newBooking.hotelName = currentHotelName;
+	newBooking.hotelAddress = currentHotelAddress;
+	newBooking.hotelArea = currentHotelArea;
+	newBooking.hotelState = currentHotelState;
 	newBooking.roomNumber = roomList[roomIndex].roomNumber;
 	newBooking.roomType = roomList[roomIndex].roomType;
 	newBooking.pricePerNight = roomList[roomIndex].price;
