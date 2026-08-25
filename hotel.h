@@ -165,6 +165,7 @@ void offerRoomUpgrade(int& roomIndex, int guests);
 void maybeGiveWelcomeGift(int resIndex);
 void loadUnpaidIntoSession();
 void showUnpaidReminder();
+bool currentUserHasUnpaid();
 void resetSessionExtras();
 void pauseEnter();
 void boxLine();

@@ -17,8 +17,8 @@ void bookRoom() {
 		}
 
 		cout << endl;
-		boxTitle("Continue Your Stay");
-		boxRow("1. Continue to Add-ons / Payment");
+		boxTitle("Continue Payment");
+		boxRow("1. Continue to Add On Menu / Payment");
 		boxRow("2. Book another room first");
 		boxRow("0. Back to Menu Page");
 		boxLine();

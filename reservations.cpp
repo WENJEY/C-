@@ -62,7 +62,7 @@ void viewMyReservations() {
 			boxSplitRow("Request:", reservations[i].specialRequest);
 		}
 		if (reservations[i].paymentStatus == "Unpaid") {
-			boxSplitRow("Note:", "Continue from 2. Booking Room");
+			boxSplitRow("Note:", "Choose 2 on Menu Page to pay");
 		}
 		boxSplitLine();
 	}
@@ -74,6 +74,13 @@ void viewMyReservations() {
 	else {
 		boxSplitRow("Total Bookings:", to_string(count) + " booking(s)");
 		boxLine();
+	}
+
+	if (currentUserHasUnpaid()) {
+		if (confirmYesNo(" Go to Add On Menu to pay now? y/n: ")) {
+			loadUnpaidIntoSession();
+			afterBookingMenu();
+		}
 	}
 }
 

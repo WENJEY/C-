@@ -5,30 +5,47 @@ void afterBookingMenu() {
 
 	do {
 		cout << endl;
-		boxTitle("After Booking Menu");
-		boxRow("Your confirmed stay is ready. Choose what to do next.");
+		boxTitle("Add On Menu");
+		boxRow("Your room is booked. Add extras, then pay.");
+		boxRow("Stay on this page until payment is done.");
 		boxLine();
 
+		int stayNo = 0;
 		for (size_t i = 0; i < currentSessionIDs.size(); i++) {
 			int idx = findReservationIndex(currentSessionIDs[i]);
 			if (idx == -1) {
 				continue;
 			}
-			ostringstream line;
-			line << "#" << reservations[idx].reservationID
-				 << "  Room " << reservations[idx].roomNumber
-				 << "  " << reservations[idx].roomType
-				 << "  x" << reservations[idx].nights << " night(s)"
-				 << "  " << reservations[idx].paymentStatus;
-			boxRow(line.str());
+			if (stayNo > 0) {
+				boxLine();
+			}
+			stayNo++;
+
+			boxRow("Booking ID   : #" + reservations[idx].reservationID);
+			boxRow("Room         : " + reservations[idx].roomNumber
+				 + "  " + reservations[idx].roomType);
+			{
+				ostringstream line;
+				line << "Guests       : " << reservations[idx].guests;
+				boxRow(line.str());
+			}
+			{
+				ostringstream line;
+				line << "Nights       : " << reservations[idx].nights << " night(s)";
+				boxRow(line.str());
+			}
+			boxRow("Check-in     : " + reservations[idx].checkInDate + "  (any time)");
+			boxRow("Check-out    : " + reservations[idx].checkOutDate + "  before 12:00");
+			boxRow("Payment      : " + reservations[idx].paymentStatus);
 		}
 
 		BillBreakdown preview = calculateSessionBill();
 		{
 			ostringstream line;
-			line << fixed << setprecision(2) << "Estimated total now : RM " << preview.total;
+			line << fixed << setprecision(2) << "Est. total   : RM " << preview.total;
 			boxRow(line.str());
 		}
+		boxRow("Includes service charge and 8% SST.");
 		boxLine();
 		boxRow("1. Hotel Add-ons");
 		boxRow("2. View Bill / Make Payment");
@@ -36,10 +53,9 @@ void afterBookingMenu() {
 		boxRow("4. Special Requests");
 		boxRow("5. Apply Promo Code");
 		boxRow("6. Redeem Loyalty Points");
-		boxRow("0. I'll continue later");
 		boxLine();
-		cout << " Please choose 0-6: ";
-		choice = getValidatedInput(0, 6);
+		cout << " Please choose 1-6: ";
+		choice = getIntInRange(1, 6);
 
 		switch (choice) {
 		case 1:
@@ -66,37 +82,6 @@ void afterBookingMenu() {
 		case 6:
 			redeemLoyaltyPoints();
 			break;
-		case 0: {
-			bool unpaid = false;
-			for (size_t i = 0; i < currentSessionIDs.size(); i++) {
-				int idx = findReservationIndex(currentSessionIDs[i]);
-				if (idx != -1 && reservations[idx].paymentStatus == "Unpaid") {
-					unpaid = true;
-					break;
-				}
-			}
-			if (!unpaid) {
-				return;
-			}
-
-			cout << "\n Your booking is still here. It is not cancelled." << endl;
-			for (size_t i = 0; i < currentSessionIDs.size(); i++) {
-				int idx = findReservationIndex(currentSessionIDs[i]);
-				if (idx == -1) {
-					continue;
-				}
-				cout << " Reservation #" << reservations[idx].reservationID
-					 << "  Room " << reservations[idx].roomNumber
-					 << "  " << reservations[idx].paymentStatus << endl;
-			}
-			cout << " From the next menu:" << endl;
-			cout << " - Choose 2. Booking Room to continue add-ons / payment" << endl;
-			cout << " - Choose 3. View My Reservations to see this booking" << endl;
-			if (!confirmYesNo(" Go to the customer menu now? y/n: ")) {
-				break;
-			}
-			return;
-		}
 		}
 	} while (true);
 }

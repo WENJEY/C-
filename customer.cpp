@@ -260,7 +260,12 @@ void customerMenu() {
 		cout << endl;
 		boxTitle("Menu Page");
 		boxRow("1. View Available Rooms");
-		boxRow("2. Booking Room");
+		if (currentUserHasUnpaid()) {
+			boxRow("2. Continue Payment / Book Another Room");
+		}
+		else {
+			boxRow("2. Booking Room");
+		}
 		boxRow("3. View My Reservations");
 		boxRow("4. Modify Reservations");
 		boxRow("5. Cancel Reservations");
@@ -310,7 +315,7 @@ void showUnpaidReminder() {
 			continue;
 		}
 		if (!any) {
-			cout << "\n You still have a booking in progress:" << endl;
+			cout << "\n You still have unpaid booking(s):" << endl;
 			any = true;
 		}
 		cout << " #" << reservations[i].reservationID
@@ -320,8 +325,24 @@ void showUnpaidReminder() {
 	}
 	if (any) {
 		cout << " This booking is still yours. It did not disappear." << endl;
-		cout << " Choose 2. Booking Room to continue add-ons / payment." << endl;
+		cout << " Choose 2 to go back to Add On Menu and pay." << endl;
 		cout << " Choose 3. View My Reservations to see the details." << endl;
 	}
+}
+
+bool currentUserHasUnpaid() {
+	for (size_t i = 0; i < reservations.size(); i++) {
+		if (reservations[i].customerUsername != currentLoggedInCustomer) {
+			continue;
+		}
+		if (reservations[i].paymentStatus != "Unpaid") {
+			continue;
+		}
+		if (reservations[i].status == "Cancelled") {
+			continue;
+		}
+		return true;
+	}
+	return false;
 }
 
