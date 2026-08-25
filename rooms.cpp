@@ -1,5 +1,30 @@
 #include "hotel.h"
 
+void printRoomColumns() {
+	cout << " |"
+		 << left << setfill(' ')
+		 << setw(12) << " Room No"
+		 << setw(13) << "Type"
+		 << setw(10) << "Capacity"
+		 << setw(14) << "Price/Night"
+		 << setw(15) << "Status"
+		 << "|" << endl;
+}
+
+void printRoomDataRow(const string& number, const string& type, int capacity,
+	double price, const string& status) {
+	ostringstream priceText;
+	priceText << fixed << setprecision(2) << "RM" << price;
+	cout << " |"
+		 << left << setfill(' ')
+		 << setw(12) << (" " + number)
+		 << setw(13) << type
+		 << setw(10) << capacity
+		 << setw(14) << priceText.str()
+		 << setw(15) << status
+		 << "|" << endl;
+}
+
 void displayAvailableRoom() {
 	displayRoomsByType("ALL");
 }
@@ -8,30 +33,15 @@ void displayRoomsByType(const string& typeFilter) {
 	int shown = 0;
 	cout << endl;
 	boxLine();
-	cout << " |"
-		 << left << setfill(' ')
-		 << setw(9) << " Room No"
-		 << setw(13) << "Type"
-		 << setw(10) << "Capacity"
-		 << setw(16) << "Price/Night"
-		 << setw(16) << "Status"
-		 << "|" << endl;
+	printRoomColumns();
 	boxLine();
 
 	for (size_t i = 0; i < roomList.size(); i++) {
 		if (typeFilter != "ALL" && roomList[i].roomType != typeFilter) {
 			continue;
 		}
-		ostringstream price;
-		price << fixed << setprecision(2) << "RM" << roomList[i].price;
-		cout << " |"
-			 << left << setfill(' ')
-			 << setw(9) << (" " + roomList[i].roomNumber)
-			 << setw(13) << roomList[i].roomType
-			 << setw(10) << roomList[i].capacity
-			 << setw(16) << price.str()
-			 << setw(16) << roomList[i].status
-			 << "|" << endl;
+		printRoomDataRow(roomList[i].roomNumber, roomList[i].roomType,
+			roomList[i].capacity, roomList[i].price, roomList[i].status);
 		shown++;
 	}
 
@@ -47,14 +57,8 @@ int displayBookableRooms(int guests) {
 	boxTitle("Rooms that fit " + to_string(guests) + " guest(s)");
 	boxRow("Any Available room with enough space can be booked.");
 	boxRow("Occupied, cleaning and maintenance rooms stay hidden.");
-	cout << " |"
-		 << left << setfill(' ')
-		 << setw(9) << " Room No"
-		 << setw(13) << "Type"
-		 << setw(10) << "Capacity"
-		 << setw(16) << "Price/Night"
-		 << setw(16) << "Status"
-		 << "|" << endl;
+	boxRow("");
+	printRoomColumns();
 	boxLine();
 
 	for (size_t i = 0; i < roomList.size(); i++) {
@@ -64,17 +68,8 @@ int displayBookableRooms(int guests) {
 		if (roomList[i].capacity < guests) {
 			continue;
 		}
-
-		ostringstream price;
-		price << fixed << setprecision(2) << "RM" << roomList[i].price;
-		cout << " |"
-			 << left << setfill(' ')
-			 << setw(9) << (" " + roomList[i].roomNumber)
-			 << setw(13) << roomList[i].roomType
-			 << setw(10) << roomList[i].capacity
-			 << setw(16) << price.str()
-			 << setw(16) << roomList[i].status
-			 << "|" << endl;
+		printRoomDataRow(roomList[i].roomNumber, roomList[i].roomType,
+			roomList[i].capacity, roomList[i].price, roomList[i].status);
 		shown++;
 	}
 
@@ -90,14 +85,8 @@ int displayRoomsForModify(int guests, const string& currentRoomNumber) {
 	cout << endl;
 	boxTitle("Rooms that fit " + to_string(guests) + " guest(s)");
 	boxRow("Your current room is listed even if occupied.");
-	cout << " |"
-		 << left << setfill(' ')
-		 << setw(9) << " Room No"
-		 << setw(13) << "Type"
-		 << setw(10) << "Capacity"
-		 << setw(16) << "Price/Night"
-		 << setw(16) << "Status"
-		 << "|" << endl;
+	boxRow("");
+	printRoomColumns();
 	boxLine();
 
 	for (size_t i = 0; i < roomList.size(); i++) {
@@ -110,16 +99,8 @@ int displayRoomsForModify(int guests, const string& currentRoomNumber) {
 		}
 
 		string statusText = isCurrent ? "Current" : roomList[i].status;
-		ostringstream price;
-		price << fixed << setprecision(2) << "RM" << roomList[i].price;
-		cout << " |"
-			 << left << setfill(' ')
-			 << setw(9) << (" " + roomList[i].roomNumber)
-			 << setw(13) << roomList[i].roomType
-			 << setw(10) << roomList[i].capacity
-			 << setw(16) << price.str()
-			 << setw(16) << statusText
-			 << "|" << endl;
+		printRoomDataRow(roomList[i].roomNumber, roomList[i].roomType,
+			roomList[i].capacity, roomList[i].price, statusText);
 		shown++;
 	}
 
