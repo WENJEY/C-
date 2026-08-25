@@ -172,6 +172,7 @@ bool currentUserHasUnpaid();
 void resetSessionExtras();
 void setRoomStatus(const string& roomNumber, const string& status);
 void removeFromCurrentSession(const string& reservationID);
+void syncRoomOccupancy();
 int daysFromToday(int day, int month, int year);
 void pauseEnter();
 void boxLine();

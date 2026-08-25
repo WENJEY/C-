@@ -6,6 +6,8 @@ int main() {
 	loadCustomersFromFile();
 	loadRoomsFromFile();
 	loadReservationsFromFile();
+	syncRoomOccupancy();
+	saveRoomsToFile();
 
 	while (true) {
 		logo();

@@ -49,6 +49,8 @@ int displayBookableRooms(int guests, bool largerRooms) {
 	}
 	else {
 		boxTitle("Rooms for " + to_string(guests) + " guest(s)");
+		boxRow("Only Available rooms that fit exactly this many people.");
+		boxRow("Occupied rooms stay hidden. Larger rooms come next.");
 	}
 	cout << " |"
 		 << left << setfill(' ')

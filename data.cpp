@@ -100,6 +100,26 @@ void removeFromCurrentSession(const string& reservationID) {
 	}
 }
 
+void syncRoomOccupancy() {
+	for (size_t i = 0; i < roomList.size(); i++) {
+		if (roomList[i].status == "Cleaning" || roomList[i].status == "Maintenance") {
+			continue;
+		}
+
+		bool used = false;
+		for (size_t r = 0; r < reservations.size(); r++) {
+			if (reservations[r].status == "Cancelled") {
+				continue;
+			}
+			if (reservations[r].roomNumber == roomList[i].roomNumber) {
+				used = true;
+				break;
+			}
+		}
+		roomList[i].status = used ? "Occupied" : "Available";
+	}
+}
+
 string generateReservationID() {
 	return padNumber(nextReservationID, 4);
 }
