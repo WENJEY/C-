@@ -1,13 +1,19 @@
 #include "hotel.h"
 
+int pickSessionBooking();
+
 void afterBookingMenu() {
 	int choice;
 
 	do {
+		if (currentSessionIDs.empty()) {
+			return;
+		}
+
 		cout << endl;
 		boxTitle("Add On Menu");
 		boxRow("Your room is booked. Add extras, then pay.");
-		boxRow("Stay on this page until payment is done.");
+		boxRow("Typed something wrong? Use 7 to change or 8 to cancel.");
 		boxLine();
 
 		int stayNo = 0;
@@ -53,9 +59,11 @@ void afterBookingMenu() {
 		boxRow("4. Special Requests");
 		boxRow("5. Apply Promo Code");
 		boxRow("6. Redeem Loyalty Points");
+		boxRow("7. Modify this booking");
+		boxRow("8. Cancel this booking");
 		boxLine();
-		cout << " Please choose 1-6: ";
-		choice = getIntInRange(1, 6);
+		cout << " Please choose 1-8: ";
+		choice = getIntInRange(1, 8);
 
 		switch (choice) {
 		case 1:
@@ -82,8 +90,69 @@ void afterBookingMenu() {
 		case 6:
 			redeemLoyaltyPoints();
 			break;
+		case 7: {
+			int idx = pickSessionBooking();
+			if (idx != -1) {
+				modifyBookingMenu(idx);
+			}
+			break;
+		}
+		case 8: {
+			int idx = pickSessionBooking();
+			if (idx != -1) {
+				confirmAndCancelReservation(idx);
+				if (currentSessionIDs.empty()) {
+					cout << " Returning to Menu Page." << endl;
+					return;
+				}
+			}
+			break;
+		}
 		}
 	} while (true);
+}
+
+int pickSessionBooking() {
+	vector<int> choices;
+
+	for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+		int idx = findReservationIndex(currentSessionIDs[i]);
+		if (idx == -1) {
+			continue;
+		}
+		if (reservations[idx].status == "Cancelled") {
+			continue;
+		}
+		choices.push_back(idx);
+	}
+
+	if (choices.empty()) {
+		cout << " No booking in this session." << endl;
+		return -1;
+	}
+	if (choices.size() == 1) {
+		return choices[0];
+	}
+
+	cout << endl;
+	boxTitle("Which booking?");
+	boxRow("Enter 0 to go back");
+	boxLine();
+	for (size_t i = 0; i < choices.size(); i++) {
+		int idx = choices[i];
+		ostringstream line;
+		line << (i + 1) << ". #" << reservations[idx].reservationID
+			 << "  Room " << reservations[idx].roomNumber
+			 << "  " << reservations[idx].roomType;
+		boxRow(line.str());
+	}
+	boxLine();
+	cout << " Please choose 0-" << choices.size() << ": ";
+	int pick = getIntInRange(0, static_cast<int>(choices.size()));
+	if (pick == 0) {
+		return -1;
+	}
+	return choices[pick - 1];
 }
 
 void offerAddOns() {

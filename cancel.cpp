@@ -12,14 +12,21 @@ void cancelReservations() {
 		if (resIndex == -1) {
 			return;
 		}
-
-		showCancelSummary(resIndex);
-		if (!confirmYesNo(" Cancel this reservation? y/n: ")) {
-			cout << " Reservation kept." << endl;
-			continue;
-		}
-		cancelOneReservation(resIndex);
+		confirmAndCancelReservation(resIndex);
 	}
+}
+
+bool confirmAndCancelReservation(int resIndex) {
+	if (resIndex < 0) {
+		return false;
+	}
+	showCancelSummary(resIndex);
+	if (!confirmYesNo(" Cancel this reservation? y/n: ")) {
+		cout << " Reservation kept." << endl;
+		return false;
+	}
+	cancelOneReservation(resIndex);
+	return true;
 }
 
 int pickBookingToCancel() {
