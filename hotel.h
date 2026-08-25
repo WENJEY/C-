@@ -139,7 +139,7 @@ void staffLogin();
 void staffMenu();
 void displayAvailableRoom();
 void displayRoomsByType(const string& typeFilter);
-int displayBookableRooms(int guests, bool largerRooms);
+int displayBookableRooms(int guests);
 int displayRoomsForModify(int guests, const string& currentRoomNumber);
 void saveRoomsToFile();
 void loadRoomsFromFile();

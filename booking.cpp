@@ -53,30 +53,9 @@ bool createOneBooking() {
 		return false;
 	}
 
-	int exactShown = displayBookableRooms(guests, false);
-	bool sawLarger = false;
-
-	bool hasLarger = false;
-	for (size_t i = 0; i < roomList.size(); i++) {
-		if (roomList[i].status == "Available" && roomList[i].capacity > guests) {
-			hasLarger = true;
-			break;
-		}
-	}
-
-	if (hasLarger) {
-		if (confirmYesNo(" Do you want to see larger rooms too? y/n: ")) {
-			sawLarger = true;
-			displayBookableRooms(guests, true);
-		}
-	}
-	else if (exactShown == 0) {
-		cout << " No rooms available for this number of guests." << endl;
-		return false;
-	}
-
-	if (exactShown == 0 && !sawLarger) {
-		cout << " No rooms to book. Booking cancelled." << endl;
+	int shown = displayBookableRooms(guests);
+	if (shown == 0) {
+		cout << " No available room fits this number of guests." << endl;
 		return false;
 	}
 
@@ -105,10 +84,6 @@ bool createOneBooking() {
 		if (roomList[roomIndex].capacity < guests) {
 			cout << " That room only fits " << roomList[roomIndex].capacity
 				 << " guest(s). Please choose another." << endl;
-			continue;
-		}
-		if (!sawLarger && roomList[roomIndex].capacity != guests) {
-			cout << " That room was not in the list. Enter a room shown above." << endl;
 			continue;
 		}
 		break;

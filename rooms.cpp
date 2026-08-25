@@ -41,17 +41,12 @@ void displayRoomsByType(const string& typeFilter) {
 	boxLine();
 }
 
-int displayBookableRooms(int guests, bool largerRooms) {
+int displayBookableRooms(int guests) {
 	int shown = 0;
 	cout << endl;
-	if (largerRooms) {
-		boxTitle("Larger rooms (more than " + to_string(guests) + " guest(s))");
-	}
-	else {
-		boxTitle("Rooms for " + to_string(guests) + " guest(s)");
-		boxRow("Only Available rooms that fit exactly this many people.");
-		boxRow("Occupied rooms stay hidden. Larger rooms come next.");
-	}
+	boxTitle("Rooms that fit " + to_string(guests) + " guest(s)");
+	boxRow("Any Available room with enough space can be booked.");
+	boxRow("Occupied, cleaning and maintenance rooms stay hidden.");
 	cout << " |"
 		 << left << setfill(' ')
 		 << setw(9) << " Room No"
@@ -66,12 +61,7 @@ int displayBookableRooms(int guests, bool largerRooms) {
 		if (roomList[i].status != "Available") {
 			continue;
 		}
-		if (largerRooms) {
-			if (roomList[i].capacity <= guests) {
-				continue;
-			}
-		}
-		else if (roomList[i].capacity != guests) {
+		if (roomList[i].capacity < guests) {
 			continue;
 		}
 
@@ -89,12 +79,7 @@ int displayBookableRooms(int guests, bool largerRooms) {
 	}
 
 	if (shown == 0) {
-		if (largerRooms) {
-			boxRow("No larger rooms are available to book.");
-		}
-		else {
-			boxRow("No rooms of this size are available to book.");
-		}
+		boxRow("No available room fits this number of guests.");
 	}
 	boxLine();
 	return shown;
