@@ -3,9 +3,6 @@
 
 // Shared header. Every .cpp includes this so the program can split
 // across files and still use the same structs, globals, and functions.
-//
-// Not created yet (functions not done):
-//   staff extra features -> later add into staff.cpp
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
@@ -157,12 +154,19 @@ bool restoreHotelFromUnpaid();
 void changeDestination();
 void clearCurrentHotel();
 void resetOccupiedRooms();
+// Staff: login, room CRUD, location CRUD, reports
 void staffLogin();
 void staffMenu();
 void displayAvailableRoom();
 void displayRoomsByType(const string& typeFilter);
 int displayBookableRooms(int guests);
 int displayRoomsForModify(int guests, const string& currentRoomNumber);
+void printRoomColumns();
+void printRoomDataRow(const string& number, const string& type, int capacity,
+	double price, const string& status);
+vector<string> destinationStates();
+vector<string> areasOf(const string& state);
+vector<int> hotelsOf(const string& state, const string& area);
 void saveRoomsToFile();
 void loadRoomsFromFile();
 void saveCustomersToFile();

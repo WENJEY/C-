@@ -1,12 +1,5 @@
 #include "hotel.h"
 
-const int STATE_COUNT = 14;
-const string STATE_ORDER[STATE_COUNT] = {
-	"Perlis", "Kedah", "Pulau Pinang", "Perak", "Selangor", "Kuala Lumpur",
-	"Negeri Sembilan", "Melaka", "Johor", "Pahang", "Terengganu", "Kelantan",
-	"Sabah", "Sarawak"
-};
-
 vector<string> areasOf(const string& state);
 vector<int> hotelsOf(const string& state, const string& area);
 string chooseState();
@@ -137,20 +130,59 @@ void changeDestination() {
 	chooseHotel(currentHotelState, currentHotelArea);
 }
 
+vector<string> destinationStates() {
+	const int PREFERRED = 14;
+	const string preferred[PREFERRED] = {
+		"Perlis", "Kedah", "Pulau Pinang", "Perak", "Selangor", "Kuala Lumpur",
+		"Negeri Sembilan", "Melaka", "Johor", "Pahang", "Terengganu", "Kelantan",
+		"Sabah", "Sarawak"
+	};
+	vector<string> states;
+
+	for (int p = 0; p < PREFERRED; p++) {
+		for (size_t i = 0; i < hotelBranches.size(); i++) {
+			if (hotelBranches[i].state == preferred[p]) {
+				states.push_back(preferred[p]);
+				break;
+			}
+		}
+	}
+
+	for (size_t i = 0; i < hotelBranches.size(); i++) {
+		bool seen = false;
+		for (size_t j = 0; j < states.size(); j++) {
+			if (states[j] == hotelBranches[i].state) {
+				seen = true;
+				break;
+			}
+		}
+		if (!seen) {
+			states.push_back(hotelBranches[i].state);
+		}
+	}
+	return states;
+}
+
 string chooseState() {
+	vector<string> states = destinationStates();
+	if (states.empty()) {
+		cout << " No hotel has been added yet." << endl;
+		return "";
+	}
+
 	cout << endl;
 	boxTitle("Which state?");
-	for (int i = 0; i < STATE_COUNT; i++) {
-		boxRow(optionText(i + 1) + STATE_ORDER[i]);
+	for (size_t i = 0; i < states.size(); i++) {
+		boxRow(optionText(static_cast<int>(i + 1)) + states[i]);
 	}
 	boxRow(optionText(0) + "Cancel");
 	boxLine();
-	cout << " Please choose 0-" << STATE_COUNT << ": ";
-	int choice = getIntInRange(0, STATE_COUNT);
+	cout << " Please choose 0-" << states.size() << ": ";
+	int choice = getIntInRange(0, static_cast<int>(states.size()));
 	if (choice == 0) {
 		return "";
 	}
-	return STATE_ORDER[choice - 1];
+	return states[static_cast<size_t>(choice - 1)];
 }
 
 string chooseArea(const string& state) {
