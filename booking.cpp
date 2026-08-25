@@ -137,9 +137,9 @@ bool createOneBooking() {
 	cout << fixed << setprecision(2);
 	cout << endl;
 	boxTitle("Booking Summary");
-	boxRow("Hotel        : " + currentHotelName);
-	boxRow("Address      : " + currentHotelAddress);
-	boxRow("Area         : " + currentHotelArea + ", " + currentHotelState);
+	boxWrap("Hotel        : " + currentHotelName);
+	boxWrap("Address      : " + currentHotelAddress);
+	boxWrap("Area         : " + currentHotelArea + ", " + currentHotelState);
 	boxRow("Guest        : " + currentCustomerName());
 	boxRow("Room Number  : " + roomList[roomIndex].roomNumber);
 	boxRow("Room Type    : " + roomList[roomIndex].roomType);

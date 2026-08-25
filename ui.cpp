@@ -63,6 +63,32 @@ void boxRow(const string& text) {
 	cout << setfill(' ') << " |" << left << setw(BOX_W) << t << "|" << endl;
 }
 
+void boxWrap(const string& text) {
+	string rest = text;
+	int width = BOX_W - 1;
+	if (width < 8) {
+		width = 8;
+	}
+	while (!rest.empty()) {
+		if (static_cast<int>(rest.length()) <= width) {
+			boxRow(rest);
+			return;
+		}
+		int cut = width;
+		for (int i = width - 1; i >= width / 2; i--) {
+			if (rest[static_cast<size_t>(i)] == ' ') {
+				cut = i;
+				break;
+			}
+		}
+		boxRow(rest.substr(0, static_cast<size_t>(cut)));
+		rest = rest.substr(static_cast<size_t>(cut));
+		while (!rest.empty() && rest[0] == ' ') {
+			rest = rest.substr(1);
+		}
+	}
+}
+
 void boxLineEq() {
 	cout << setfill(' ') << " +" << string(BOX_W, '=') << "+" << endl;
 }

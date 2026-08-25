@@ -67,11 +67,10 @@ struct SelectedAddOn {
 };
 
 struct HotelBranch {
+	string state;
+	string area;
 	string name;
-	int stateIndex;
-	int areaIndex;
 	string address;
-	double localKm;
 };
 
 struct BookingRecord {
@@ -155,6 +154,7 @@ void customerMenu();
 bool findHotelByDestination();
 bool requireHotelSelected();
 bool restoreHotelFromUnpaid();
+void changeDestination();
 void clearCurrentHotel();
 void resetOccupiedRooms();
 void staffLogin();
@@ -200,6 +200,7 @@ void pauseEnter();
 void boxLine();
 void boxTitle(const string& title);
 void boxRow(const string& text);
+void boxWrap(const string& text);
 void boxLineEq();
 void boxCenter(const string& text);
 void boxInner(const string& leftText, const string& rightText);

@@ -19,9 +19,7 @@ void customerAuthMenu() {
 			break;
 		case 2:
 			if (customerLogin()) {
-				if (!restoreHotelFromUnpaid()) {
-					findHotelByDestination();
-				}
+				restoreHotelFromUnpaid();
 				customerMenu();
 			}
 			break;
@@ -263,9 +261,9 @@ void customerMenu() {
 		cout << endl;
 		boxTitle("Menu Page");
 		if (!currentHotelName.empty()) {
-			boxRow("Hotel : " + currentHotelName);
-			boxRow("Area  : " + currentHotelArea + ", " + currentHotelState);
-			boxRow("Addr  : " + currentHotelAddress);
+			boxWrap("Hotel : " + currentHotelName);
+			boxWrap("Area  : " + currentHotelArea + ", " + currentHotelState);
+			boxWrap("Addr  : " + currentHotelAddress);
 			boxLine();
 		}
 		boxRow("1. View Available Rooms");
@@ -279,7 +277,7 @@ void customerMenu() {
 		boxRow("4. Modify Reservations");
 		boxRow("5. Cancel Reservations");
 		boxRow("6. View My Profile");
-		boxRow("7. Find Hotel by Destination");
+		boxRow("7. Change Destination");
 		boxRow("0. Back to Main Menu");
 		boxLine();
 		cout << " Please choose 0-7: ";
@@ -309,7 +307,7 @@ void customerMenu() {
 			viewMyProfile();
 			break;
 		case 7:
-			findHotelByDestination();
+			changeDestination();
 			break;
 		case 0:
 			currentLoggedInCustomer = "";
