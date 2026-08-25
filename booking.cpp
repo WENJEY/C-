@@ -42,45 +42,43 @@ void bookRoom() {
 
 bool createOneBooking() {
 	cout << endl;
-	boxTitle("Choose Room Type");
-	boxRow("1. All rooms");
-	boxRow("2. Single");
-	boxRow("3. Twin");
-	boxRow("4. Deluxe");
-	boxRow("5. Family");
-	boxRow("6. Suite");
-	boxRow("7. Presidential");
-	boxRow("0. Cancel booking");
+	boxTitle("How many guests?");
+	boxRow("Enter how many people will stay");
+	boxRow("Enter 0 to cancel");
 	boxLine();
-	cout << " Please choose 0-7: ";
-	int typeChoice = getValidatedInput(0, 7);
-
-	if (typeChoice == 0) {
+	cout << " Number of guests (1-6): ";
+	int guests = getIntInRange(0, 6);
+	if (guests == 0) {
 		cout << " Booking cancelled." << endl;
 		return false;
 	}
 
-	string typeFilter = "ALL";
-	if (typeChoice == 2) {
-		typeFilter = "Single";
-	}
-	if (typeChoice == 3) {
-		typeFilter = "Twin";
-	}
-	if (typeChoice == 4) {
-		typeFilter = "Deluxe";
-	}
-	if (typeChoice == 5) {
-		typeFilter = "Family";
-	}
-	if (typeChoice == 6) {
-		typeFilter = "Suite";
-	}
-	if (typeChoice == 7) {
-		typeFilter = "Presidential";
+	int exactShown = displayBookableRooms(guests, false);
+	bool sawLarger = false;
+
+	bool hasLarger = false;
+	for (size_t i = 0; i < roomList.size(); i++) {
+		if (roomList[i].status == "Available" && roomList[i].capacity > guests) {
+			hasLarger = true;
+			break;
+		}
 	}
 
-	displayRoomsByType(typeFilter);
+	if (hasLarger) {
+		if (confirmYesNo(" Do you want to see larger rooms too? y/n: ")) {
+			sawLarger = true;
+			displayBookableRooms(guests, true);
+		}
+	}
+	else if (exactShown == 0) {
+		cout << " No rooms available for this number of guests." << endl;
+		return false;
+	}
+
+	if (exactShown == 0 && !sawLarger) {
+		cout << " No rooms to book. Booking cancelled." << endl;
+		return false;
+	}
 
 	string roomNumber;
 	int roomIndex = -1;
@@ -99,38 +97,22 @@ bool createOneBooking() {
 			cout << " Room not found! Please try again." << endl;
 			continue;
 		}
-		if (typeFilter != "ALL" && roomList[roomIndex].roomType != typeFilter) {
-			cout << " That room is not in the " << typeFilter << " list. Please choose again." << endl;
-			continue;
-		}
 		if (roomList[roomIndex].status != "Available") {
 			cout << " This room is not available. Status: "
 				 << roomList[roomIndex].status << ". Please choose another." << endl;
 			continue;
 		}
-		break;
-	}
-
-	int guests = 0;
-	while (true) {
-		cout << "\n Enter number of guests (1-" << roomList[roomIndex].capacity << " or 0 to cancel): ";
-		guests = getIntInRange(0, 20);
-		if (guests == 0) {
-			cout << " Booking cancelled." << endl;
-			return false;
+		if (roomList[roomIndex].capacity < guests) {
+			cout << " That room only fits " << roomList[roomIndex].capacity
+				 << " guest(s). Please choose another." << endl;
+			continue;
 		}
-		if (guests > roomList[roomIndex].capacity) {
-			cout << " This " << roomList[roomIndex].roomType << " only fits "
-				 << roomList[roomIndex].capacity << " guest(s)." << endl;
-			cout << " You can continue and add an Extra Bed after confirming." << endl;
-			if (!confirmYesNo(" Continue with this room anyway? y/n: ")) {
-				continue;
-			}
+		if (!sawLarger && roomList[roomIndex].capacity != guests) {
+			cout << " That room was not in the list. Enter a room shown above." << endl;
+			continue;
 		}
 		break;
 	}
-
-	offerRoomUpgrade(roomIndex, guests);
 
 	cout << "\n Enter number of nights or 0 to cancel: ";
 	int nights = getIntInRange(0, 30);
