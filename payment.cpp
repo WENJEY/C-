@@ -176,7 +176,7 @@ void showSessionBill(bool showPayHint) {
 	boxLine();
 
 	if (showPayHint) {
-		cout << " Payment methods: Cash / Card / Touch n Go / GrabPay / Boost" << endl;
+		cout << " Payment methods: Card / Touch n Go / GrabPay / Boost" << endl;
 	}
 }
 
@@ -199,15 +199,14 @@ void processPayment() {
 
 	cout << endl;
 	boxTitle("Payment Method");
-	boxRow("1. Cash");
-	boxRow("2. Debit / Credit Card");
-	boxRow("3. Touch n Go eWallet");
-	boxRow("4. GrabPay");
-	boxRow("5. Boost");
+	boxRow("1. Debit / Credit Card");
+	boxRow("2. Touch n Go eWallet");
+	boxRow("3. GrabPay");
+	boxRow("4. Boost");
 	boxRow("0. Cancel payment");
 	boxLine();
-	cout << " Please choose 0-5: ";
-	int method = getValidatedInput(0, 5);
+	cout << " Please choose 0-4: ";
+	int method = getValidatedInput(0, 4);
 	if (method == 0) {
 		cout << " Payment cancelled." << endl;
 		return;
@@ -215,15 +214,12 @@ void processPayment() {
 
 	string methodName;
 	if (method == 1) {
-		methodName = "Cash";
-	}
-	else if (method == 2) {
 		methodName = "Card";
 	}
-	else if (method == 3) {
+	else if (method == 2) {
 		methodName = "Touch n Go";
 	}
-	else if (method == 4) {
+	else if (method == 3) {
 		methodName = "GrabPay";
 	}
 	else {
@@ -231,44 +227,6 @@ void processPayment() {
 	}
 
 	if (method == 1) {
-		while (true) {
-			cout << " Cash received RM or 0 to cancel: ";
-			string cashStr;
-			getline(cin, cashStr);
-			if (cashStr == "0") {
-				cout << " Payment cancelled." << endl;
-				return;
-			}
-
-			bool valid = !cashStr.empty();
-			int dotCount = 0;
-			for (size_t i = 0; i < cashStr.length(); i++) {
-				if (cashStr[i] == '.') {
-					dotCount++;
-				}
-				else if (!isdigit(cashStr[i])) {
-					valid = false;
-				}
-			}
-			if (!valid || dotCount > 1) {
-				cout << " Invalid amount." << endl;
-				continue;
-			}
-
-			double cash = stod(cashStr);
-			if (cash + 0.001 < bill.total) {
-				cout << " Insufficient cash. Total is RM "
-					 << fixed << setprecision(2) << bill.total << endl;
-				continue;
-			}
-
-			double change = roundMoney(cash - bill.total);
-			cout << " Payment accepted. Change: RM "
-				 << fixed << setprecision(2) << change << endl;
-			break;
-		}
-	}
-	else if (method == 2) {
 		while (true) {
 			cout << " Enter 16-digit card number or 0 to cancel: ";
 			string card;
