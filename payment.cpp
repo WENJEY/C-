@@ -333,7 +333,6 @@ void processPayment() {
 
 	addLoyaltyPoints(earned);
 	saveCustomersToFile();
-	saveReservationsToFile();
 	printAndSaveInvoice(bill, methodName);
 
 	cout << "\n Payment successful! Thank you, " << currentCustomerName() << "." << endl;

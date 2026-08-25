@@ -4,10 +4,6 @@ int main() {
 	enableColors();
 	srand(static_cast<unsigned int>(time(0)));
 	loadCustomersFromFile();
-	loadRoomsFromFile();
-	loadReservationsFromFile();
-	syncRoomOccupancy();
-	saveRoomsToFile();
 
 	while (true) {
 		logo();

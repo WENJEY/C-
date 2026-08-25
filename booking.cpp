@@ -199,8 +199,6 @@ bool createOneBooking() {
 	reservations.push_back(newBooking);
 	currentSessionIDs.push_back(newBooking.reservationID);
 	roomList[roomIndex].status = "Occupied";
-	saveReservationsToFile();
-	saveRoomsToFile();
 
 	cout << "\n Reservation confirmed! Your reservation ID is "
 		 << newBooking.reservationID << "." << endl;
@@ -262,7 +260,6 @@ void maybeGiveWelcomeGift(int resIndex) {
 	gift.quantity = 1;
 	gift.lineTotal = 0;
 	reservations[resIndex].addOns.push_back(gift);
-	saveReservationsToFile();
 	cout << " Surprise gift: complimentary welcome fruit platter added to your room!" << endl;
 }
 

@@ -222,7 +222,6 @@ void addOnsForReservation(int resIndex) {
 		cout << " Choose add-on 0-" << addOnList.size() << ": ";
 		choice = getIntInRange(0, static_cast<int>(addOnList.size()));
 		if (choice == 0) {
-			saveReservationsToFile();
 			return;
 		}
 
@@ -256,7 +255,6 @@ void addOnsForReservation(int resIndex) {
 
 		cout << " Added " << item.name << " x" << qty
 			 << "  RM " << fixed << setprecision(2) << line << "." << endl;
-		saveReservationsToFile();
 	} while (true);
 }
 
@@ -345,7 +343,6 @@ void specialRequestMenu() {
 	}
 
 	reservations[resIndex].specialRequest = request;
-	saveReservationsToFile();
 	cout << " Noted! We will try our best: " << request << endl;
 }
 
