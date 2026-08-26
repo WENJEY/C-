@@ -323,6 +323,7 @@ void customerMenu() {
 			resetOccupiedRooms();
 			resetSessionExtras();
 			currentSessionIDs.clear();
+			loadingPause();
 			cout << "\n Logged out successfully." << endl;
 			return;
 		}

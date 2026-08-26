@@ -118,6 +118,7 @@ void staffMenu() {
 			break;
 		case 0:
 			cout << "\n Staff logged out." << endl;
+			loadingPause();
 			return;
 		}
 	} while (choice != 0);
