@@ -30,36 +30,40 @@ void applyPromoCode() {
 	sessionPromoFlat = 0;
 	sessionPromoCode = "";
 
-	if (code == "Terence") {
+	if (code == "TERENCE") {
 		sessionPromoPercent = 0.10;
+		sessionPromoCode = "Terence";
 	}
-	else if (code == "XinHong") {
+	else if (code == "XINHONG") {
 		if (totalNights < 3) {
 			cout << " XinHong needs at least 3 nights in this stay." << endl;
 			return;
 		}
 		sessionPromoPercent = 0.15;
+		sessionPromoCode = "XinHong";
 	}
-	else if (code == "Eason") {
+	else if (code == "EASON") {
 		sessionPromoPercent = 0.20;
+		sessionPromoCode = "Eason";
 	}
-	else if (code == "WenJet") {
+	else if (code == "WENJET") {
 		sessionPromoFlat = 5.00;
+		sessionPromoCode = "WenJet";
 	}
-	else if (code == "Kaw Kaw Deal") {
+	else if (code == "KAW KAW DEAL") {
 		if (roomCharge < 400.00) {
 			cout << " Kaw Kaw Deal needs a subtotal of RM 400.00 or more." << endl;
 			return;
 		}
 		sessionPromoFlat = 50.00;
+		sessionPromoCode = "Kaw Kaw Deal";
 	}
 	else {
 		cout << " Invalid promo code." << endl;
 		return;
 	}
 
-	sessionPromoCode = code;
-	cout << " Promo " << code << " applied!" << endl;
+	cout << " Promo " << sessionPromoCode << " applied!" << endl;
 	showSessionBill(false);
 }
 
@@ -136,8 +140,12 @@ void showSessionBill(bool showPayHint) {
 				 << " : RM " << reservations[idx].addOns[j].lineTotal;
 			boxRow(line.str());
 		}
-		if (reservations[idx].specialRequest != "-") {
-			boxRow("Request         : " + reservations[idx].specialRequest);
+		{
+			string request = reservations[idx].specialRequest;
+			if (request.empty() || request == "-") {
+				request = "None";
+			}
+			boxField("Request         : ", request);
 		}
 	}
 
@@ -148,8 +156,9 @@ void showSessionBill(bool showPayHint) {
 		boxRow(line.str());
 	}
 	if (bill.promoDiscount > 0) {
+		boxRow("Promo code      : " + sessionPromoCode);
 		ostringstream line;
-		line << fixed << setprecision(2) << "Promo " << sessionPromoCode << "      : -RM " << bill.promoDiscount;
+		line << fixed << setprecision(2) << "Promo discount  : -RM " << bill.promoDiscount;
 		boxRow(line.str());
 	}
 	if (bill.memberDiscount > 0) {
@@ -357,6 +366,49 @@ void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
 		}
 		receipt << " |" << body << "|\n";
 	};
+	auto wrapInner = [&](const string& text, int hang) {
+		string rest = text;
+		int width = BOX_W - 1;
+		if (width < 8) {
+			width = 8;
+		}
+		bool first = true;
+		while (!rest.empty()) {
+			int lineWidth = width;
+			string prefix = "";
+			if (!first) {
+				int indent = hang;
+				if (indent < 0) {
+					indent = 0;
+				}
+				if (indent > lineWidth - 8) {
+					indent = lineWidth - 8;
+				}
+				prefix = string(static_cast<size_t>(indent), ' ');
+				lineWidth = width - indent;
+				if (lineWidth < 8) {
+					lineWidth = 8;
+				}
+			}
+			first = false;
+			if (static_cast<int>(rest.length()) <= lineWidth) {
+				inner(prefix + rest, "");
+				return;
+			}
+			int cut = lineWidth;
+			for (int i = lineWidth - 1; i >= lineWidth / 2; i--) {
+				if (rest[static_cast<size_t>(i)] == ' ') {
+					cut = i;
+					break;
+				}
+			}
+			inner(prefix + rest.substr(0, static_cast<size_t>(cut)), "");
+			rest = rest.substr(static_cast<size_t>(cut));
+			while (!rest.empty() && rest[0] == ' ') {
+				rest = rest.substr(1);
+			}
+		}
+	};
 	auto money = [&](const string& label, double amount, bool minus) {
 		ostringstream val;
 		val << fixed << setprecision(2);
@@ -425,6 +477,13 @@ void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
 			addPrice << fixed << setprecision(2) << "RM " << reservations[idx].addOns[j].lineTotal << " ";
 			inner(addName.str(), addPrice.str());
 		}
+		{
+			string request = reservations[idx].specialRequest;
+			if (request.empty() || request == "-") {
+				request = "None";
+			}
+			wrapInner(" Special request: " + request, 18);
+		}
 	}
 	lineEq();
 	center("PAYMENT BREAKDOWN");
@@ -445,8 +504,15 @@ void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
 		money("Room charge:", bill.roomCharge, false);
 	}
 	money("Add-ons:", bill.addOnCharge, false);
-	if (bill.promoDiscount + bill.memberDiscount > 0) {
-		money("Promo / Member:", bill.promoDiscount + bill.memberDiscount, true);
+	if (bill.promoDiscount > 0) {
+		string promoLabel = "Promo discount:";
+		if (!sessionPromoCode.empty()) {
+			promoLabel = "Promo (" + sessionPromoCode + "):";
+		}
+		money(promoLabel, bill.promoDiscount, true);
+	}
+	if (bill.memberDiscount > 0) {
+		money("Member discount:", bill.memberDiscount, true);
 	}
 	if (bill.loyaltyDiscount > 0) {
 		money("Loyalty:", bill.loyaltyDiscount, true);
