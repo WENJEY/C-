@@ -20,8 +20,15 @@ add_executable(C___Assignment
         customerInfo/addons.cpp
         customerInfo/location.cpp
         customerInfo/room.cpp
-        # staffInfo — staff tools
+        # staffInfo — staff tools (one module per menu item)
         staffInfo/staff.cpp
+        staffInfo/staffHelpers.cpp
+        staffInfo/staffRooms.cpp
+        staffInfo/staffLocations.cpp
+        staffInfo/staffReports.cpp
+        staffInfo/staffBookings.cpp
+        staffInfo/staffSearch.cpp
+        staffInfo/staffCheckIns.cpp
         # uiChecking — screen layout & input checks
         uiChecking/ui.cpp
         uiChecking/validation.cpp
