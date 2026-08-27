@@ -1,79 +1,107 @@
 #include "../hotel.h"
 
 void applyPromoCode() {
-	cout << endl;
-	cout << " Enter promo code (0 to cancel): ";
+	while (true) {
+		showPage("Promo Code");
+		boxRow("Enter a promo code, or 0 to cancel.");
+		boxLine();
+		cout << " Enter promo code (0 to cancel): ";
 
-	string code;
-	getline(cin, code);
-	if (code == "0" || code.empty()) {
-		return;
-	}
-
-	for (size_t i = 0; i < code.length(); i++) {
-		code[i] = static_cast<char>(toupper(static_cast<unsigned char>(code[i])));
-	}
-
-	int totalNights = 0;
-	double roomCharge = 0;
-	for (size_t i = 0; i < currentSessionIDs.size(); i++) {
-		int idx = findReservationIndex(currentSessionIDs[i]);
-		if (idx == -1) {
-			continue;
-		}
-		totalNights += reservations[idx].nights;
-		roomCharge += reservations[idx].pricePerNight * reservations[idx].nights;
-		roomCharge += addOnTotal(reservations[idx]);
-	}
-
-	sessionPromoPercent = 0;
-	sessionPromoFlat = 0;
-	sessionPromoCode = "";
-
-	if (code == "TERENCE") {
-		sessionPromoPercent = 0.10;
-		sessionPromoCode = "Terence";
-	}
-	else if (code == "XINHONG") {
-		if (totalNights < 3) {
-			cout << " XinHong needs at least 3 nights in this stay." << endl;
+		string code;
+		getline(cin, code);
+		cout << endl;
+		if (code == "0" || code.empty()) {
 			return;
 		}
-		sessionPromoPercent = 0.15;
-		sessionPromoCode = "XinHong";
-	}
-	else if (code == "EASON") {
-		sessionPromoPercent = 0.20;
-		sessionPromoCode = "Eason";
-	}
-	else if (code == "WENJET") {
-		sessionPromoFlat = 5.00;
-		sessionPromoCode = "WenJet";
-	}
-	else if (code == "KAW KAW DEAL") {
-		if (roomCharge < 400.00) {
-			cout << " Kaw Kaw Deal needs a subtotal of RM 400.00 or more." << endl;
-			return;
-		}
-		sessionPromoFlat = 50.00;
-		sessionPromoCode = "Kaw Kaw Deal";
-	}
-	else {
-		cout << " Invalid promo code." << endl;
-		return;
-	}
 
+		for (size_t i = 0; i < code.length(); i++) {
+			code[i] = static_cast<char>(toupper(static_cast<unsigned char>(code[i])));
+		}
+
+		int totalNights = 0;
+		double roomCharge = 0;
+		for (size_t i = 0; i < currentSessionIDs.size(); i++) {
+			int idx = findReservationIndex(currentSessionIDs[i]);
+			if (idx == -1) {
+				continue;
+			}
+			totalNights += reservations[idx].nights;
+			roomCharge += reservations[idx].pricePerNight * reservations[idx].nights;
+			roomCharge += addOnTotal(reservations[idx]);
+		}
+
+		sessionPromoPercent = 0;
+		sessionPromoFlat = 0;
+		sessionPromoCode = "";
+
+		if (code == "TERENCE") {
+			sessionPromoPercent = 0.10;
+			sessionPromoCode = "Terence";
+			break;
+		}
+		else if (code == "XINHONG") {
+			if (totalNights < 3) {
+				cout << red << " XinHong needs at least 3 nights in this stay." << original << endl;
+				pauseEnter();
+				continue;
+			}
+			sessionPromoPercent = 0.15;
+			sessionPromoCode = "XinHong";
+			break;
+
+		}
+		else if (code == "EASON") {
+			sessionPromoPercent = 0.20;
+			sessionPromoCode = "Eason";
+			break;
+		}
+		else if (code == "WENJET") {
+			sessionPromoFlat = 5.00;
+			sessionPromoCode = "WenJet";
+			break;
+
+		}
+		else if (code == "KAW KAW DEAL") {
+			if (roomCharge < 400.00) {
+				cout << red << " Kaw Kaw Deal needs a subtotal of RM 400.00 or more." << original << endl;
+				pauseEnter();
+				continue;
+			}
+			sessionPromoFlat = 50.00;
+			sessionPromoCode = "Kaw Kaw Deal";
+			break;
+
+		}
+		else {
+			cout << red << " Invalid promo code." << original << endl;
+			pauseEnter();
+		}
+	}
 	cout << " Promo " << sessionPromoCode << " applied!" << endl;
+	pauseEnter();
 	showSessionBill(false);
+	pauseEnter();
 }
 
 void redeemLoyaltyPoints() {
 	int points = loyaltyPointsOfCurrentUser();
-	cout << "\n Your loyalty points: " << points << endl;
-	cout << " Redeem " << REDEEM_BLOCK << " points = RM " << fixed << setprecision(2) << REDEEM_VALUE << " off." << endl;
+	showPage("Loyalty Points");
+	{
+		ostringstream line;
+		line << "Your loyalty points: " << points;
+		boxRow(line.str());
+	}
+	{
+		ostringstream line;
+		line << "Redeem " << REDEEM_BLOCK << " points = RM "
+			 << fixed << setprecision(2) << REDEEM_VALUE << " off.";
+		boxRow(line.str());
+	}
+	boxLine();
 
 	if (points < REDEEM_BLOCK) {
-		cout << " Not enough points yet. Keep booking to earn more!" << endl;
+		cout << red << " Not enough points yet. Keep booking to earn more!" << original << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -81,33 +109,39 @@ void redeemLoyaltyPoints() {
 	BillBreakdown bill = calculateSessionBill();
 	int affordable = static_cast<int>(bill.afterDiscount / REDEEM_VALUE);
 	if (affordable < 1) {
-		cout << " Current bill is too small to redeem points." << endl;
+		cout << red << " Current bill is too small to redeem points." << original << endl;
+		pauseEnter();
 		return;
 	}
 	if (maxBlocks > affordable) {
 		maxBlocks = affordable;
 	}
 
-	cout << " You can redeem up to " << (maxBlocks * REDEEM_BLOCK) << " points." << endl;
-	cout << " Enter points to redeem (multiples of " << REDEEM_BLOCK << " or 0 to cancel): ";
-	int redeem = getIntInRange(0, maxBlocks * REDEEM_BLOCK);
-	if (redeem == 0) {
-		return;
-	}
-	if (redeem % REDEEM_BLOCK != 0) {
-		cout << " Points must be in blocks of " << REDEEM_BLOCK << "." << endl;
-		return;
-	}
+	while (true) {
+		cout << " You can redeem up to " << (maxBlocks * REDEEM_BLOCK) << " points." << endl;
+		cout << " Enter points to redeem (multiples of " << REDEEM_BLOCK << " or 0 to cancel): ";
+		int redeem = getIntInRange(0, maxBlocks * REDEEM_BLOCK);
+		if (redeem == 0) {
+			return;
+		}
+		if (redeem % REDEEM_BLOCK != 0) {
+			cout << red << " Points must be in blocks of " << REDEEM_BLOCK << "." << original << endl;
+			pauseEnter();
+			continue;
+		}
 
-	sessionRedeemedPoints = redeem;
-	cout << " " << redeem << " points reserved for this payment." << endl;
-	showSessionBill(false);
+		sessionRedeemedPoints = redeem;
+		cout << " " << redeem << " points reserved for this payment." << endl;
+		pauseEnter();
+		showSessionBill(false);
+		pauseEnter();
+		break;
+	}
 }
 
 void showSessionBill(bool showPayHint) {
 	BillBreakdown bill = calculateSessionBill();
-	cout << endl;
-	boxTitle("Your Bill");
+	showPage("Your Bill");
 	boxRow("Guest           : " + currentCustomerName());
 	boxRow("Member          : " + membershipOfCurrentUser());
 	if (!currentHotelName.empty()) {
@@ -203,15 +237,16 @@ void processPayment() {
 		}
 	}
 	if (alreadyPaid) {
-		cout << " This stay is already paid." << endl;
+		cout << red << " This stay is already paid." << original << endl;
+		pauseEnter();
 		return;
 	}
 
 	BillBreakdown bill = calculateSessionBill();
 	showSessionBill(false);
+	pauseEnter();
 
-	cout << endl;
-	boxTitle("Payment Method");
+	showPage("Payment Method");
 	boxRow("1. Debit / Credit Card");
 	boxRow("2. Touch n Go eWallet");
 	boxRow("3. GrabPay");
@@ -222,6 +257,7 @@ void processPayment() {
 	int method = getValidatedInput(0, 4);
 	if (method == 0) {
 		cout << " Payment cancelled." << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -244,8 +280,10 @@ void processPayment() {
 			cout << " Enter 16-digit card number or 0 to cancel: ";
 			string card;
 			getline(cin, card);
+			cout << endl;
 			if (card == "0") {
 				cout << " Payment cancelled." << endl;
+				pauseEnter();
 				return;
 			}
 
@@ -256,10 +294,11 @@ void processPayment() {
 				}
 			}
 			if (digits.length() != 16) {
-				cout << " Card number must contain 16 digits." << endl;
+				cout << red << " Card number must contain 16 digits." << original << endl;
 				continue;
 			}
 			cout << " Charging card ending " << digits.substr(12, 4) << " ..." << endl;
+			pauseEnter();
 			break;
 		}
 	}
@@ -268,6 +307,7 @@ void processPayment() {
 			 << " with " << methodName << " using the phone number on your profile." << endl;
 		if (!confirmYesNo(" Confirm e-wallet payment? y/n: ")) {
 			cout << " Payment cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 	}
@@ -528,6 +568,7 @@ void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
 	center("Enjoy your stay!");
 	lineEq();
 
+	clearScreen();
 	cout << receipt.str();
 
 	string fileName = "invoice_" + invoiceId + ".txt";
@@ -537,6 +578,7 @@ void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
 		file.close();
 		cout << " Receipt saved as " << fileName << endl;
 	}
+	pauseEnter();
 }
 
 double addOnTotal(const BookingRecord& booking) {

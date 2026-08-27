@@ -16,6 +16,9 @@
 using namespace std;
 
 #define red "\033[91m"
+#define yellow "\033[93m"
+#define blue "\033[94m"
+#define cyan "\033[96m"
 #define original "\033[0m"
 #define window_width 112
 #define BOX_W 64
@@ -139,6 +142,9 @@ extern string currentHotelArea;
 extern string currentHotelState;
 
 void enableColors();
+void clearScreen();
+void showBanner();
+void showPage(const string& title);
 void logo();
 void displayUserTypeMenu();
 void customerAuthMenu();

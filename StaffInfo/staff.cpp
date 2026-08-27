@@ -7,19 +7,24 @@ void staffLogin() {
 	const int MAX_ATTEMPTS = 3;
 
 	while (attempts < MAX_ATTEMPTS) {
-		cout << endl;
-		boxTitle("Staff Login");
+		showPage("Staff Login");
 		if (attempts > 0) {
 			ostringstream line;
 			line << "Attempt " << attempts + 1 << " of " << MAX_ATTEMPTS;
 			boxRow(line.str());
 			boxLine();
 		}
+		else {
+			boxRow("Enter 0 on username to cancel");
+			boxLine();
+		}
 
 		cout << " Username or 0 to cancel: ";
 		getline(cin, id);
+		cout << endl;
 		if (id == "0") {
 			cout << " Login cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 
@@ -27,6 +32,7 @@ void staffLogin() {
 		password = getSecurePassword(false);
 		if (password == "0") {
 			cout << " Login cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 
@@ -39,16 +45,18 @@ void staffLogin() {
 
 		attempts++;
 		if (attempts < MAX_ATTEMPTS) {
-			cout << " Login failed! Invalid username or password." << endl;
+			cout << red << " Login failed! Invalid username or password." << original << endl;
 			cout << " You have " << (MAX_ATTEMPTS - attempts) << " attempt(s) remaining." << endl;
 			if (!confirmYesNo(" Would you like to try again? y/n: ")) {
 				cout << " Login cancelled." << endl;
+				pauseEnter();
 				return;
 			}
 		}
 		else {
-			cout << " Login failed! Maximum attempts exceeded." << endl;
-			cout << " Access denied. Returning to main menu." << endl;
+			cout << red << " Login failed! Maximum attempts exceeded." << original << endl;
+			cout << red << " Access denied. Returning to main menu." << original << endl;
+			pauseEnter();
 			return;
 		}
 	}
@@ -57,8 +65,7 @@ void staffLogin() {
 void staffMenu() {
 	int choice;
 	do {
-		cout << endl;
-		boxTitle("Staff Menu");
+		showPage("Staff Menu");
 		boxRow("Room and location changes last until you close the program.");
 		boxLine();
 		boxRow(optionText(1) + "Manage rooms");

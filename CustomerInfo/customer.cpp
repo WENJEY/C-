@@ -2,10 +2,8 @@
 
 void customerAuthMenu() {
 	int choice;
-
 	do {
-		cout << endl;
-		boxTitle("Customer Access");
+		showPage("Customer Access");
 		boxRow("1. Login to Existing Account");
 		boxRow("2. Register New Account");
 		boxRow("0. Back to Main Menu");
@@ -34,8 +32,7 @@ void customerRegister() {
 	Customer newCustomer;
 	string confirmPassword;
 
-	cout << endl;
-	boxTitle("Customer Registration");
+	showPage("Customer Registration");
 	boxRow("Please fill in the following information");
 	boxRow("Enter 0 at any field to cancel");
 	boxLine();
@@ -44,16 +41,18 @@ void customerRegister() {
 		cout << "\n Enter username (3-20 characters, letters/numbers only): ";
 		getline(cin, newCustomer.username);
 
+		cout << endl;
 		if (newCustomer.username == "0") {
 			cout << " Registration cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 		if (newCustomer.username.empty()) {
-			cout << " Username cannot be empty!" << endl;
+			cout << red << " Username cannot be empty!" << original << endl;
 			continue;
 		}
 		if (newCustomer.username.length() < 3 || newCustomer.username.length() > 20) {
-			cout << " Username must be 3-20 characters long!" << endl;
+			cout << red << " Username must be 3-20 characters long!" << original << endl;
 			continue;
 		}
 
@@ -65,11 +64,11 @@ void customerRegister() {
 			}
 		}
 		if (!validUsername) {
-			cout << " Username can only contain letters and numbers!" << endl;
+			cout << red << " Username can only contain letters and numbers!" << original << endl;
 			continue;
 		}
 		if (customerExists(newCustomer.username)) {
-			cout << " Username already exists! Please choose another." << endl;
+			cout << red << " Username already exists! Please choose another." << original << endl;
 			continue;
 		}
 		break;
@@ -78,12 +77,15 @@ void customerRegister() {
 	while (true) {
 		cout << "\n Enter your age (or 0 to cancel): ";
 		getline(cin, newCustomer.age);
+
+		cout << endl;
 		if (newCustomer.age == "0") {
 			cout << " Registration cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 		if (!isValidAge(newCustomer.age)) {
-			cout << " You must be 18 years old and above to book our hotel." << endl;
+			cout << red << " You must be 18 years old and above to book our hotel." << original << endl;
 			continue;
 		}
 		break;
@@ -92,23 +94,29 @@ void customerRegister() {
 	while (true) {
 		cout << "\n Enter password (minimum 6 characters or 0 to cancel): ";
 		newCustomer.password = getSecurePassword(false);
+
+		cout << endl;
 		if (newCustomer.password == "0") {
 			cout << " Registration cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 		if (!isValidPassword(newCustomer.password)) {
-			cout << " Password must be at least 6 characters long!" << endl;
+			cout << red << " Password must be at least 6 characters long!" << original << endl;
 			continue;
 		}
 
 		cout << "\n Confirm password (or 0 to cancel): ";
 		confirmPassword = getSecurePassword(false);
+
+		cout << endl;
 		if (confirmPassword == "0") {
 			cout << " Registration cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 		if (newCustomer.password != confirmPassword) {
-			cout << " Passwords do not match! Please try again." << endl;
+			cout << red << " Passwords do not match! Please try again." << original << endl;
 			continue;
 		}
 		cout << " Password confirmed successfully!" << endl;
@@ -118,16 +126,19 @@ void customerRegister() {
 	while (true) {
 		cout << "\n Enter full name (or 0 to cancel): ";
 		getline(cin, newCustomer.fullName);
+
+		cout << endl;
 		if (newCustomer.fullName == "0") {
 			cout << " Registration cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 		if (newCustomer.fullName.empty()) {
-			cout << " Full name cannot be empty!" << endl;
+			cout << red << " Full name cannot be empty!" << original << endl;
 			continue;
 		}
 		if (!isValidName(newCustomer.fullName)) {
-			cout << " Invalid name format! Names should contain only letters and spaces (2-50 characters)." << endl;
+			cout << red << " Invalid name format! Names should contain only letters and spaces (2-50 characters)." << original << endl;
 			continue;
 		}
 		formatName(newCustomer.fullName);
@@ -137,16 +148,19 @@ void customerRegister() {
 	while (true) {
 		cout << "\n Enter Gmail address (example: yourname@gmail.com or 0 to cancel): ";
 		getline(cin, newCustomer.email);
+
+		cout << endl;
 		if (newCustomer.email == "0") {
 			cout << " Registration cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 		if (newCustomer.email.empty()) {
-			cout << " Email cannot be empty!" << endl;
+			cout << red << " Email cannot be empty!" << original << endl;
 			continue;
 		}
 		if (!isValidEmail(newCustomer.email)) {
-			cout << " Invalid email! Please use Gmail format: yourname@gmail.com" << endl;
+			cout << red << " Invalid email! Please use Gmail format: yourname@gmail.com" << original << endl;
 			continue;
 		}
 		cout << " Valid Gmail address!" << endl;
@@ -156,16 +170,19 @@ void customerRegister() {
 	while (true) {
 		cout << "\n Enter Malaysian phone number (+60xxxxxxxxx or 01xxxxxxxx or 0 to cancel): ";
 		getline(cin, newCustomer.phoneNumber);
+
+		cout << endl;
 		if (newCustomer.phoneNumber == "0") {
 			cout << " Registration cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 		if (newCustomer.phoneNumber.empty()) {
-			cout << " Phone number cannot be empty!" << endl;
+			cout << red << " Phone number cannot be empty!" << original << endl;
 			continue;
 		}
 		if (!isValidPhoneNumber(newCustomer.phoneNumber)) {
-			cout << " Invalid format! Use: +60123456789 or 0123456789" << endl;
+			cout << red << " Invalid format! Use: +60123456789 or 0123456789" << original << endl;
 			continue;
 		}
 		cout << " Valid Malaysian phone number!" << endl;
@@ -175,19 +192,22 @@ void customerRegister() {
 	while (true) {
 		cout << "\n Enter IC number (12 digits) or Passport number (or 0 to cancel): ";
 		getline(cin, newCustomer.icPassport);
+
+		cout << endl;
 		if (newCustomer.icPassport == "0") {
 			cout << " Registration cancelled." << endl;
+			pauseEnter();
 			return;
 		}
 		if (newCustomer.icPassport.empty()) {
-			cout << " IC/Passport cannot be empty!" << endl;
+			cout << red << " IC/Passport cannot be empty!" << original << endl;
 			continue;
 		}
 		if (isValidMalaysianIC(newCustomer.icPassport) || isValidPassport(newCustomer.icPassport)) {
 			cout << " Valid IC/Passport!" << endl;
 			break;
 		}
-		cout << " Invalid IC/Passport format!" << endl;
+		cout << red << " Invalid IC/Passport format!" << original << endl;
 	}
 
 	newCustomer.membershipStatus = "Regular";
@@ -209,15 +229,24 @@ bool customerLogin() {
 	customers[0]= {"1","1","1","1","1","1"};
 
 	while (attempts < MAX_ATTEMPTS) {
-		cout << "\n ===== Customer Login =====" << endl;
+		showPage("Customer Login");
 		if (attempts > 0) {
-			cout << " Attempt " << attempts + 1 << " of " << MAX_ATTEMPTS << endl;
+			ostringstream line;
+			line << "Attempt " << attempts + 1 << " of " << MAX_ATTEMPTS;
+			boxRow(line.str());
+			boxLine();
+		}
+		else {
+			boxRow("Enter 0 on username to cancel");
+			boxLine();
 		}
 
 		cout << " Username or 0 to cancel: ";
 		getline(cin, username);
+		cout << endl;
 		if (username == "0") {
 			cout << " Login cancelled." << endl;
+			pauseEnter();
 			return false;
 		}
 
@@ -225,6 +254,7 @@ bool customerLogin() {
 		password = getSecurePassword(false);
 		if (password == "0") {
 			cout << " Login cancelled." << endl;
+			pauseEnter();
 			return false;
 		}
 
@@ -244,16 +274,18 @@ bool customerLogin() {
 
 		attempts++;
 		if (attempts < MAX_ATTEMPTS) {
-			cout << " Login failed! Invalid username or password." << endl;
+			cout << red << " Login failed! Invalid username or password." << original << endl;
 			cout << " You have " << (MAX_ATTEMPTS - attempts) << " attempt(s) remaining." << endl;
 			if (!confirmYesNo(" Would you like to try again? y/n: ")) {
 				cout << " Login cancelled." << endl;
+				pauseEnter();
 				return false;
 			}
 		}
 		else {
-			cout << " Login failed! Maximum attempts exceeded." << endl;
-			cout << " Access denied. Returning to main menu." << endl;
+			cout << red << " Login failed! Maximum attempts exceeded." << original << endl;
+			cout << red << " Access denied. Returning to main menu." << original << endl;
+			pauseEnter();
 			return false;
 		}
 	}
@@ -264,15 +296,14 @@ void customerMenu() {
 	int choice;
 
 	do {
-		showUnpaidReminder();
-		cout << endl;
-		boxTitle("Menu Page");
+		showPage("Menu Page");
 		if (!currentHotelName.empty()) {
 			boxField("Hotel : ", currentHotelName);
 			boxField("Area  : ", currentHotelArea + ", " + currentHotelState);
 			boxField("Addr  : ", currentHotelAddress);
 			boxLine();
 		}
+		showUnpaidReminder();
 		boxRow(optionText(1) + "View Available Rooms");
 		if (currentUserHasUnpaid()) {
 			boxRow(optionText(2) + "Continue Payment / Book Another Room");
@@ -325,8 +356,8 @@ void customerMenu() {
 			resetOccupiedRooms();
 			resetSessionExtras();
 			currentSessionIDs.clear();
-			loadingPause();
 			cout << "\n Logged out successfully." << endl;
+			loadingPause();
 			return;
 		}
 	} while (choice != 0);
@@ -345,18 +376,18 @@ void showUnpaidReminder() {
 			continue;
 		}
 		if (!any) {
-			cout << "\n You still have unpaid booking(s):" << endl;
+			boxRow("You still have unpaid booking(s):");
 			any = true;
 		}
-		cout << " #" << reservations[i].reservationID
+		ostringstream line;
+		line << "#" << reservations[i].reservationID
 			 << "  Room " << reservations[i].roomNumber
-			 << "  " << reservations[i].roomType
-			 << "  " << reservations[i].paymentStatus << endl;
+			 << "  " << reservations[i].roomType;
+		boxRow(line.str());
 	}
 	if (any) {
-		cout << " This booking is still yours. It did not disappear." << endl;
-		cout << " Choose 2 to go back to Add On Menu and pay." << endl;
-		cout << " Choose 3. View My Reservations to see the details." << endl;
+		boxRow("Choose 2 to pay, or 3 to view details.");
+		boxLine();
 	}
 }
 

@@ -31,9 +31,8 @@ void displayAvailableRoom() {
 
 void displayRoomsByType(const string& typeFilter) {
 	int shown = 0;
-	cout << endl;
+	showPage("Available Rooms");
 	if (!currentHotelName.empty()) {
-		boxTitle(currentHotelName);
 		boxWrap(currentHotelAddress);
 		boxWrap(currentHotelArea + ", " + currentHotelState);
 	}
@@ -54,12 +53,12 @@ void displayRoomsByType(const string& typeFilter) {
 		boxRow("No rooms found for this type.");
 	}
 	boxLine();
+	pauseEnter();
 }
 
 int displayBookableRooms(int guests) {
 	int shown = 0;
-	cout << endl;
-	boxTitle("Rooms that fit " + to_string(guests) + " guest(s)");
+	showPage("Rooms that fit " + to_string(guests) + " guest(s)");
 	if (!currentHotelName.empty()) {
 		boxWrap(currentHotelName);
 		boxWrapHang(currentHotelAddress, 0);
@@ -92,8 +91,7 @@ int displayBookableRooms(int guests) {
 
 int displayRoomsForModify(int guests, const string& currentRoomNumber) {
 	int shown = 0;
-	cout << endl;
-	boxTitle("Rooms that fit " + to_string(guests) + " guest(s)");
+	showPage("Rooms that fit " + to_string(guests) + " guest(s)");
 	boxRow("Your current room is listed even if occupied.");
 	boxRow("");
 	printRoomColumns();

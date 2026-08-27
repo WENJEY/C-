@@ -56,8 +56,7 @@ void staffReports() {
 		}
 	}
 
-	cout << endl;
-	boxTitle("Reports and statistics");
+	showPage("Reports and statistics");
 	{
 		ostringstream line;
 		line << customers.size();

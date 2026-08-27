@@ -6,9 +6,10 @@ int main() {
 	loadCustomersFromFile();
 
 	while (true) {
+		clearScreen();
 		logo();
 		displayUserTypeMenu();
-		int choice = getValidatedInput(1, 3);
+		int choice = getValidatedInput(0, 2);
 
 		switch (choice) {
 			case 1:
@@ -17,9 +18,14 @@ int main() {
 			case 2:
 				staffLogin();
 				break;
-			case 3:
+			case 0:
 				cout << endl;
-				cout << " Thank you for using Grand Horizon Hotel!" << endl;
+				showBanner();
+				boxTitle("Goodbye");
+				boxRow("Thank you for using Grand Horizon Hotel.");
+				boxRow("Have a nice day!");
+				boxLine();
+				pauseEnter();
 				return 0;
 		}
 	}

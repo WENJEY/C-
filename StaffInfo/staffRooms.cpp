@@ -3,8 +3,7 @@
 void staffRoomMenu() {
 	int choice;
 	do {
-		cout << endl;
-		boxTitle("Manage rooms");
+		showPage("Manage rooms");
 		boxRow(optionText(1) + "View rooms");
 		boxRow(optionText(2) + "Add a room");
 		boxRow(optionText(3) + "Edit a room");
@@ -33,8 +32,7 @@ void staffPrintRooms() {
 	int occupied = 0;
 	int cleaning = 0;
 	int maintenance = 0;
-	cout << endl;
-	boxTitle("All rooms");
+	showPage("All rooms");
 	printRoomColumns();
 	boxLine();
 	for (size_t i = 0; i < roomList.size(); i++) {
@@ -70,7 +68,6 @@ void staffPrintRooms() {
 
 void staffListRooms() {
 	staffPrintRooms();
-	pauseEnter();
 	loadingPause();
 }
 
@@ -80,7 +77,8 @@ void staffAddRoom() {
 		return;
 	}
 	if (findRoomIndex(room.roomNumber) != -1) {
-		cout << " That room number already exists." << endl;
+		cout << red << " That room number already exists." << original << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -93,6 +91,7 @@ void staffAddRoom() {
 	room.capacity = getIntInRange(0, 6);
 	if (room.capacity == 0) {
 		cout << " Add room cancelled." << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -100,8 +99,7 @@ void staffAddRoom() {
 		return;
 	}
 
-	cout << endl;
-	boxTitle("Starting status");
+	showPage("Starting status");
 	boxRow(optionText(1) + "Available");
 	boxRow(optionText(2) + "Cleaning");
 	boxRow(optionText(3) + "Maintenance");
@@ -111,6 +109,7 @@ void staffAddRoom() {
 	int statusPick = getIntInRange(0, 3);
 	if (statusPick == 0) {
 		cout << " Add room cancelled." << endl;
+		pauseEnter();
 		return;
 	}
 	if (statusPick == 1) {
@@ -125,6 +124,7 @@ void staffAddRoom() {
 
 	roomList.push_back(room);
 	cout << " Room " << room.roomNumber << " added." << endl;
+	pauseEnter();
 }
 
 void staffEditRoom() {
@@ -135,12 +135,12 @@ void staffEditRoom() {
 	}
 	int idx = findRoomIndex(roomNumber);
 	if (idx == -1) {
-		cout << " Room not found." << endl;
+		cout << red << " Room not found." << original << endl;
+		pauseEnter();
 		return;
 	}
 
-	cout << endl;
-	boxTitle("Edit room " + roomList[idx].roomNumber);
+	showPage("Edit room " + roomList[idx].roomNumber);
 	boxField("Type     : ", roomList[idx].roomType);
 	{
 		ostringstream line;
@@ -170,6 +170,7 @@ void staffEditRoom() {
 		if (!type.empty()) {
 			roomList[idx].roomType = type;
 			cout << " Type updated." << endl;
+			pauseEnter();
 		}
 	}
 	else if (choice == 2) {
@@ -177,16 +178,19 @@ void staffEditRoom() {
 		int capacity = getIntInRange(0, 6);
 		if (capacity == 0) {
 			cout << " Capacity not changed." << endl;
+			pauseEnter();
 			return;
 		}
 		roomList[idx].capacity = capacity;
 		cout << " Capacity updated." << endl;
+		pauseEnter();
 	}
 	else if (choice == 3) {
 		double price = 0;
 		if (askMoney(" New price per night RM (or 0 to cancel): ", price)) {
 			roomList[idx].price = price;
 			cout << " Price updated." << endl;
+			pauseEnter();
 		}
 	}
 	else if (choice == 4) {
@@ -195,11 +199,13 @@ void staffEditRoom() {
 			return;
 		}
 		if (status == "Available" && roomHasActiveBooking(roomList[idx].roomNumber)) {
-			cout << " This room still has an active booking. Status not changed." << endl;
+			cout << red << " This room still has an active booking. Status not changed." << original << endl;
+			pauseEnter();
 			return;
 		}
 		roomList[idx].status = status;
 		cout << " Status updated." << endl;
+		pauseEnter();
 	}
 }
 
@@ -211,17 +217,21 @@ void staffDeleteRoom() {
 	}
 	int idx = findRoomIndex(roomNumber);
 	if (idx == -1) {
-		cout << " Room not found." << endl;
+		cout << red << " Room not found." << original << endl;
+		pauseEnter();
 		return;
 	}
 	if (roomHasActiveBooking(roomNumber)) {
-		cout << " Cannot delete. This room still has an active booking." << endl;
+		cout << red << " Cannot delete. This room still has an active booking." << original << endl;
+		pauseEnter();
 		return;
 	}
 	if (!confirmYesNo(" Delete room " + roomNumber + "? y/n: ")) {
 		cout << " Room kept." << endl;
+		pauseEnter();
 		return;
 	}
 	roomList.erase(roomList.begin() + static_cast<size_t>(idx));
 	cout << " Room " << roomNumber << " deleted." << endl;
+	pauseEnter();
 }

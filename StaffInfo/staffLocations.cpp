@@ -3,8 +3,7 @@
 void staffLocationMenu() {
 	int choice;
 	do {
-		cout << endl;
-		boxTitle("Manage locations");
+		showPage("Manage locations");
 		boxRow(optionText(1) + "View hotels");
 		boxRow(optionText(2) + "Add a hotel");
 		boxRow(optionText(3) + "Edit a hotel");
@@ -39,8 +38,7 @@ void staffListHotels() {
 	}
 
 	vector<int> list = hotelsOf(state, area);
-	cout << endl;
-	boxTitle("Hotels in " + area + ", " + state);
+	showPage("Hotels in " + area + ", " + state);
 	if (list.empty()) {
 		boxRow("No hotel in this area.");
 		boxLine();
@@ -80,13 +78,13 @@ void staffAddHotel() {
 	}
 
 	hotelBranches.push_back(hotel);
-	cout << endl;
-	boxTitle("Hotel added");
+	showPage("Hotel added");
 	boxField("Hotel   : ", hotel.name);
 	boxField("Area    : ", hotel.area + ", " + hotel.state);
 	boxField("Address : ", hotel.address);
 	boxLine();
 	cout << " Customers can pick this hotel when they book." << endl;
+	pauseEnter();
 }
 
 void staffEditHotel() {
@@ -123,6 +121,7 @@ void staffEditHotel() {
 				currentHotelName = name;
 			}
 			cout << " Name updated." << endl;
+			pauseEnter();
 		}
 	}
 	else if (choice == 2) {
@@ -133,6 +132,7 @@ void staffEditHotel() {
 				currentHotelAddress = address;
 			}
 			cout << " Address updated." << endl;
+			pauseEnter();
 		}
 	}
 	else if (choice == 3) {
@@ -151,6 +151,7 @@ void staffEditHotel() {
 			currentHotelArea = newArea;
 		}
 		cout << " Location updated." << endl;
+		pauseEnter();
 	}
 }
 
@@ -171,6 +172,7 @@ void staffDeleteHotel() {
 	showStaffHotel(idx);
 	if (!confirmYesNo(" Delete this hotel from the list? y/n: ")) {
 		cout << " Hotel kept." << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -180,4 +182,5 @@ void staffDeleteHotel() {
 		clearCurrentHotel();
 	}
 	cout << " Hotel deleted. Old bookings still keep this hotel name in history." << endl;
+	pauseEnter();
 }

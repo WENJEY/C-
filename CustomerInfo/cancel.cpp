@@ -23,6 +23,7 @@ bool confirmAndCancelReservation(int resIndex) {
 	showCancelSummary(resIndex);
 	if (!confirmYesNo(" Cancel this reservation? y/n: ")) {
 		cout << " Reservation kept." << endl;
+		pauseEnter();
 		return false;
 	}
 	cancelOneReservation(resIndex);
@@ -32,8 +33,7 @@ bool confirmAndCancelReservation(int resIndex) {
 int pickBookingToCancel() {
 	vector<int> choices;
 
-	cout << endl;
-	boxTitle("Cancel Reservations");
+	showPage("Cancel Reservations");
 	boxRow("Choose a booking to cancel");
 	boxRow("Cancelled bookings stay in history");
 	boxRow("Enter 0 to go back");
@@ -62,6 +62,7 @@ int pickBookingToCancel() {
 	if (choices.empty()) {
 		boxRow("No active booking to cancel.");
 		boxLine();
+		pauseEnter();
 		return -1;
 	}
 
@@ -84,8 +85,7 @@ void showCancelSummary(int resIndex) {
 		daysLeft = daysFromToday(d, m, y);
 	}
 
-	cout << endl;
-	boxTitle("Cancel #" + b.reservationID);
+	showPage("Cancel #" + b.reservationID);
 	boxRow("Guest        : " + currentCustomerName());
 	if (!b.hotelName.empty()) {
 		boxField("Hotel        : ", b.hotelName);
@@ -155,8 +155,7 @@ void printCancelSlip(int resIndex, double refund, const string& policyText) {
 	int min = 0;
 	malaysiaNow(y, m, d, h, min);
 
-	cout << endl;
-	boxTitle("Cancellation Slip");
+	showPage("Cancellation Slip");
 	if (!b.hotelName.empty()) {
 		boxRow(b.hotelName);
 		boxRow(b.hotelAddress);

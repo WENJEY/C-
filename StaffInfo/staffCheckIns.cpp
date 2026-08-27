@@ -9,8 +9,7 @@ void staffTodayCheckIns() {
     malaysiaNow(y, m, d, h, min);
     string today = makeDate(d, m, y);
 
-    cout << endl;
-    boxTitle("Today's check-ins");
+    showPage("Today's check-ins");
     boxField("Today : ", weekdayName(d, m, y) + " " + today);
     boxLine();
 

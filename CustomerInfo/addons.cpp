@@ -13,8 +13,7 @@ void afterBookingMenu() {
 			return;
 		}
 
-		cout << endl;
-		boxTitle("Add On Menu");
+		showPage("Add On Menu");
 		boxRow("Your room is booked. Add extras, then pay.");
 		boxRow("Typed something wrong? Use 7 to change or 8 to cancel.");
 		boxLine();
@@ -84,6 +83,9 @@ void afterBookingMenu() {
 					return;
 				}
 			}
+			else {
+				pauseEnter();
+			}
 			break;
 		case 3:
 			createOneBooking();
@@ -110,6 +112,7 @@ void afterBookingMenu() {
 				confirmAndCancelReservation(idx);
 				if (currentSessionIDs.empty()) {
 					cout << " Returning to Menu Page." << endl;
+					pauseEnter();
 					return;
 				}
 			}
@@ -134,15 +137,15 @@ int pickSessionBooking() {
 	}
 
 	if (choices.empty()) {
-		cout << " No booking in this session." << endl;
+		cout << red << " No booking in this session." << original << endl;
+		pauseEnter();
 		return -1;
 	}
 	if (choices.size() == 1) {
 		return choices[0];
 	}
 
-	cout << endl;
-	boxTitle("Which booking?");
+	showPage("Which booking?");
 	boxRow("Enter 0 to go back");
 	boxLine();
 	for (size_t i = 0; i < choices.size(); i++) {
@@ -164,7 +167,8 @@ int pickSessionBooking() {
 
 void offerAddOns() {
 	if (currentSessionIDs.empty()) {
-		cout << " No booking in this session." << endl;
+		cout << red << " No booking in this session." << original << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -183,6 +187,7 @@ void offerAddOns() {
 		cout << " Choose: ";
 		int pick = getIntInRange(0, static_cast<int>(currentSessionIDs.size()));
 		if (pick == 0) {
+			pauseEnter();
 			return;
 		}
 		targetIndex = findReservationIndex(currentSessionIDs[pick - 1]);
@@ -197,8 +202,7 @@ void addOnsForReservation(int resIndex) {
 	int choice;
 
 	do {
-		cout << endl;
-		boxTitle("Hotel Add-ons");
+		showPage("Hotel Add-ons");
 		{
 			ostringstream line;
 			line << "Room " << reservations[resIndex].roomNumber
@@ -262,17 +266,18 @@ void addOnsForReservation(int resIndex) {
 
 		cout << " Added " << item.name << " x" << qty
 			 << "  RM " << fixed << setprecision(2) << line << "." << endl;
+		pauseEnter();
 	} while (true);
 }
 
 int pickExistingAddOn(int resIndex) {
 	if (reservations[resIndex].addOns.empty()) {
-		cout << " No add-on on this booking yet." << endl;
+		cout << red << " No add-on on this booking yet." << original << endl;
+		pauseEnter();
 		return -1;
 	}
 
-	cout << endl;
-	boxTitle("Current add-ons");
+	showPage("Current add-ons");
 	boxRow("Enter 0 to go back");
 	boxLine();
 	for (size_t i = 0; i < reservations[resIndex].addOns.size(); i++) {
@@ -304,6 +309,7 @@ void changeAddOnQuantity(int resIndex) {
 	int qty = getIntInRange(0, 20);
 	if (qty == 0) {
 		cout << " Quantity not changed." << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -332,8 +338,7 @@ void manageAddOnsForReservation(int resIndex) {
 	int choice;
 
 	do {
-		cout << endl;
-		boxTitle("Hotel Add-ons");
+		showPage("Hotel Add-ons");
 		{
 			ostringstream line;
 			line << "Room " << reservations[resIndex].roomNumber
@@ -394,7 +399,8 @@ void manageAddOnsForReservation(int resIndex) {
 
 void specialRequestMenu() {
 	if (currentSessionIDs.empty()) {
-		cout << " No booking in this session." << endl;
+		cout << red << " No booking in this session." << original << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -412,6 +418,7 @@ void specialRequestMenu() {
 		cout << " Choose: ";
 		int pick = getIntInRange(0, static_cast<int>(currentSessionIDs.size()));
 		if (pick == 0) {
+			pauseEnter();
 			return;
 		}
 		resIndex = findReservationIndex(currentSessionIDs[pick - 1]);
@@ -421,8 +428,7 @@ void specialRequestMenu() {
 		return;
 	}
 
-	cout << endl;
-	boxTitle("Special Requests");
+	showPage("Special Requests");
 	boxRow("1. High floor");
 	boxRow("2. Quiet room / away from lift");
 	boxRow("3. Extra pillows");
@@ -459,6 +465,7 @@ void specialRequestMenu() {
 	case 6:
 		cout << " Type your request: ";
 		getline(cin, extra);
+		cout << endl;
 		break;
 	case 0:
 		return;
@@ -466,6 +473,7 @@ void specialRequestMenu() {
 
 	if (extra.empty()) {
 		cout << " No request added." << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -478,4 +486,5 @@ void specialRequestMenu() {
 
 	reservations[resIndex].specialRequest = request;
 	cout << " Noted! We will try our best: " << request << endl;
+	pauseEnter();
 }

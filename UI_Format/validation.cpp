@@ -5,8 +5,9 @@ int getValidatedInput(int min, int max) {
 
 	while (true) {
 		getline(cin, inputStr);
+		cout << endl;
 		if (inputStr.empty()) {
-			cout << " Please enter a number between " << min << "-" << max << " or 0 to cancel: ";
+			cout << red << " Please enter a number between " << min << "-" << max << " or 0 to cancel: " << original;
 			continue;
 		}
 
@@ -18,13 +19,13 @@ int getValidatedInput(int min, int max) {
 			}
 		}
 		if (!isNumeric) {
-			cout << " Invalid input! Please enter a number between " << min << "-" << max << " or 0 to cancel: ";
+			cout << red << " Invalid input! Please enter a number between " << min << "-" << max << " or 0 to cancel: " << original;
 			continue;
 		}
 
 		int input = stoi(inputStr);
 		if (input != 0 && (input < min || input > max)) {
-			cout << " Number out of range! Please enter a number between " << min << "-" << max << " or 0 to cancel: ";
+			cout << red << " Number out of range! Please enter a number between " << min << "-" << max << " or 0 to cancel: " << original;
 			continue;
 		}
 		return input;
@@ -167,6 +168,7 @@ string getSecurePassword(bool showPrompt) {
 		cout << " Enter password (min 6 characters): ";
 	}
 	getline(cin, password);
+	cout << endl;
 	if (!password.empty() && password != "0") {
 		cout << "\n Password entered: " << string(password.length(), '*') << endl;
 	}
@@ -174,19 +176,19 @@ string getSecurePassword(bool showPrompt) {
 }
 
 void pauseEnter() {
-	cout << "\n Press Enter to continue...";
+	cout << blue << "\n Press Enter to continue..." << original;
 	string dummy;
 	getline(cin, dummy);
 }
 
 void loadingPause() {
 	cout << endl;
-	cout << " Loading next page";
+	cout << yellow << " Loading next page";
 	for (int i = 0; i < 8; i++) {
 		cout << "." << flush;
 		Sleep(300);
 	}
-	cout << endl;
+	cout << original << endl;
 }
 
 string padNumber(int value, int width) {
@@ -202,8 +204,9 @@ int getIntInRange(int minVal, int maxVal) {
 
 	while (true) {
 		getline(cin, inputStr);
+		cout << endl;
 		if (inputStr.empty()) {
-			cout << " Please enter a number between " << minVal << "-" << maxVal << ": ";
+			cout << red << " Please enter a number between " << minVal << "-" << maxVal << ": " << original;
 			continue;
 		}
 
@@ -215,13 +218,13 @@ int getIntInRange(int minVal, int maxVal) {
 			}
 		}
 		if (!isNumeric) {
-			cout << " Invalid input! Please enter a number between " << minVal << "-" << maxVal << ": ";
+			cout << red << " Invalid input! Please enter a number between " << minVal << "-" << maxVal << ": " << original;
 			continue;
 		}
 
 		int input = stoi(inputStr);
 		if (input < minVal || input > maxVal) {
-			cout << " Number out of range! Please enter a number between " << minVal << "-" << maxVal << ": ";
+			cout << red << " Number out of range! Please enter a number between " << minVal << "-" << maxVal << ": " << original;
 			continue;
 		}
 		return input;
@@ -233,8 +236,9 @@ bool confirmYesNo(const string& prompt) {
 		cout << prompt;
 		string answer;
 		getline(cin, answer);
+		cout << endl;
 		if (answer.empty()) {
-			cout << " Please enter y or n." << endl;
+			cout << red << " Please enter y or n." << original << endl;
 			continue;
 		}
 		size_t start = 0;
@@ -242,7 +246,7 @@ bool confirmYesNo(const string& prompt) {
 			start++;
 		}
 		if (start >= answer.length()) {
-			cout << " Please enter y or n." << endl;
+			cout << red << " Please enter y or n." << original << endl;
 			continue;
 		}
 		char c = static_cast<char>(tolower(static_cast<unsigned char>(answer[start])));
@@ -252,7 +256,7 @@ bool confirmYesNo(const string& prompt) {
 		if (c == 'n') {
 			return false;
 		}
-		cout << " Please enter y or n." << endl;
+		cout << red << " Please enter y or n." << original << endl;
 	}
 }
 

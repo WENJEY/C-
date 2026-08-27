@@ -42,6 +42,8 @@ string weekdayName(int day, int month, int year) {
 }
 
 bool askCheckInDate(int& day, int& month, int& year) {
+	string error;
+
 	while (true) {
 		int nowY = 0;
 		int nowM = 0;
@@ -50,14 +52,17 @@ bool askCheckInDate(int& day, int& month, int& year) {
 		int nowMin = 0;
 		malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
 
-		cout << endl;
-		boxTitle("Check-in Date");
+		showPage("Check-in Date");
 		boxRow("Today Malaysia time: " + makeDate(nowD, nowM, nowY) + "  " + makeClockTime(nowH, nowMin));
 		boxRow("Today is " + weekdayName(nowD, nowM, nowY));
 		boxRow("Enter day, then month, then year");
 		boxRow("You can check in any time on that date");
 		boxRow("Enter 0 at any step to cancel");
 		boxLine();
+
+		if (!error.empty()) {
+			cout << red << error << original << endl << endl;
+		}
 
 		cout << " Day   (1-31)      : ";
 		int d = getIntInRange(0, 31);
@@ -78,11 +83,11 @@ bool askCheckInDate(int& day, int& month, int& year) {
 		}
 
 		if (!isValidDate(d, m, y)) {
-			cout << " That date does not exist. Please enter again." << endl;
+			error = " That date does not exist. Please enter again.";
 			continue;
 		}
 		if (dateCompare(d, m, y, nowD, nowM, nowY) < 0) {
-			cout << " Check-in date cannot be before today." << endl;
+			error = " Check-in date cannot be before today.";
 			continue;
 		}
 

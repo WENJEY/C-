@@ -1,8 +1,7 @@
 #include "../staff_internal.h"
 
 void staffViewAllBookings() {
-    cout << endl;
-    boxTitle("All bookings");
+    showPage("All bookings");
     if (reservations.empty()) {
         boxRow("No booking in this run yet.");
         boxLine();

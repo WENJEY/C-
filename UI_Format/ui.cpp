@@ -1,4 +1,101 @@
 #include "../hotel.h"
+#include <streambuf>
+
+int screenWidth();
+int screenHeight();
+int pageIndent();
+
+class CenterStreamBuf : public streambuf {
+public:
+	streambuf* dest;
+	bool atStart;
+	bool skipPad;
+
+	CenterStreamBuf() : dest(nullptr), atStart(true), skipPad(false) {}
+
+	int overflow(int ch) override {
+		if (ch == traits_type::eof()) {
+			return sync();
+		}
+		if (dest == nullptr) {
+			return traits_type::eof();
+		}
+		if (atStart && !skipPad && ch != '\n' && ch != '\r') {
+			int pad = pageIndent();
+			for (int i = 0; i < pad; i++) {
+				if (dest->sputc(' ') == traits_type::eof()) {
+					return traits_type::eof();
+				}
+			}
+			atStart = false;
+		}
+		if (dest->sputc(static_cast<char>(ch)) == traits_type::eof()) {
+			return traits_type::eof();
+		}
+		if (ch == '\n') {
+			atStart = true;
+		}
+		return ch;
+	}
+
+	int sync() override {
+		if (dest == nullptr) {
+			return 0;
+		}
+		return dest->pubsync();
+	}
+
+	streamsize xsputn(const char* s, streamsize n) override {
+		streamsize written = 0;
+		for (streamsize i = 0; i < n; i++) {
+			if (overflow(static_cast<unsigned char>(s[i])) == traits_type::eof()) {
+				break;
+			}
+			written++;
+		}
+		return written;
+	}
+};
+
+CenterStreamBuf centerBuf;
+
+int screenWidth() {
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
+		int cols = info.srWindow.Right - info.srWindow.Left + 1;
+		if (cols > 40) {
+			return cols;
+		}
+	}
+	return 120;
+}
+
+int screenHeight() {
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
+		int rows = info.srWindow.Bottom - info.srWindow.Top + 1;
+		if (rows > 10) {
+			return rows;
+		}
+	}
+	return 30;
+}
+
+int pageIndent() {
+	int pad = (screenWidth() - (BOX_W + 4)) / 2;
+	if (pad < 0) {
+		return 0;
+	}
+	return pad;
+}
+
+void enableCenteredOutput() {
+	if (centerBuf.dest != nullptr) {
+		return;
+	}
+	centerBuf.dest = cout.rdbuf();
+	cout.rdbuf(&centerBuf);
+}
 
 void enableColors() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -6,6 +103,36 @@ void enableColors() {
 	if (GetConsoleMode(hConsole, &mode)) {
 		SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 	}
+	enableCenteredOutput();
+}
+
+void clearScreen() {
+	system("cls");
+	centerBuf.atStart = true;
+}
+
+void showBanner() {
+	cout << cyan;
+	boxLineEq();
+	boxCenter("GRAND HORIZON HOTEL");
+	boxLineEq();
+	cout << original;
+	if (!currentLoggedInCustomer.empty()) {
+		boxRow("Hi, " + currentCustomerName()
+			+ "  |  " + membershipOfCurrentUser());
+		if (!currentHotelName.empty()) {
+			boxField("Hotel : ", currentHotelName);
+		}
+		boxLine();
+	}
+}
+
+void showPage(const string& title) {
+	clearScreen();
+	logo();
+
+	showBanner();
+	boxTitle(title);
 }
 
 void logo() {
@@ -27,6 +154,8 @@ void logo() {
 	stringstream ss(logoArt), s(systemArt);
 	string line;
 
+	centerBuf.skipPad = true;
+	centerBuf.atStart = true;
 	cout << string(22, '=') << setw(window_width) << setfill('=') << "=" << string(22, '=') << endl;
 	cout << red;
 	while (getline(ss, line)) {
@@ -37,6 +166,9 @@ void logo() {
 		cout << string(25, ' ') << setw(10) << setfill(' ') << " " << line << '\n';
 	}
 	cout << string(22, '=') << setw(window_width) << setfill('=') << "=" << string(22, '=') << endl;
+	cout << setfill(' ') << left;
+	centerBuf.skipPad = false;
+	centerBuf.atStart = true;
 }
 
 void boxLine() {
@@ -174,13 +306,12 @@ void boxSplitRow(const string& leftText, const string& rightText) {
 }
 
 void displayUserTypeMenu() {
-	cout << setfill(' ') << endl;
-	cout << " Welcome to Grand Horizon Hotel" << endl;
-	cout << " " << setw(30) << setfill('=') << '=' << endl;
-	cout << "\n +---------------- Hotel Reservation System ----------------+" << endl;
-	cout << " | 1. Customer                                              |" << endl;
-	cout << " | 2. Staff                                                 |" << endl;
-	cout << " | 3. Exit System                                           |" << endl;
-	cout << " +----------------------------------------------------------+" << endl;
-	cout << " Please select user type (1-3): ";
+	boxTitle("Welcome");
+	boxRow("Please choose how to continue");
+	boxLine();
+	boxRow(optionText(1) + "Customer");
+	boxRow(optionText(2) + "Staff");
+	boxRow(optionText(0) + "Exit System");
+	boxLine();
+	cout << " Please select 0-2: ";
 }

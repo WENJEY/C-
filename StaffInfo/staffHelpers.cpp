@@ -17,12 +17,14 @@ bool askLine(const string& prompt, string& out) {
 	while (true) {
 		cout << prompt;
 		getline(cin, out);
+		cout << endl;
 		if (out == "0") {
 			cout << " Cancelled." << endl;
+			pauseEnter();
 			return false;
 		}
 		if (out.empty()) {
-			cout << " Cannot be empty." << endl;
+			cout << red << " Cannot be empty." << original << endl;
 			continue;
 		}
 		return true;
@@ -34,8 +36,10 @@ bool askMoney(const string& prompt, double& amount) {
 		cout << prompt;
 		string text;
 		getline(cin, text);
+		cout << endl;
 		if (text == "0") {
 			cout << " Cancelled." << endl;
+			pauseEnter();
 			return false;
 		}
 
@@ -53,13 +57,13 @@ bool askMoney(const string& prompt, double& amount) {
 			}
 		}
 		if (!ok || dots > 1) {
-			cout << " Enter a number such as 150 or 150.50." << endl;
+			cout << red << " Enter a number such as 150 or 150.50." << original << endl;
 			continue;
 		}
 
 		amount = roundMoney(stod(text));
 		if (amount <= 0) {
-			cout << " Price must be more than 0." << endl;
+			cout << red << " Price must be more than 0." << original << endl;
 			continue;
 		}
 		return true;
@@ -68,8 +72,7 @@ bool askMoney(const string& prompt, double& amount) {
 
 string pickStateForStaff(bool allowNew) {
 	vector<string> states = destinationStates();
-	cout << endl;
-	boxTitle("Which state?");
+	showPage("Which state?");
 	for (size_t i = 0; i < states.size(); i++) {
 		boxRow(optionText(static_cast<int>(i + 1)) + states[i]);
 	}
@@ -82,7 +85,8 @@ string pickStateForStaff(bool allowNew) {
 	boxLine();
 	int maxChoice = static_cast<int>(states.size()) + extra;
 	if (states.empty() && !allowNew) {
-		cout << " No hotel yet. Add a hotel first." << endl;
+		cout << red << " No hotel yet. Add a hotel first." << original << endl;
+		pauseEnter();
 		return "";
 	}
 	if (maxChoice == 0) {
@@ -95,6 +99,8 @@ string pickStateForStaff(bool allowNew) {
 	cout << " Please choose 0-" << maxChoice << ": ";
 	int choice = getIntInRange(0, maxChoice);
 	if (choice == 0) {
+		cout << " Cancelled." << endl;
+		pauseEnter();
 		return "";
 	}
 	if (allowNew && choice == static_cast<int>(states.size()) + 1) {
@@ -109,8 +115,7 @@ string pickStateForStaff(bool allowNew) {
 
 string pickAreaForStaff(const string& state, bool allowNew) {
 	vector<string> areas = areasOf(state);
-	cout << endl;
-	boxTitle("Which area in " + state + "?");
+	showPage("Which area in " + state + "?");
 	for (size_t i = 0; i < areas.size(); i++) {
 		boxRow(optionText(static_cast<int>(i + 1)) + areas[i]);
 	}
@@ -123,7 +128,8 @@ string pickAreaForStaff(const string& state, bool allowNew) {
 	boxLine();
 	int maxChoice = static_cast<int>(areas.size()) + extra;
 	if (areas.empty() && !allowNew) {
-		cout << " No area in this state yet." << endl;
+		cout << red << " No area in this state yet." << original << endl;
+		pauseEnter();
 		return "";
 	}
 	if (maxChoice == 0) {
@@ -136,6 +142,8 @@ string pickAreaForStaff(const string& state, bool allowNew) {
 	cout << " Please choose 0-" << maxChoice << ": ";
 	int choice = getIntInRange(0, maxChoice);
 	if (choice == 0) {
+		cout << " Cancelled." << endl;
+		pauseEnter();
 		return "";
 	}
 	if (allowNew && choice == static_cast<int>(areas.size()) + 1) {
@@ -151,11 +159,11 @@ string pickAreaForStaff(const string& state, bool allowNew) {
 int pickHotelIndexForStaff(const string& state, const string& area) {
 	vector<int> list = hotelsOf(state, area);
 	if (list.empty()) {
-		cout << " No hotel in this area." << endl;
+		cout << red << " No hotel in this area." << original << endl;
+		pauseEnter();
 		return -1;
 	}
-	cout << endl;
-	boxTitle("Choose a hotel");
+	showPage("Choose a hotel");
 	for (size_t i = 0; i < list.size(); i++) {
 		int idx = list[i];
 		boxRow(optionText(static_cast<int>(i + 1)) + hotelBranches[static_cast<size_t>(idx)].name);
@@ -169,14 +177,15 @@ int pickHotelIndexForStaff(const string& state, const string& area) {
 	cout << " Please choose 0-" << list.size() << ": ";
 	int pick = getIntInRange(0, static_cast<int>(list.size()));
 	if (pick == 0) {
+		cout << " Cancelled." << endl;
+		pauseEnter();
 		return -1;
 	}
 	return list[static_cast<size_t>(pick - 1)];
 }
 
 string pickRoomType() {
-	cout << endl;
-	boxTitle("Room type");
+	showPage("Room type");
 	boxRow(optionText(1) + "Single");
 	boxRow(optionText(2) + "Twin");
 	boxRow(optionText(3) + "Deluxe");
@@ -189,6 +198,8 @@ string pickRoomType() {
 	cout << " Please choose 0-7: ";
 	int choice = getIntInRange(0, 7);
 	if (choice == 0) {
+		cout << " Cancelled." << endl;
+		pauseEnter();
 		return "";
 	}
 	if (choice == 1) {
@@ -217,8 +228,7 @@ string pickRoomType() {
 }
 
 string pickRoomStatus() {
-	cout << endl;
-	boxTitle("Room status");
+	showPage("Room status");
 	boxRow(optionText(1) + "Available");
 	boxRow(optionText(2) + "Occupied");
 	boxRow(optionText(3) + "Cleaning");
@@ -228,6 +238,8 @@ string pickRoomStatus() {
 	cout << " Please choose 0-4: ";
 	int choice = getIntInRange(0, 4);
 	if (choice == 0) {
+		cout << " Cancelled." << endl;
+		pauseEnter();
 		return "";
 	}
 	if (choice == 1) {
@@ -243,8 +255,7 @@ string pickRoomStatus() {
 }
 
 void showStaffHotel(int idx) {
-	cout << endl;
-	boxTitle("Hotel");
+	showPage("Hotel");
 	boxField("Hotel   : ", hotelBranches[static_cast<size_t>(idx)].name);
 	boxField("Area    : ", hotelBranches[static_cast<size_t>(idx)].area
 		+ ", " + hotelBranches[static_cast<size_t>(idx)].state);

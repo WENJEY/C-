@@ -1,13 +1,18 @@
 #include "../staff_internal.h"
 
 void staffSearchCustomer() {
+    showPage("Customer search");
+    boxRow("Enter a username to look up");
+    boxLine();
+
     string username;
     if (!askLine(" Username to search (or 0 to cancel): ", username)) {
         return;
     }
     int idx = findCustomerIndex(username);
     if (idx == -1) {
-        cout << " Customer not found." << endl;
+        cout << red << " Customer not found." << original << endl;
+        pauseEnter();
         return;
     }
 
@@ -24,8 +29,7 @@ void staffSearchCustomer() {
             }
     }
 
-    cout << endl;
-    boxTitle("Customer search");
+    showPage("Customer search");
     boxField("Username    : ", c.username);
     boxField("Full name   : ", c.fullName);
     boxField("Age         : ", c.age);

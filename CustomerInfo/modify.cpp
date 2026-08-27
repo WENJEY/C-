@@ -26,8 +26,7 @@ void modifyReservations() {
 int pickBookingToModify() {
 	vector<int> choices;
 
-	cout << endl;
-	boxTitle("Modify Reservations");
+	showPage("Modify Reservations");
 	boxRow("Choose a booking to change");
 	boxRow("Cancelled bookings cannot be modified");
 	boxRow("Enter 0 to go back");
@@ -56,6 +55,7 @@ int pickBookingToModify() {
 	if (choices.empty()) {
 		boxRow("No active booking to modify.");
 		boxLine();
+		pauseEnter();
 		return -1;
 	}
 
@@ -70,8 +70,7 @@ int pickBookingToModify() {
 
 void showModifySummary(int resIndex) {
 	const BookingRecord& b = reservations[resIndex];
-	cout << endl;
-	boxTitle("Modify #" + b.reservationID);
+	showPage("Modify #" + b.reservationID);
 	if (!b.hotelName.empty()) {
 		boxField("Hotel        : ", b.hotelName);
 		boxField("Address      : ", b.hotelAddress);
@@ -206,6 +205,7 @@ void saveStayChanges() {
 void remindPaidChange(int resIndex) {
 	if (reservations[resIndex].paymentStatus != "Paid") {
 		cout << " Unpaid booking updated. Pay from Menu Page option 2." << endl;
+		pauseEnter();
 		return;
 	}
 	cout << fixed << setprecision(2);
@@ -219,6 +219,7 @@ void remindPaidChange(int resIndex) {
 		 << endl;
 	cout << " If the new stay costs more, pay the difference at the hotel counter." << endl;
 	cout << " If it costs less, a refund will be arranged at check-in." << endl;
+	pauseEnter();
 }
 
 void changeCheckInDate(int resIndex) {
@@ -227,6 +228,7 @@ void changeCheckInDate(int resIndex) {
 	int y = 0;
 	if (!askCheckInDate(d, m, y)) {
 		cout << " Check-in date not changed." << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -247,6 +249,7 @@ void changeNights(int resIndex) {
 	int nights = getIntInRange(0, 30);
 	if (nights == 0) {
 		cout << " Nights not changed." << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -272,17 +275,20 @@ void changeGuests(int resIndex) {
 	int guests = getIntInRange(0, 6);
 	if (guests == 0) {
 		cout << " Guest count not changed." << endl;
+		pauseEnter();
 		return;
 	}
 	if (guests > capacity) {
 		cout << " This room only fits " << capacity
 			 << " guest(s). Change room first, then guest count." << endl;
+		pauseEnter();
 		return;
 	}
 
 	reservations[resIndex].guests = guests;
 	saveStayChanges();
 	cout << " Guest count updated to " << guests << "." << endl;
+	pauseEnter();
 }
 
 void changeRoom(int resIndex) {
@@ -290,7 +296,8 @@ void changeRoom(int resIndex) {
 	string oldRoom = reservations[resIndex].roomNumber;
 	int shown = displayRoomsForModify(guests, oldRoom);
 	if (shown == 0) {
-		cout << " No other room fits this guest count." << endl;
+		cout << red << " No other room fits this guest count." << original << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -299,32 +306,35 @@ void changeRoom(int resIndex) {
 	while (true) {
 		cout << "\n Enter new room number or 0 to cancel: ";
 		getline(cin, roomNumber);
+		cout << endl;
 		if (roomNumber == "0") {
 			cout << " Room not changed." << endl;
+			pauseEnter();
 			return;
 		}
 
 		roomIndex = findRoomIndex(roomNumber);
 		if (roomIndex == -1) {
-			cout << " Room not found! Please try again." << endl;
+			cout << red << " Room not found! Please try again." << original << endl;
 			continue;
 		}
 		if (roomList[roomIndex].roomNumber != oldRoom
 			&& roomList[roomIndex].status != "Available") {
-			cout << " That room is not available. Status: "
-				 << roomList[roomIndex].status << endl;
+			cout << red << " That room is not available. Status: "
+				 << roomList[roomIndex].status << original << endl;
 			continue;
 		}
 		if (roomList[roomIndex].capacity < guests) {
-			cout << " That room only fits " << roomList[roomIndex].capacity
-				 << " guest(s)." << endl;
+			cout << red << " That room only fits " << roomList[roomIndex].capacity
+				 << " guest(s)." << original << endl;
 			continue;
 		}
 		break;
 	}
 
 	if (roomList[roomIndex].roomNumber == oldRoom) {
-		cout << " You are already in Room " << oldRoom << "." << endl;
+		cout << red << " You are already in Room " << oldRoom << "." << original << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -338,6 +348,7 @@ void changeRoom(int resIndex) {
 
 	if (!confirmYesNo(" Confirm room change? y/n: ")) {
 		cout << " Room not changed." << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -353,8 +364,7 @@ void changeRoom(int resIndex) {
 }
 
 void changeSpecialRequest(int resIndex) {
-	cout << endl;
-	boxTitle("Special Requests");
+	showPage("Special Requests");
 	if (reservations[resIndex].specialRequest != "-"
 		&& !reservations[resIndex].specialRequest.empty()) {
 		boxRow("Current: " + reservations[resIndex].specialRequest);
@@ -378,6 +388,7 @@ void changeSpecialRequest(int resIndex) {
 		reservations[resIndex].specialRequest = "-";
 		saveStayChanges();
 		cout << " Special request cleared." << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -401,11 +412,13 @@ void changeSpecialRequest(int resIndex) {
 	case 6:
 		cout << " Type your request: ";
 		getline(cin, extra);
+		cout << endl;
 		break;
 	}
 
 	if (extra.empty()) {
 		cout << " No request added." << endl;
+		pauseEnter();
 		return;
 	}
 
@@ -419,4 +432,5 @@ void changeSpecialRequest(int resIndex) {
 	reservations[resIndex].specialRequest = request;
 	saveStayChanges();
 	cout << " Noted! We will try our best: " << request << endl;
+	pauseEnter();
 }

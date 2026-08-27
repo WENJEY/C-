@@ -1,7 +1,10 @@
 #include "../hotel.h"
 
 void viewMyReservations() {
+	clearScreen();
+	logo();
 	cout << endl;
+	showBanner();
 	boxLine();
 	boxCenter("YOUR BOOKING HISTORY");
 	boxSplitLine();
@@ -81,6 +84,8 @@ void viewMyReservations() {
 		if (confirmYesNo(" Go to Add On Menu to pay now? y/n: ")) {
 			loadUnpaidIntoSession();
 			afterBookingMenu();
+			return;
 		}
 	}
+	pauseEnter();
 }
