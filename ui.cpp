@@ -1,11 +1,15 @@
 #include "hotel.h"
 
 void enableColors() {
+#ifdef _WIN32
+	// Windows consoles need this flag before ANSI colors work.
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD mode;
 	if (GetConsoleMode(hConsole, &mode)) {
 		SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 	}
+#endif
+	// macOS / Linux terminals already support ANSI colors.
 }
 
 void logo() {

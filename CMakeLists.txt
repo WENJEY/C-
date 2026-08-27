@@ -3,6 +3,8 @@ project(C___Assignment)
 
 set(CMAKE_CXX_STANDARD 20)
 
+# IMPORTANT: every .cpp must be listed here. Linking only main.cpp causes
+# "Undefined symbols" for logo/enableColors/staffLogin/... on macOS and Windows.
 add_executable(C___Assignment
         main.cpp
         hotel.h
