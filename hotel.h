@@ -22,8 +22,8 @@ using namespace std;
 #define COL_L 22
 #define COL_R 41
 
-const string STAFF_ID = "bruh";
-const string STAFF_PASSWORD = "1234567890";
+const char* const STAFF_ID = "1";
+const char* const STAFF_PASSWORD = "1";
 
 const double SST_RATE = 0.08;
 const double SERVICE_CHARGE_RATE = 0.10;

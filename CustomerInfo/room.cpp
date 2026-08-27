@@ -18,8 +18,8 @@ void printRoomDataRow(const string& number, const string& type, int capacity,
 	cout << " |"
 		 << left << setfill(' ')
 		 << setw(12) << (" " + number)
-		 << setw(13) << type
-		 << setw(10) << capacity
+		 << setw(15) << type
+		 << setw(10) << setw(2) << " " << capacity << setw(5) << " "
 		 << setw(14) << priceText.str()
 		 << setw(15) << status
 		 << "|" << endl;

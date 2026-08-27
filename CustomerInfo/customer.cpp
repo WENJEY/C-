@@ -6,8 +6,8 @@ void customerAuthMenu() {
 	do {
 		cout << endl;
 		boxTitle("Customer Access");
-		boxRow("1. Register New Account");
-		boxRow("2. Login to Existing Account");
+		boxRow("1. Login to Existing Account");
+		boxRow("2. Register New Account");
 		boxRow("0. Back to Main Menu");
 		boxLine();
 		cout << " Please choose 0-2: ";
@@ -15,13 +15,14 @@ void customerAuthMenu() {
 
 		switch (choice) {
 		case 1:
-			customerRegister();
-			break;
-		case 2:
 			if (customerLogin()) {
 				restoreHotelFromUnpaid();
 				customerMenu();
 			}
+			break;
+
+		case 2:
+			customerRegister();
 			break;
 		case 0:
 			return;
@@ -205,6 +206,7 @@ bool customerLogin() {
 	string password;
 	int attempts = 0;
 	const int MAX_ATTEMPTS = 3;
+	customers[0]= {"1","1","1","1","1","1"};
 
 	while (attempts < MAX_ATTEMPTS) {
 		cout << "\n ===== Customer Login =====" << endl;

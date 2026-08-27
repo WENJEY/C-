@@ -5,11 +5,11 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(C___Assignment main.cpp
         hotel.h
-        "UI & Format/data.cpp"
-        "UI & Format/ui.cpp"
-        "UI & Format/datetime.cpp"
-        "UI & Format/validation.cpp"
-        "UI & Format/storage.cpp"
+        UI_Format/data.cpp
+        UI_Format/ui.cpp
+        UI_Format/datetime.cpp
+        UI_Format/validation.cpp
+        UI_Format/storage.cpp
         CustomerInfo/customer.cpp
         StaffInfo/staff.cpp
         CustomerInfo/room.cpp
@@ -20,7 +20,7 @@ add_executable(C___Assignment main.cpp
         CustomerInfo/payment.cpp
         CustomerInfo/modify.cpp
         CustomerInfo/cancel.cpp
-        "UI & Format/location.cpp"
+        UI_Format/location.cpp
         StaffInfo/staffRooms.cpp
         StaffInfo/staffLocations.cpp
         StaffInfo/staffReports.cpp

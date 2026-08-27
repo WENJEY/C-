@@ -35,7 +35,7 @@ void applyPromoCode() {
 	}
 	else if (code == "XinHong") {
 		if (totalNights < 3) {
-			cout << " HORIZON15 needs at least 3 nights in this stay." << endl;
+			cout << " XinHong needs at least 3 nights in this stay." << endl;
 			return;
 		}
 		sessionPromoPercent = 0.15;
@@ -48,7 +48,7 @@ void applyPromoCode() {
 	}
 	else if (code == "Kaw Kaw Deal") {
 		if (roomCharge < 400.00) {
-			cout << " GOLDEN50 needs a subtotal of RM 400.00 or more." << endl;
+			cout << " Kaw Kaw Deal needs a subtotal of RM 400.00 or more." << endl;
 			return;
 		}
 		sessionPromoFlat = 50.00;
