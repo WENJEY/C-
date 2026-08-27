@@ -1,4 +1,4 @@
-#include "hotel.h"
+#include "../hotel.h"
 
 vector<string> areasOf(const string& state);
 vector<int> hotelsOf(const string& state, const string& area);

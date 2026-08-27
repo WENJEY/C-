@@ -1,4 +1,4 @@
-#include "hotel.h"
+#include "../hotel.h"
 
 void malaysiaNow(int& year, int& month, int& day, int& hour, int& minute) {
 	time_t now = time(0) + 8 * 3600;

@@ -1,4 +1,4 @@
-#include "hotel.h"
+#include "../hotel.h"
 
 vector<Customer> customers;
 string currentLoggedInCustomer = "";

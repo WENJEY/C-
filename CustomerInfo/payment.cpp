@@ -1,4 +1,4 @@
-#include "hotel.h"
+#include "../hotel.h"
 
 void applyPromoCode() {
 	cout << endl;
@@ -30,23 +30,23 @@ void applyPromoCode() {
 	sessionPromoFlat = 0;
 	sessionPromoCode = "";
 
-	if (code == "WELCOME10") {
+	if (code == "Terence") {
 		sessionPromoPercent = 0.10;
 	}
-	else if (code == "HORIZON15") {
+	else if (code == "XinHong") {
 		if (totalNights < 3) {
 			cout << " HORIZON15 needs at least 3 nights in this stay." << endl;
 			return;
 		}
 		sessionPromoPercent = 0.15;
 	}
-	else if (code == "WEEKEND20") {
+	else if (code == "Eason") {
 		sessionPromoPercent = 0.20;
 	}
-	else if (code == "STUDENT5") {
+	else if (code == "WenJet") {
 		sessionPromoFlat = 5.00;
 	}
-	else if (code == "GOLDEN50") {
+	else if (code == "Kaw Kaw Deal") {
 		if (roomCharge < 400.00) {
 			cout << " GOLDEN50 needs a subtotal of RM 400.00 or more." << endl;
 			return;

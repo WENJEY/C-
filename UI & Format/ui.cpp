@@ -1,4 +1,4 @@
-#include "hotel.h"
+#include "../hotel.h"
 
 void enableColors() {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

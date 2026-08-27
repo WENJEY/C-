@@ -1,4 +1,4 @@
-#include "hotel.h"
+#include "../hotel.h"
 
 void showProfileCard(const Customer& c);
 void editFullName(int idx);

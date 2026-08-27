@@ -1,4 +1,4 @@
-#include "hotel.h"
+#include "../hotel.h"
 
 void printRoomColumns() {
 	cout << " |"

@@ -1,4 +1,4 @@
-#include "hotel.h"
+#include "../hotel.h"
 
 int pickBookingToCancel();
 void showCancelSummary(int resIndex);
