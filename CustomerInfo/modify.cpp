@@ -101,6 +101,22 @@ void showModifySummary(int resIndex) {
 			 << roundMoney(b.pricePerNight * b.nights);
 		boxRow(line.str());
 	}
+	if (!b.addOns.empty()) {
+		for (size_t i = 0; i < b.addOns.size(); i++) {
+			ostringstream line;
+			line << fixed << setprecision(2)
+				 << "Add-on       : " << b.addOns[i].name
+				 << " x" << b.addOns[i].quantity
+				 << "  RM " << b.addOns[i].lineTotal;
+			boxRow(line.str());
+		}
+		{
+			ostringstream line;
+			line << fixed << setprecision(2) << "Add-on total : RM "
+				 << addOnTotal(b);
+			boxRow(line.str());
+		}
+	}
 	if (b.specialRequest != "-" && !b.specialRequest.empty()) {
 		boxRow("Request      : " + b.specialRequest);
 	}
@@ -131,10 +147,11 @@ void modifyBookingMenu(int resIndex) {
 			boxRow("3. Change number of guests");
 			boxRow("4. Change room");
 			boxRow("5. Change special request");
+			boxRow("6. Add / change hotel add-ons");
 			boxRow("0. Back");
 			boxLine();
-			cout << " Please choose 0-5: ";
-			choice = getIntInRange(0, 5);
+			cout << " Please choose 0-6: ";
+			choice = getIntInRange(0, 6);
 
 			switch (choice) {
 			case 1:
@@ -151,6 +168,9 @@ void modifyBookingMenu(int resIndex) {
 				break;
 			case 5:
 				changeSpecialRequest(resIndex);
+				break;
+			case 6:
+				manageAddOnsForReservation(resIndex);
 				break;
 			}
 		}
@@ -193,6 +213,9 @@ void remindPaidChange(int resIndex) {
 		 << reservations[resIndex].totalAmount << ")." << endl;
 	cout << " New room charge: RM "
 		 << roundMoney(reservations[resIndex].pricePerNight * reservations[resIndex].nights)
+		 << endl;
+	cout << " Add-ons: RM "
+		 << addOnTotal(reservations[resIndex])
 		 << endl;
 	cout << " If the new stay costs more, pay the difference at the hotel counter." << endl;
 	cout << " If it costs less, a refund will be arranged at check-in." << endl;

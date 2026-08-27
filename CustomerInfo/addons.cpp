@@ -1,6 +1,9 @@
 #include "../hotel.h"
 
 int pickSessionBooking();
+int pickExistingAddOn(int resIndex);
+void changeAddOnQuantity(int resIndex);
+void removeAddOnFromReservation(int resIndex);
 
 void afterBookingMenu() {
 	int choice;
@@ -260,6 +263,133 @@ void addOnsForReservation(int resIndex) {
 		cout << " Added " << item.name << " x" << qty
 			 << "  RM " << fixed << setprecision(2) << line << "." << endl;
 	} while (true);
+}
+
+int pickExistingAddOn(int resIndex) {
+	if (reservations[resIndex].addOns.empty()) {
+		cout << " No add-on on this booking yet." << endl;
+		return -1;
+	}
+
+	cout << endl;
+	boxTitle("Current add-ons");
+	boxRow("Enter 0 to go back");
+	boxLine();
+	for (size_t i = 0; i < reservations[resIndex].addOns.size(); i++) {
+		ostringstream line;
+		line << (i + 1) << ". " << reservations[resIndex].addOns[i].name
+			 << " x" << reservations[resIndex].addOns[i].quantity
+			 << "  RM " << fixed << setprecision(2)
+			 << reservations[resIndex].addOns[i].lineTotal;
+		boxRow(line.str());
+	}
+	boxLine();
+	cout << " Please choose 0-" << reservations[resIndex].addOns.size() << ": ";
+	int pick = getIntInRange(0, static_cast<int>(reservations[resIndex].addOns.size()));
+	if (pick == 0) {
+		return -1;
+	}
+	return pick - 1;
+}
+
+void changeAddOnQuantity(int resIndex) {
+	int index = pickExistingAddOn(resIndex);
+	if (index == -1) {
+		return;
+	}
+
+	SelectedAddOn& item = reservations[resIndex].addOns[index];
+	cout << " Current quantity for " << item.name << ": " << item.quantity << endl;
+	cout << " New quantity (1-20 or 0 to cancel): ";
+	int qty = getIntInRange(0, 20);
+	if (qty == 0) {
+		cout << " Quantity not changed." << endl;
+		return;
+	}
+
+	item.quantity = qty;
+	item.lineTotal = roundMoney(item.unitPrice * item.quantity);
+	saveStayChanges();
+	cout << " Updated " << item.name << " to x" << qty
+		 << "  RM " << fixed << setprecision(2) << item.lineTotal << "." << endl;
+	remindPaidChange(resIndex);
+}
+
+void removeAddOnFromReservation(int resIndex) {
+	int index = pickExistingAddOn(resIndex);
+	if (index == -1) {
+		return;
+	}
+
+	string name = reservations[resIndex].addOns[index].name;
+	reservations[resIndex].addOns.erase(reservations[resIndex].addOns.begin() + index);
+	saveStayChanges();
+	cout << " Removed " << name << "." << endl;
+	remindPaidChange(resIndex);
+}
+
+void manageAddOnsForReservation(int resIndex) {
+	int choice;
+
+	do {
+		cout << endl;
+		boxTitle("Hotel Add-ons");
+		{
+			ostringstream line;
+			line << "Room " << reservations[resIndex].roomNumber
+				 << "   Guests: " << reservations[resIndex].guests
+				 << "   Nights: " << reservations[resIndex].nights;
+			boxRow(line.str());
+		}
+		boxLine();
+		if (reservations[resIndex].addOns.empty()) {
+			boxRow("None yet");
+		}
+		else {
+			for (size_t i = 0; i < reservations[resIndex].addOns.size(); i++) {
+				ostringstream line;
+				line << reservations[resIndex].addOns[i].name
+					 << " x" << reservations[resIndex].addOns[i].quantity
+					 << "  RM " << fixed << setprecision(2)
+					 << reservations[resIndex].addOns[i].lineTotal;
+				boxRow(line.str());
+			}
+			{
+				ostringstream line;
+				line << fixed << setprecision(2) << "Add-on total : RM "
+					 << addOnTotal(reservations[resIndex]);
+				boxRow(line.str());
+			}
+		}
+		boxLine();
+		boxRow("1. Add an add-on");
+		boxRow("2. Change quantity");
+		boxRow("3. Remove an add-on");
+		boxRow("0. Back");
+		boxLine();
+		cout << " Please choose 0-3: ";
+		choice = getIntInRange(0, 3);
+
+		switch (choice) {
+		case 1: {
+			double beforeTotal = addOnTotal(reservations[resIndex]);
+			size_t beforeCount = reservations[resIndex].addOns.size();
+			addOnsForReservation(resIndex);
+			if (addOnTotal(reservations[resIndex]) != beforeTotal
+				|| reservations[resIndex].addOns.size() != beforeCount) {
+				saveStayChanges();
+				remindPaidChange(resIndex);
+			}
+			break;
+		}
+		case 2:
+			changeAddOnQuantity(resIndex);
+			break;
+		case 3:
+			removeAddOnFromReservation(resIndex);
+			break;
+		}
+	} while (choice != 0);
 }
 
 void specialRequestMenu() {
