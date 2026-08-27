@@ -42,7 +42,7 @@ int sessionRedeemedPoints = 0;
 bool sessionSurpriseGiven = false;
 
 // Real hotels by state and area. Every hotel uses the same roomList.
-vector<HotelBranch> hotelBranches = {
+static const char* const HOTEL_ROWS[][4] = {
 	{"Perlis", "Kangar", "Ants Hotel", "No. 12, Jalan Bintong Mewah 1, Bintong Mewah, 01000 Kangar, Perlis"},
 	{"Perlis", "Kangar", "Hotel Federal Kangar", "Kampung Tok Peduka, 01000 Kangar, Perlis"},
 	{"Perlis", "Kangar", "Hotel Seri Malaysia Kangar", "LOT 8101 MUKIM, MALAYS, Persiaran Wawasan, Taman Budaya, 01000 Kangar, Perlis"},
@@ -259,8 +259,18 @@ vector<HotelBranch> hotelBranches = {
 	{"Sarawak", "Mulu", "Mulu Marriott Resort & Spa", "Sungai Melinau, 98008 Mulu, Sarawak"},
 	{"Sarawak", "Kapit", "Hotel Orchard Kapit", "Kapit, Sarawak"},
 	{"Sarawak", "Kapit", "Meligai Hotel Kapit", "96800, Lot 334, Jalan Airport, 96800 Kapit, Sarawak"},
-	{"Sarawak", "Sematan", "Sematan Palm Beach Resort", "Lot 295, Kpg Sungai Kilong, Pekan Sematan, 94100 Sematan, Sarawak"}
+	{"Sarawak", "Sematan", "Sematan Palm Beach Resort", "Lot 295, Kpg Sungai Kilong, Pekan Sematan, 94100 Sematan, Sarawak"},
 };
+
+vector<HotelBranch> hotelBranches = [] {
+	vector<HotelBranch> v;
+	const size_t n = sizeof(HOTEL_ROWS) / sizeof(HOTEL_ROWS[0]);
+	v.reserve(n);
+	for (size_t i = 0; i < n; ++i) {
+		v.push_back({HOTEL_ROWS[i][0], HOTEL_ROWS[i][1], HOTEL_ROWS[i][2], HOTEL_ROWS[i][3]});
+	}
+	return v;
+}();
 
 
 string currentHotelName = "";
