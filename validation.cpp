@@ -184,7 +184,7 @@ void loadingPause() {
 	cout << " Loading next page";
 	for (int i = 0; i < 8; i++) {
 		cout << "." << flush;
-		Sleep(300);
+		sleepMs(300);
 	}
 	cout << endl;
 }

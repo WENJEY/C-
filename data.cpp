@@ -42,7 +42,16 @@ int sessionRedeemedPoints = 0;
 bool sessionSurpriseGiven = false;
 
 // Real hotels by state and area. Every hotel uses the same roomList.
-vector<HotelBranch> hotelBranches = {
+// Stored as const char* so MinGW does not hit "too many sections" / file-too-big
+// when compiling hundreds of std::string temporaries in one translation unit.
+struct HotelBranchInit {
+	const char* state;
+	const char* area;
+	const char* name;
+	const char* address;
+};
+
+static const HotelBranchInit HOTEL_BRANCH_DATA[] = {
 	{"Perlis", "Kangar", "Ants Hotel", "No. 12, Jalan Bintong Mewah 1, Bintong Mewah, 01000 Kangar, Perlis"},
 	{"Perlis", "Kangar", "Hotel Federal Kangar", "Kampung Tok Peduka, 01000 Kangar, Perlis"},
 	{"Perlis", "Kangar", "Hotel Seri Malaysia Kangar", "LOT 8101 MUKIM, MALAYS, Persiaran Wawasan, Taman Budaya, 01000 Kangar, Perlis"},
@@ -259,8 +268,26 @@ vector<HotelBranch> hotelBranches = {
 	{"Sarawak", "Mulu", "Mulu Marriott Resort & Spa", "Sungai Melinau, 98008 Mulu, Sarawak"},
 	{"Sarawak", "Kapit", "Hotel Orchard Kapit", "Kapit, Sarawak"},
 	{"Sarawak", "Kapit", "Meligai Hotel Kapit", "96800, Lot 334, Jalan Airport, 96800 Kapit, Sarawak"},
-	{"Sarawak", "Sematan", "Sematan Palm Beach Resort", "Lot 295, Kpg Sungai Kilong, Pekan Sematan, 94100 Sematan, Sarawak"}
+	{"Sarawak", "Sematan", "Sematan Palm Beach Resort", "Lot 295, Kpg Sungai Kilong, Pekan Sematan, 94100 Sematan, Sarawak"},
 };
+
+static vector<HotelBranch> makeHotelBranches() {
+	vector<HotelBranch> list;
+	const size_t count = sizeof(HOTEL_BRANCH_DATA) / sizeof(HOTEL_BRANCH_DATA[0]);
+	list.reserve(count);
+	for (size_t i = 0; i < count; i++) {
+		HotelBranch hotel;
+		hotel.state = HOTEL_BRANCH_DATA[i].state;
+		hotel.area = HOTEL_BRANCH_DATA[i].area;
+		hotel.name = HOTEL_BRANCH_DATA[i].name;
+		hotel.address = HOTEL_BRANCH_DATA[i].address;
+		list.push_back(hotel);
+	}
+	return list;
+}
+
+vector<HotelBranch> hotelBranches = makeHotelBranches();
+
 
 
 string currentHotelName = "";
