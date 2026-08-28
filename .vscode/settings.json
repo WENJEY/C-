@@ -1,0 +1,8 @@
+{
+  "cmake.configureOnOpen": true,
+  "cmake.buildBeforeRun": true,
+  "cmake.debugConfig": {
+    "cwd": "${workspaceFolder}",
+    "console": "externalTerminal"
+  }
+}

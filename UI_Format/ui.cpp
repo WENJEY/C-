@@ -135,6 +135,31 @@ void showPage(const string& title) {
 	boxTitle(title);
 }
 
+int artWidth(const string& art) {
+	int maxW = 0;
+	stringstream ss(art);
+	string line;
+	while (getline(ss, line)) {
+		int w = static_cast<int>(line.length());
+		if (w > maxW) {
+			maxW = w;
+		}
+	}
+	return maxW;
+}
+
+void printArtBlock(const string& art, int pad) {
+	stringstream ss(art);
+	string line;
+	while (getline(ss, line)) {
+		if (line.empty()) {
+			cout << '\n';
+			continue;
+		}
+		cout << string(pad, ' ') << line << '\n';
+	}
+}
+
 void logo() {
 	string logoArt = R"(
   /$$$$$$                                 /$$      /$$   /$$                  /$$
@@ -151,21 +176,23 @@ void logo() {
  |_| / \ | |_ |    |_) |_ (_  |_ |_) \  / /\  |   |  / \ |\ |   (_ \_/ (_   | |_ |\/|
  | | \_/ | |_ |_   | \ |_ __) |_ | \  \/ /--\ |  _|_ \_/ | \|   __) |  __)  | |_ |  |
                                                                                       )";
-	stringstream ss(logoArt), s(systemArt);
-	string line;
+	int logoPad = (screenWidth() - artWidth(logoArt)) / 2;
+	int sysPad = (screenWidth() - artWidth(systemArt)) / 2;
+	if (logoPad < 0) {
+		logoPad = 0;
+	}
+	if (sysPad < 0) {
+		sysPad = 0;
+	}
 
 	centerBuf.skipPad = true;
 	centerBuf.atStart = true;
-	cout << string(22, '=') << setw(window_width) << setfill('=') << "=" << string(22, '=') << endl;
+	cout << string(screenWidth(), '=') << endl;
 	cout << red;
-	while (getline(ss, line)) {
-		cout << string(22, ' ') << setw(2) << setfill(' ') << " " << line << '\n';
-	}
+	printArtBlock(logoArt, logoPad);
 	cout << original;
-	while (getline(s, line)) {
-		cout << string(25, ' ') << setw(10) << setfill(' ') << " " << line << '\n';
-	}
-	cout << string(22, '=') << setw(window_width) << setfill('=') << "=" << string(22, '=') << endl;
+	printArtBlock(systemArt, sysPad);
+	cout << string(screenWidth(), '=') << endl;
 	cout << setfill(' ') << left;
 	centerBuf.skipPad = false;
 	centerBuf.atStart = true;
