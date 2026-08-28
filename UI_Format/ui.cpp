@@ -60,6 +60,7 @@ public:
 CenterStreamBuf centerBuf;
 
 int screenWidth() {
+#ifdef _WIN32
 	CONSOLE_SCREEN_BUFFER_INFO info;
 	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
 		int cols = info.srWindow.Right - info.srWindow.Left + 1;
@@ -67,10 +68,12 @@ int screenWidth() {
 			return cols;
 		}
 	}
+#endif
 	return 120;
 }
 
 int screenHeight() {
+#ifdef _WIN32
 	CONSOLE_SCREEN_BUFFER_INFO info;
 	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
 		int rows = info.srWindow.Bottom - info.srWindow.Top + 1;
@@ -78,6 +81,7 @@ int screenHeight() {
 			return rows;
 		}
 	}
+#endif
 	return 30;
 }
 
@@ -98,16 +102,22 @@ void enableCenteredOutput() {
 }
 
 void enableColors() {
+#ifdef _WIN32
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD mode;
 	if (GetConsoleMode(hConsole, &mode)) {
 		SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 	}
+#endif
 	enableCenteredOutput();
 }
 
 void clearScreen() {
+#ifdef _WIN32
 	system("cls");
+#else
+	system("clear");
+#endif
 	centerBuf.atStart = true;
 }
 

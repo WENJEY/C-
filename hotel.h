@@ -4,7 +4,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <iomanip>
-#include <windows.h>
 #include <string>
 #include <vector>
 #include <cctype>
@@ -13,7 +12,20 @@
 #include <ctime>
 #include <cmath>
 #include <cstdlib>
+#include <chrono>
+#include <thread>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 using namespace std;
+
+inline void sleepMs(int milliseconds) {
+#ifdef _WIN32
+	Sleep(milliseconds);
+#else
+	this_thread::sleep_for(chrono::milliseconds(milliseconds));
+#endif
+}
 
 #define red "\033[91m"
 #define yellow "\033[93m"
