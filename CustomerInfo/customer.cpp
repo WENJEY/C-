@@ -226,7 +226,6 @@ bool customerLogin() {
 	string password;
 	int attempts = 0;
 	const int MAX_ATTEMPTS = 3;
-	customers[0]= {"1","1","1","1","1","1"};
 
 	while (attempts < MAX_ATTEMPTS) {
 		showPage("Customer Login");

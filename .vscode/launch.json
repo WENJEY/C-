@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run C_",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/C_.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "environment": [
+        {
+          "name": "PATH",
+          "value": "${env:PATH};C:/Program Files/JetBrains/CLion 2026.1.3/bin/mingw/bin;C:/Program Files/JetBrains/CLion 2026.1.3/bin/gdb/win/x64/bin"
+        }
+      ],
+      "externalConsole": true,
+      "stopAtEntry": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "windows": {
+        "miDebuggerPath": "C:/Program Files/JetBrains/CLion 2026.1.3/bin/gdb/win/x64/bin/gdb.exe"
+      },
+      "preLaunchTask": "CMake Build"
+    }
+  ]
+}
