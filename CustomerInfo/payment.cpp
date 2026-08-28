@@ -345,6 +345,7 @@ void processPayment() {
 	addLoyaltyPoints(earned);
 	saveCustomersToFile();
 	printAndSaveInvoice(bill, methodName);
+	saveStayChanges();
 
 	cout << "\n Payment successful! Thank you, " << currentCustomerName() << "." << endl;
 	cout << " You earned " << earned << " loyalty point(s)." << endl;
@@ -571,7 +572,8 @@ void printAndSaveInvoice(const BillBreakdown& bill, const string& method) {
 	clearScreen();
 	cout << receipt.str();
 
-	string fileName = "invoice_" + invoiceId + ".txt";
+	ensureDataFolder();
+	string fileName = dataFile("invoice_" + invoiceId + ".txt");
 	ofstream file(fileName);
 	if (file.is_open()) {
 		file << receipt.str();

@@ -195,6 +195,7 @@ void offerAddOns() {
 
 	if (targetIndex != -1) {
 		addOnsForReservation(targetIndex);
+		saveStayChanges();
 	}
 }
 
@@ -485,6 +486,7 @@ void specialRequestMenu() {
 	}
 
 	reservations[resIndex].specialRequest = request;
+	saveStayChanges();
 	cout << " Noted! We will try our best: " << request << endl;
 	pauseEnter();
 }

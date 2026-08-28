@@ -1,7 +1,16 @@
 #include "../hotel.h"
 
+void ensureDataFolder() {
+	CreateDirectoryA("data", NULL);
+}
+
+string dataFile(const string& name) {
+	return string("data/") + name;
+}
+
 void saveCustomersToFile() {
-	ofstream file("customers.txt");
+	ensureDataFolder();
+	ofstream file(dataFile("customers.txt"));
 	if (file.is_open()) {
 		file << customers.size() << endl;
 		for (size_t i = 0; i < customers.size(); i++) {
@@ -36,7 +45,7 @@ void trimFileField(string& text) {
 }
 
 void loadCustomersFromFile() {
-	ifstream file("customers.txt");
+	ifstream file(dataFile("customers.txt"));
 	if (!file.is_open()) {
 		return;
 	}
@@ -91,7 +100,8 @@ void loadCustomersFromFile() {
 }
 
 void saveRoomsToFile() {
-	ofstream file("rooms.txt");
+	ensureDataFolder();
+	ofstream file(dataFile("rooms.txt"));
 	if (file.is_open()) {
 		file << roomList.size() << endl;
 		for (size_t i = 0; i < roomList.size(); i++) {
@@ -107,7 +117,7 @@ void saveRoomsToFile() {
 }
 
 void loadRoomsFromFile() {
-	ifstream file("rooms.txt");
+	ifstream file(dataFile("rooms.txt"));
 	if (!file.is_open()) {
 		return;
 	}
@@ -140,7 +150,8 @@ void loadRoomsFromFile() {
 }
 
 void saveReservationsToFile() {
-	ofstream file("reservations.txt");
+	ensureDataFolder();
+	ofstream file(dataFile("reservations.txt"));
 	if (!file.is_open()) {
 		return;
 	}
@@ -152,6 +163,10 @@ void saveReservationsToFile() {
 	for (size_t i = 0; i < reservations.size(); i++) {
 		file << reservations[i].reservationID << endl;
 		file << reservations[i].customerUsername << endl;
+		file << reservations[i].hotelName << endl;
+		file << reservations[i].hotelAddress << endl;
+		file << reservations[i].hotelArea << endl;
+		file << reservations[i].hotelState << endl;
 		file << reservations[i].roomNumber << endl;
 		file << reservations[i].roomType << endl;
 		file << reservations[i].pricePerNight << endl;
@@ -185,7 +200,7 @@ void saveReservationsToFile() {
 }
 
 void loadReservationsFromFile() {
-	ifstream file("reservations.txt");
+	ifstream file(dataFile("reservations.txt"));
 	if (!file.is_open()) {
 		return;
 	}
@@ -212,6 +227,10 @@ void loadReservationsFromFile() {
 
 		getline(file, booking.reservationID);
 		getline(file, booking.customerUsername);
+		getline(file, booking.hotelName);
+		getline(file, booking.hotelAddress);
+		getline(file, booking.hotelArea);
+		getline(file, booking.hotelState);
 		getline(file, booking.roomNumber);
 		getline(file, booking.roomType);
 		getline(file, priceStr);
@@ -263,6 +282,56 @@ void loadReservationsFromFile() {
 		}
 		getline(file, separator);
 		reservations.push_back(booking);
+	}
+	file.close();
+}
+
+void saveHotelsToFile() {
+	ensureDataFolder();
+	ofstream file(dataFile("hotels.txt"));
+	if (!file.is_open()) {
+		return;
+	}
+
+	file << hotelBranches.size() << endl;
+	for (size_t i = 0; i < hotelBranches.size(); i++) {
+		file << hotelBranches[i].state << endl;
+		file << hotelBranches[i].area << endl;
+		file << hotelBranches[i].name << endl;
+		file << hotelBranches[i].address << endl;
+		file << "---" << endl;
+	}
+	file.close();
+}
+
+void loadHotelsFromFile() {
+	ifstream file(dataFile("hotels.txt"));
+	if (!file.is_open()) {
+		return;
+	}
+
+	int numHotels = 0;
+	file >> numHotels;
+	file.ignore();
+	if (numHotels <= 0) {
+		file.close();
+		return;
+	}
+
+	hotelBranches.clear();
+	for (int i = 0; i < numHotels; i++) {
+		HotelBranch hotel;
+		string separator;
+		getline(file, hotel.state);
+		getline(file, hotel.area);
+		getline(file, hotel.name);
+		getline(file, hotel.address);
+		getline(file, separator);
+		trimFileField(hotel.state);
+		trimFileField(hotel.area);
+		trimFileField(hotel.name);
+		trimFileField(hotel.address);
+		hotelBranches.push_back(hotel);
 	}
 	file.close();
 }

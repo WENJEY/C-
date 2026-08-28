@@ -3,7 +3,7 @@
 vector<Customer> customers;
 string currentLoggedInCustomer = "";
 
-// This list is the start of every run. Bookings stay in memory only.
+// Default rooms. data/rooms.txt replaces this after the first save.
 vector<Room> roomList = {
 	{"101", "Single",        1, 120.00, "Available"},
 	{"102", "Single",        1, 120.00, "Available"},

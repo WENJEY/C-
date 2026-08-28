@@ -123,6 +123,7 @@ void staffAddRoom() {
 	}
 
 	roomList.push_back(room);
+	saveStayChanges();
 	cout << " Room " << room.roomNumber << " added." << endl;
 	pauseEnter();
 }
@@ -169,6 +170,7 @@ void staffEditRoom() {
 		string type = pickRoomType();
 		if (!type.empty()) {
 			roomList[idx].roomType = type;
+			saveStayChanges();
 			cout << " Type updated." << endl;
 			pauseEnter();
 		}
@@ -182,6 +184,7 @@ void staffEditRoom() {
 			return;
 		}
 		roomList[idx].capacity = capacity;
+		saveStayChanges();
 		cout << " Capacity updated." << endl;
 		pauseEnter();
 	}
@@ -189,6 +192,7 @@ void staffEditRoom() {
 		double price = 0;
 		if (askMoney(" New price per night RM (or 0 to cancel): ", price)) {
 			roomList[idx].price = price;
+			saveStayChanges();
 			cout << " Price updated." << endl;
 			pauseEnter();
 		}
@@ -204,6 +208,7 @@ void staffEditRoom() {
 			return;
 		}
 		roomList[idx].status = status;
+		saveStayChanges();
 		cout << " Status updated." << endl;
 		pauseEnter();
 	}
@@ -232,6 +237,7 @@ void staffDeleteRoom() {
 		return;
 	}
 	roomList.erase(roomList.begin() + static_cast<size_t>(idx));
+	saveStayChanges();
 	cout << " Room " << roomNumber << " deleted." << endl;
 	pauseEnter();
 }
