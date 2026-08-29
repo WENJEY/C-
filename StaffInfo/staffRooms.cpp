@@ -68,7 +68,7 @@ void staffPrintRooms() {
 
 void staffListRooms() {
 	staffPrintRooms();
-	loadingPause();
+	pauseEnter();
 }
 
 void staffAddRoom() {
