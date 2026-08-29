@@ -1,18 +1,18 @@
 {
-  "version": 6,
+  "version": 3,
   "cmakeMinimumRequired": {
     "major": 3,
-    "minor": 23,
+    "minor": 21,
     "patch": 0
   },
   "configurePresets": [
     {
       "name": "vscode",
-      "displayName": "VS Code",
-      "generator": "Ninja",
+      "displayName": "Default",
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     }
   ],

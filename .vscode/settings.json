@@ -1,6 +1,21 @@
 {
-  "cmake.useCMakePresets": "always",
-  "cmake.configureOnOpen": true,
-  "cmake.buildBeforeRun": true,
-  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+    "cmake.useCMakePresets": "always",
+    "cmake.configureOnOpen": true,
+    "cmake.buildBeforeRun": true,
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.preferredGenerators": [
+        "Ninja",
+        "MinGW Makefiles",
+        "Unix Makefiles",
+        "NMake Makefiles",
+        "Visual Studio 17 2022",
+        "Visual Studio 16 2019"
+    ],
+    "cmake.mingwSearchDirs": [
+        "C:/mingw64",
+        "C:/msys64/mingw64",
+        "C:/msys64/ucrt64",
+        "C:/Program Files/mingw-w64",
+        "C:/Program Files/JetBrains"
+    ]
 }

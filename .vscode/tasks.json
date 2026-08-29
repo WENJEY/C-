@@ -1,37 +1,58 @@
 {
-  "version": "2.0.0",
-  "options": {
-    "cwd": "${workspaceFolder}",
-    "env": {
-      "PATH": "${env:PATH};C:\\Program Files\\CMake\\bin;C:\\Program Files\\JetBrains\\CLion 2026.1.3\\bin\\cmake\\win\\x64\\bin;C:\\Program Files\\JetBrains\\CLion 2026.1.3\\bin\\mingw\\bin;C:\\Program Files\\JetBrains\\CLion 2026.1.3\\bin\\ninja\\win\\x64;C:\\Program Files\\JetBrains\\CLion 2026.1.3\\bin\\gdb\\win\\x64\\bin"
-    }
-  },
-  "tasks": [
-    {
-      "label": "CMake Configure",
-      "type": "process",
-      "command": "cmake",
-      "args": ["--preset", "vscode"],
-      "problemMatcher": []
+    "version": "2.0.0",
+    "options": {
+        "cwd": "${workspaceFolder}"
     },
-    {
-      "label": "CMake Build",
-      "type": "process",
-      "command": "cmake",
-      "args": ["--build", "--preset", "vscode"],
-      "dependsOn": "CMake Configure",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": ["$gcc"]
-    },
-    {
-      "label": "Run C_",
-      "type": "shell",
-      "command": "Start-Process -FilePath '${workspaceFolder}\\build\\C_.exe' -WorkingDirectory '${workspaceFolder}'",
-      "dependsOn": "CMake Build",
-      "problemMatcher": []
-    }
-  ]
+    "tasks": [
+        {
+            "label": "CMake Configure",
+            "type": "shell",
+            "command": "cmake --preset vscode",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": ["/d", "/c"]
+                    }
+                },
+                "command": "call \"${workspaceFolder}\\scripts\\windows-dev-env.cmd\" && cmake --preset vscode"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake Build",
+            "type": "shell",
+            "command": "cmake --build --preset vscode",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": ["/d", "/c"]
+                    }
+                },
+                "command": "call \"${workspaceFolder}\\scripts\\windows-dev-env.cmd\" && cmake --build --preset vscode"
+            },
+            "dependsOn": "CMake Configure",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc", "$msCompile"]
+        },
+        {
+            "label": "Run C_",
+            "type": "shell",
+            "command": "${workspaceFolder}/build/C_",
+            "windows": {
+                "command": "\"${workspaceFolder}\\build\\C_.exe\""
+            },
+            "dependsOn": "CMake Build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "focus": true
+            },
+            "problemMatcher": []
+        }
+    ]
 }

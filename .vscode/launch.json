@@ -1,27 +1,37 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Run C_",
-      "type": "cppdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/build/C_.exe",
-      "args": [],
-      "cwd": "${workspaceFolder}",
-      "environment": [
+    "version": "0.2.0",
+    "configurations": [
         {
-          "name": "PATH",
-          "value": "${env:PATH};C:/Program Files/JetBrains/CLion 2026.1.3/bin/mingw/bin;C:/Program Files/JetBrains/CLion 2026.1.3/bin/gdb/win/x64/bin"
+            "name": "Run C_ (gdb/lldb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/C_",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "stopAtEntry": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb",
+            "preLaunchTask": "CMake Build",
+            "windows": {
+                "program": "${workspaceFolder}/build/C_.exe",
+                "miDebuggerPath": "${workspaceFolder}/scripts/gdb.cmd"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            }
+        },
+        {
+            "name": "Run C_ (MSVC)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Debug/C_.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "externalTerminal",
+            "stopAtEntry": false,
+            "preLaunchTask": "CMake Build"
         }
-      ],
-      "externalConsole": true,
-      "stopAtEntry": false,
-      "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
-      "windows": {
-        "miDebuggerPath": "C:/Program Files/JetBrains/CLion 2026.1.3/bin/gdb/win/x64/bin/gdb.exe"
-      },
-      "preLaunchTask": "CMake Build"
-    }
-  ]
+    ]
 }
