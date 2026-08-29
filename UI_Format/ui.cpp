@@ -1,9 +1,39 @@
 #include "../hotel.h"
 #include <streambuf>
 
-int screenWidth();
-int screenHeight();
-int pageIndent();
+int screenWidth() {
+#ifdef _WIN32
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
+		int cols = info.srWindow.Right - info.srWindow.Left + 1;
+		if (cols > 40) {
+			return cols;
+		}
+	}
+#endif
+	return 120;
+}
+
+int screenHeight() {
+#ifdef _WIN32
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
+		int rows = info.srWindow.Bottom - info.srWindow.Top + 1;
+		if (rows > 10) {
+			return rows;
+		}
+	}
+#endif
+	return 30;
+}
+
+int pageIndent() {
+	int pad = (screenWidth() - (BOX_W + 4)) / 2;
+	if (pad < 0) {
+		return 0;
+	}
+	return pad;
+}
 
 class CenterStreamBuf : public streambuf {
 public:
@@ -58,40 +88,6 @@ public:
 };
 
 CenterStreamBuf centerBuf;
-
-int screenWidth() {
-#ifdef _WIN32
-	CONSOLE_SCREEN_BUFFER_INFO info;
-	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
-		int cols = info.srWindow.Right - info.srWindow.Left + 1;
-		if (cols > 40) {
-			return cols;
-		}
-	}
-#endif
-	return 120;
-}
-
-int screenHeight() {
-#ifdef _WIN32
-	CONSOLE_SCREEN_BUFFER_INFO info;
-	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
-		int rows = info.srWindow.Bottom - info.srWindow.Top + 1;
-		if (rows > 10) {
-			return rows;
-		}
-	}
-#endif
-	return 30;
-}
-
-int pageIndent() {
-	int pad = (screenWidth() - (BOX_W + 4)) / 2;
-	if (pad < 0) {
-		return 0;
-	}
-	return pad;
-}
 
 void enableCenteredOutput() {
 	if (centerBuf.dest != nullptr) {
