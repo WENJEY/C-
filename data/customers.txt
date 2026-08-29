@@ -1,11 +1,27 @@
-1
-222
-22
-222222
-Wen
-wen@gmail.com
-0123456789
-123456789090
-Regular
-0
----
+========================================
+Grand Horizon Hotel
+Customers
+========================================
+Total               : 2
+
+---------- Customer 1 ----------
+Username            : 222
+Age                 : 22
+Password            : 222222
+Full Name           : Wen
+Email               : wen@gmail.com
+Phone               : 0123456789
+IC/Passport         : 123456789090
+Membership          : Regular
+Loyalty Points      : 0
+
+---------- Customer 2 ----------
+Username            : 123
+Age                 : 23
+Password            : 123456
+Full Name           : Wen
+Email               : wen@gmail.com
+Phone               : 01234567890
+IC/Passport         : 123456789090
+Membership          : Regular
+Loyalty Points      : 0
