@@ -54,6 +54,22 @@ bool createOneBooking() {
 		return false;
 	}
 
+	int browseD = 0;
+	int browseM = 0;
+	int browseY = 0;
+	if (!askAvailabilityBrowseDate(browseD, browseM, browseY)) {
+		cout << " Booking cancelled." << endl;
+		pauseEnter();
+		return false;
+	}
+
+	if (displayAvailabilityForDate(guests, browseD, browseM, browseY) == 0) {
+		cout << red << " No room fits this guest count." << original << endl;
+		pauseEnter();
+		return false;
+	}
+	pauseEnter();
+
 	int shown = displayBookableRooms(guests);
 	if (shown == 0) {
 		cout << red << " No available room fits this number of guests." << original << endl;
@@ -81,9 +97,9 @@ bool createOneBooking() {
 			cout << red << " Room not found! Please try again." << original << endl;
 			continue;
 		}
-		if (roomList[roomIndex].status != "Available") {
-			cout << red << " This room is not available. Status: "
-				 << roomList[roomIndex].status << ". Please choose another." << original << endl;
+		if (roomList[roomIndex].status == "Cleaning" || roomList[roomIndex].status == "Maintenance") {
+			cout << red << " This room is under " << roomList[roomIndex].status
+				 << ". Please choose another." << original << endl;
 			continue;
 		}
 		if (roomList[roomIndex].capacity < guests) {
@@ -113,10 +129,31 @@ bool createOneBooking() {
 	int inD = 0;
 	int inM = 0;
 	int inY = 0;
-	if (!askCheckInDate(inD, inM, inY)) {
-		cout << " Booking cancelled." << endl;
-		pauseEnter();
-		return false;
+	while (true) {
+		if (!askCheckInDate(inD, inM, inY)) {
+			cout << " Booking cancelled." << endl;
+			pauseEnter();
+			return false;
+		}
+
+		int outD = inD;
+		int outM = inM;
+		int outY = inY;
+		addDays(outD, outM, outY, nights);
+		if (isRoomAvailableForDates(roomNumber, inD, inM, inY, outD, outM, outY)) {
+			break;
+		}
+
+		cout << red << "\n Room " << roomNumber << " is already booked for part of that stay." << original << endl;
+		showRoomBookingCalendar(roomNumber);
+		cout << " Please pick different check-in dates, or 0 to cancel booking." << endl;
+		cout << "\n Enter 1 to try another check-in date, or 0 to cancel: ";
+		int retry = getIntInRange(0, 1);
+		if (retry == 0) {
+			cout << " Booking cancelled." << endl;
+			pauseEnter();
+			return false;
+		}
 	}
 
 	int outD = inD;
@@ -213,7 +250,7 @@ bool createOneBooking() {
 
 	reservations.push_back(newBooking);
 	currentSessionIDs.push_back(newBooking.reservationID);
-	roomList[roomIndex].status = "Occupied";
+	syncRoomOccupancy();
 
 	cout << "\n Reservation confirmed! Your reservation ID is "
 		 << newBooking.reservationID << "." << endl;
@@ -238,8 +275,9 @@ void offerRoomUpgrade(int& roomIndex, int guests) {
 	int upgradeIndex = -1;
 	for (size_t i = 0; i < roomList.size(); i++) {
 		if (roomList[i].roomType == nextType
-			&& roomList[i].status == "Available"
-			&& roomList[i].capacity >= guests) {
+			&& roomList[i].capacity >= guests
+			&& roomList[i].status != "Cleaning"
+			&& roomList[i].status != "Maintenance") {
 			upgradeIndex = static_cast<int>(i);
 			break;
 		}

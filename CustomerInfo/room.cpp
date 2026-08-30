@@ -53,7 +53,18 @@ void displayRoomsByType(const string& typeFilter) {
 		boxRow("No rooms found for this type.");
 	}
 	boxLine();
-	pauseEnter();
+
+	cout << "\n Enter a room number to view its booking calendar, or press Enter to go back: ";
+	string roomNumber;
+	getline(cin, roomNumber);
+	cout << endl;
+	if (!roomNumber.empty() && roomNumber != "0" && findRoomIndex(roomNumber) != -1) {
+		showRoomBookingCalendar(roomNumber);
+		pauseEnter();
+	}
+	else {
+		pauseEnter();
+	}
 }
 
 int displayBookableRooms(int guests) {
@@ -64,14 +75,15 @@ int displayBookableRooms(int guests) {
 		boxWrapHang(currentHotelAddress, 0);
 		boxWrap(currentHotelArea + ", " + currentHotelState);
 	}
-	boxRow("Any Available room with enough space can be booked.");
-	boxRow("Occupied, cleaning and maintenance rooms stay hidden.");
+	boxRow("Rooms that fit your guest count are listed below.");
+	boxRow("After you pick a room, the system shows which dates are free.");
+	boxRow("Cleaning and maintenance rooms stay hidden.");
 	boxRow("");
 	printRoomColumns();
 	boxLine();
 
 	for (size_t i = 0; i < roomList.size(); i++) {
-		if (roomList[i].status != "Available") {
+		if (roomList[i].status == "Cleaning" || roomList[i].status == "Maintenance") {
 			continue;
 		}
 		if (roomList[i].capacity < guests) {
@@ -89,24 +101,204 @@ int displayBookableRooms(int guests) {
 	return shown;
 }
 
-int displayRoomsForModify(int guests, const string& currentRoomNumber) {
+int displayAvailabilityForDate(int guests, int day, int month, int year) {
+	int shown = 0;
+	string dateText = weekdayName(day, month, year) + " " + makeDate(day, month, year);
+
+	showPage("Room availability on " + makeDate(day, month, year));
+	if (!currentHotelName.empty()) {
+		boxWrap(currentHotelName);
+	}
+	boxRow("Date checked: " + dateText);
+	boxRow("Available = room is free to start a stay on this date");
+	boxRow("Booked    = someone already has this room on this date");
+	boxRow("You will choose check-in date again after picking room and nights.");
+	boxRow("");
+	printRoomColumns();
+	boxLine();
+
+	for (size_t i = 0; i < roomList.size(); i++) {
+		if (roomList[i].capacity < guests) {
+			continue;
+		}
+		if (roomList[i].status == "Cleaning" || roomList[i].status == "Maintenance") {
+			continue;
+		}
+
+		string statusText;
+		if (isRoomAvailableOnDate(roomList[i].roomNumber, day, month, year)) {
+			statusText = "Available";
+		}
+		else {
+			statusText = "Booked";
+		}
+
+		printRoomDataRow(roomList[i].roomNumber, roomList[i].roomType,
+			roomList[i].capacity, roomList[i].price, statusText);
+		shown++;
+	}
+
+	if (shown == 0) {
+		boxRow("No room fits this guest count.");
+	}
+	boxLine();
+	return shown;
+}
+
+int displayBookableRoomsForDates(int guests, int inD, int inM, int inY, int outD, int outM, int outY) {
+	int shown = 0;
+	string checkIn = makeDate(inD, inM, inY);
+	string checkOut = makeDate(outD, outM, outY);
+
+	showPage("Rooms free for your dates");
+	if (!currentHotelName.empty()) {
+		boxWrap(currentHotelName);
+		boxWrapHang(currentHotelAddress, 0);
+		boxWrap(currentHotelArea + ", " + currentHotelState);
+	}
+	boxRow("Check-in  : " + weekdayName(inD, inM, inY) + " " + checkIn + "  (any time)");
+	boxRow("Check-out : " + weekdayName(outD, outM, outY) + " " + checkOut + "  before 12:00");
+	boxRow("Only rooms with no booking clash are listed.");
+	boxRow("");
+	printRoomColumns();
+	boxLine();
+
+	for (size_t i = 0; i < roomList.size(); i++) {
+		if (roomList[i].capacity < guests) {
+			continue;
+		}
+		if (roomList[i].status == "Cleaning" || roomList[i].status == "Maintenance") {
+			continue;
+		}
+		if (!isRoomAvailableForDates(roomList[i].roomNumber, inD, inM, inY, outD, outM, outY)) {
+			continue;
+		}
+
+		printRoomDataRow(roomList[i].roomNumber, roomList[i].roomType,
+			roomList[i].capacity, roomList[i].price, "Available");
+		shown++;
+	}
+
+	if (shown == 0) {
+		boxRow("No room is free for these dates and guest count.");
+		boxRow("Try different dates or fewer guests.");
+	}
+	boxLine();
+	return shown;
+}
+
+void showRoomBookingCalendar(const string& roomNumber) {
+	int nowY = 0;
+	int nowM = 0;
+	int nowD = 0;
+	int nowH = 0;
+	int nowMin = 0;
+	malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
+	string today = makeDate(nowD, nowM, nowY);
+
+	showPage("Room " + roomNumber + " booking calendar");
+	boxRow("Today Malaysia time: " + today + "  " + makeClockTime(nowH, nowMin));
+	boxRow("Booked dates block new bookings for that period.");
+	boxRow("After check-out day the room can be booked again.");
+	boxLine();
+
+	int count = 0;
+	for (size_t r = 0; r < reservations.size(); r++) {
+		if (reservations[r].status == "Cancelled") {
+			continue;
+		}
+		if (reservations[r].roomNumber != roomNumber) {
+			continue;
+		}
+
+		int inD = 0;
+		int inM = 0;
+		int inY = 0;
+		int outD = 0;
+		int outM = 0;
+		int outY = 0;
+		if (!parseDate(reservations[r].checkInDate, inD, inM, inY)) {
+			continue;
+		}
+		if (!parseDate(reservations[r].checkOutDate, outD, outM, outY)) {
+			continue;
+		}
+
+		string label;
+		if (dateCompare(outD, outM, outY, nowD, nowM, nowY) <= 0) {
+			label = "Past";
+		}
+		else if (isStayActiveOnDate(inD, inM, inY, outD, outM, outY, nowD, nowM, nowY)) {
+			label = "Ongoing";
+		}
+		else {
+			label = "Upcoming";
+		}
+
+		ostringstream line;
+		line << label << "  #" << reservations[r].reservationID
+			 << "  " << weekdayName(inD, inM, inY) << " " << reservations[r].checkInDate
+			 << "  to  " << weekdayName(outD, outM, outY) << " " << reservations[r].checkOutDate;
+		boxRow(line.str());
+		count++;
+	}
+
+	if (count == 0) {
+		boxRow("No bookings yet. You can book any date from today onward.");
+	}
+	else {
+		boxRow("");
+		boxRow("Dates outside the booked ranges above are available to book.");
+	}
+	boxLine();
+}
+
+void showRoomAvailabilityForBooking(const string& roomNumber) {
+	showRoomBookingCalendar(roomNumber);
+
+	int nowY = 0;
+	int nowM = 0;
+	int nowD = 0;
+	int nowH = 0;
+	int nowMin = 0;
+	malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
+
+	showPage("Room " + roomNumber + " — when can you book?");
+	boxRow("Today: " + makeDate(nowD, nowM, nowY) + "  " + makeClockTime(nowH, nowMin));
+	boxRow("Check-in any time on your chosen day.");
+	boxRow("Check-out before 12:00 noon on the last day.");
+	boxRow("");
+	boxRow("Pick check-in and nights that do NOT overlap");
+	boxRow("the Booked / Ongoing / Upcoming dates shown above.");
+	boxLine();
+}
+
+int displayRoomsForModify(int guests, const string& currentRoomNumber,
+	int inD, int inM, int inY, int outD, int outM, int outY, const string& skipReservationID) {
 	int shown = 0;
 	showPage("Rooms that fit " + to_string(guests) + " guest(s)");
-	boxRow("Your current room is listed even if occupied.");
+	boxRow("Your current room is listed even if booked on these dates.");
+	boxRow("Check-in  : " + makeDate(inD, inM, inY));
+	boxRow("Check-out : " + makeDate(outD, outM, outY));
 	boxRow("");
 	printRoomColumns();
 	boxLine();
 
 	for (size_t i = 0; i < roomList.size(); i++) {
 		bool isCurrent = (roomList[i].roomNumber == currentRoomNumber);
-		if (!isCurrent && roomList[i].status != "Available") {
-			continue;
+		if (!isCurrent) {
+			if (roomList[i].status == "Cleaning" || roomList[i].status == "Maintenance") {
+				continue;
+			}
+			if (!isRoomAvailableForDates(roomList[i].roomNumber, inD, inM, inY, outD, outM, outY, skipReservationID)) {
+				continue;
+			}
 		}
 		if (roomList[i].capacity < guests) {
 			continue;
 		}
 
-		string statusText = isCurrent ? "Current" : roomList[i].status;
+		string statusText = isCurrent ? "Current" : "Available";
 		printRoomDataRow(roomList[i].roomNumber, roomList[i].roomType,
 			roomList[i].capacity, roomList[i].price, statusText);
 		shown++;

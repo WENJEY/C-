@@ -2,9 +2,9 @@
 Grand Horizon Hotel
 Reservations
 ========================================
-Total               : 1
-Next Reservation ID : 2
-Next Invoice No     : 2
+Total               : 3
+Next Reservation ID : 4
+Next Invoice No     : 4
 
 ---------- Reservation 1 ----------
 Reservation ID      : 0001
@@ -33,4 +33,63 @@ Loyalty Discount    : 0.00
 Service Charge      : 1566.00
 SST                 : 1378.08
 Total Amount        : 18604.08
+Add-on Count        : 0
+
+---------- Reservation 2 ----------
+Reservation ID      : 0002
+Customer            : 222
+Hotel Name          : Ants Hotel
+Hotel Address       : No. 12, Jalan Bintong Mewah 1, Bintong Mewah, 01000 Kangar, Perlis
+Hotel Area          : Kangar
+Hotel State         : Perlis
+Room Number         : 101
+Room Type           : Single
+Price Per Night     : 120.00
+Nights              : 1
+Guests              : 1
+Booking Date        : 30/08/2026
+Booking Time        : 18:36
+Check-in Date       : 01/09/2026
+Check-in Time       : Any time
+Check-out Date      : 02/09/2026
+Status              : Cancelled
+Payment Status      : Paid
+Payment Method      : Touch n Go
+Promo Code          : 
+Special Request     : -
+Discount            : 0.00
+Loyalty Discount    : 0.00
+Service Charge      : 12.00
+SST                 : 10.56
+Total Amount        : 142.56
+Add-on Count        : 1
+Add-on              : Welcome Fruit Platter Complimentary | 0.00 | 1 | 0.00
+
+---------- Reservation 3 ----------
+Reservation ID      : 0003
+Customer            : 222
+Hotel Name          : Adya Hotel Langkawi
+Hotel Address       : No 1 PT 4001 Mukim Darul Aman Persiaran Mutiara 2 Mukim Kuah, 07000 Langkawi, Kedah
+Hotel Area          : Langkawi
+Hotel State         : Kedah
+Room Number         : 201
+Room Type           : Twin
+Price Per Night     : 150.00
+Nights              : 3
+Guests              : 2
+Booking Date        : 30/08/2026
+Booking Time        : 18:38
+Check-in Date       : 01/09/2026
+Check-in Time       : Any time
+Check-out Date      : 04/09/2026
+Status              : Paid
+Payment Status      : Paid
+Payment Method      : Card
+Promo Code          : 
+Special Request     : -
+Discount            : 0.00
+Loyalty Discount    : 0.00
+Service Charge      : 45.00
+SST                 : 39.60
+Total Amount        : 534.60
 Add-on Count        : 0

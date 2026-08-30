@@ -13,7 +13,7 @@ Email               : wen@gmail.com
 Phone               : 0123456789
 IC/Passport         : 123456789090
 Membership          : Regular
-Loyalty Points      : 0
+Loyalty Points      : 53
 
 ---------- Customer 2 ----------
 Username            : kssss

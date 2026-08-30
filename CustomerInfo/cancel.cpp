@@ -193,10 +193,9 @@ void cancelOneReservation(int resIndex) {
 
 	string policyText;
 	double refund = refundAmountFor(resIndex, daysLeft, policyText);
-	string roomNumber = reservations[resIndex].roomNumber;
 
 	reservations[resIndex].status = "Cancelled";
-	setRoomStatus(roomNumber, "Available");
+	syncRoomOccupancy();
 	removeFromCurrentSession(reservations[resIndex].reservationID);
 	saveStayChanges();
 
@@ -216,6 +215,7 @@ void cancelOneReservation(int resIndex) {
 	}
 
 	printCancelSlip(resIndex, refund, policyText);
+	cout << endl;
 	cout << " Reservation #" << reservations[resIndex].reservationID
 		 << " has been cancelled." << endl;
 	pauseEnter();

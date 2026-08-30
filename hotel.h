@@ -162,7 +162,11 @@ void staffMenu();
 void displayAvailableRoom();
 void displayRoomsByType(const string& typeFilter);
 int displayBookableRooms(int guests);
-int displayRoomsForModify(int guests, const string& currentRoomNumber);
+int displayAvailabilityForDate(int guests, int day, int month, int year);
+int displayBookableRoomsForDates(int guests, int inD, int inM, int inY, int outD, int outM, int outY);
+int displayRoomsForModify(int guests, const string& currentRoomNumber, int inD, int inM, int inY, int outD, int outM, int outY, const string& skipReservationID);
+void showRoomBookingCalendar(const string& roomNumber);
+void showRoomAvailabilityForBooking(const string& roomNumber);
 void printRoomColumns();
 void printRoomDataRow(const string& number, const string& type, int capacity, double price, const string& status);
 vector<string> destinationStates();
@@ -227,12 +231,24 @@ string twoDigits(int value);
 string makeDate(int day, int month, int year);
 string makeClockTime(int hour, int minute);
 string weekdayName(int day, int month, int year);
+bool askAvailabilityBrowseDate(int& day, int& month, int& year);
 bool askCheckInDate(int& day, int& month, int& year);
 bool parseDate(const string& text, int& day, int& month, int& year);
 bool isValidDate(int day, int month, int year);
 int dateCompare(int d1, int m1, int y1, int d2, int m2, int y2);
 int daysInMonth(int month, int year);
 void addDays(int& day, int& month, int& year, int extraDays);
+bool datesOverlap(int inD1, int inM1, int inY1, int outD1, int outM1, int outY1,
+	int inD2, int inM2, int inY2, int outD2, int outM2, int outY2);
+bool isRoomBookedForRange(const string& roomNumber,
+	int inD, int inM, int inY, int outD, int outM, int outY,
+	const string& skipReservationID = "");
+bool isRoomAvailableForDates(const string& roomNumber,
+	int inD, int inM, int inY, int outD, int outM, int outY,
+	const string& skipReservationID = "");
+bool isRoomAvailableOnDate(const string& roomNumber, int day, int month, int year);
+bool isStayActiveOnDate(int inD, int inM, int inY, int outD, int outM, int outY,
+	int onD, int onM, int onY);
 string generateReservationID();
 string padNumber(int value, int width);
 int findRoomIndex(const string& roomNumber);
@@ -259,6 +275,8 @@ bool isValidEmail(const string& email);
 bool isValidPhoneNumber(const string& phone);
 bool isValidPassword(const string& password);
 bool customerExists(const string& username);
+bool usernameTakenExcept(const string& username, int excludeIndex);
+bool isValidUsername(const string& username);
 string getSecurePassword(bool showPrompt = true);
 
 #endif

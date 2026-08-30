@@ -263,3 +263,27 @@ bool confirmYesNo(const string& prompt) {
 double roundMoney(double amount) {
 	return round(amount * 100.0) / 100.0;
 }
+
+bool isValidUsername(const string& username) {
+	if (username.length() < 3 || username.length() > 20) {
+		return false;
+	}
+	for (size_t i = 0; i < username.length(); i++) {
+		if (!isalnum(static_cast<unsigned char>(username[i]))) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool usernameTakenExcept(const string& username, int excludeIndex) {
+	for (size_t i = 0; i < customers.size(); i++) {
+		if (static_cast<int>(i) == excludeIndex) {
+			continue;
+		}
+		if (customers[i].username == username) {
+			return true;
+		}
+	}
+	return false;
+}
