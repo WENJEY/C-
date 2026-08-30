@@ -247,6 +247,8 @@ bool isRoomAvailableForDates(const string& roomNumber,
 	int inD, int inM, int inY, int outD, int outM, int outY,
 	const string& skipReservationID = "");
 bool isRoomAvailableOnDate(const string& roomNumber, int day, int month, int year);
+bool isStayActiveOnDate(int inD, int inM, int inY, int outD, int outM, int outY,
+	int onD, int onM, int onY);
 string generateReservationID();
 string padNumber(int value, int width);
 int findRoomIndex(const string& roomNumber);
