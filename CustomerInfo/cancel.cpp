@@ -216,6 +216,7 @@ void cancelOneReservation(int resIndex) {
 	}
 
 	printCancelSlip(resIndex, refund, policyText);
+	cout << endl;
 	cout << " Reservation #" << reservations[resIndex].reservationID
 		 << " has been cancelled." << endl;
 	pauseEnter();
