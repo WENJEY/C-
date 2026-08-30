@@ -1,0 +1,36 @@
+========================================
+Grand Horizon Hotel
+Reservations
+========================================
+Total               : 1
+Next Reservation ID : 2
+Next Invoice No     : 2
+
+---------- Reservation 1 ----------
+Reservation ID      : 0001
+Customer            : kssss
+Hotel Name          : Sheraton Kuching Hotel
+Hotel Address       : 2, Jln Padungan, 93100 Kuching, Sarawak
+Hotel Area          : Kuching
+Hotel State         : Sarawak
+Room Number         : 602
+Room Type           : Presidential
+Price Per Night     : 580.00
+Nights              : 30
+Guests              : 6
+Booking Date        : 29/08/2026
+Booking Time        : 11:29
+Check-in Date       : 30/12/2100
+Check-in Time       : Any time
+Check-out Date      : 29/01/2101
+Status              : Paid
+Payment Status      : Paid
+Payment Method      : Touch n Go
+Promo Code          : Terence
+Special Request     : High floor
+Discount            : 1740.00
+Loyalty Discount    : 0.00
+Service Charge      : 1566.00
+SST                 : 1378.08
+Total Amount        : 18604.08
+Add-on Count        : 0

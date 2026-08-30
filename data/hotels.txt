@@ -1,0 +1,1307 @@
+========================================
+Grand Horizon Hotel
+Hotels
+========================================
+Total               : 217
+
+---------- Hotel 1 ----------
+State               : Perlis
+Area                : Kangar
+Name                : Ants Hotel
+Address             : No. 12, Jalan Bintong Mewah 1, Bintong Mewah, 01000 Kangar, Perlis
+
+---------- Hotel 2 ----------
+State               : Perlis
+Area                : Kangar
+Name                : Hotel Federal Kangar
+Address             : Kampung Tok Peduka, 01000 Kangar, Perlis
+
+---------- Hotel 3 ----------
+State               : Perlis
+Area                : Kangar
+Name                : Hotel Seri Malaysia Kangar
+Address             : LOT 8101 MUKIM, MALAYS, Persiaran Wawasan, Taman Budaya, 01000 Kangar, Perlis
+
+---------- Hotel 4 ----------
+State               : Perlis
+Area                : Kangar
+Name                : The Putra Regency Hotel
+Address             : 135, Persiaran Jubli Emas, 01000 Kangar, Perlis
+
+---------- Hotel 5 ----------
+State               : Perlis
+Area                : Kuala Perlis
+Name                : Putra Brasmana Hotel
+Address             : Jalan Kampung Perak, Pekan Kuala Perlis, 02000 Kuala Perlis, Perlis
+
+---------- Hotel 6 ----------
+State               : Perlis
+Area                : Kuala Perlis
+Name                : Savana Hotel Kuala Perlis
+Address             : No. 1,3,5, Blok C, KOMPLEKS PERNIAGAAN, Jalan Empat, Pekan Kuala Perlis, 02000 Kuala Perlis, Perlis
+
+---------- Hotel 7 ----------
+State               : Perlis
+Area                : Kuala Perlis
+Name                : T Hotel Kuala Perlis
+Address             : 1, Persiaran Putra Timur, Pekan Kuala Perlis, 02000 Kuala Perlis, Perlis
+
+---------- Hotel 8 ----------
+State               : Perlis
+Area                : Arau
+Name                : All in Hotel
+Address             : NO. 33, Persiaran Jejawi Utara Kompleks Perniagaan, Kampung Jejawi, 02600 Arau, Perlis
+
+---------- Hotel 9 ----------
+State               : Perlis
+Area                : Arau
+Name                : Hotel Metro Inn Arau
+Address             : No. 27-35, Jalan Dua, Kompleks Arau, 02600 Arau, Perlis
+
+---------- Hotel 10 ----------
+State               : Perlis
+Area                : Arau
+Name                : Rumah Tetamu Arau (Royal Guest House)
+Address             : 32, Lorong 1 Taman Seri Mawar, Arau, 02600 Arau, Perlis
+
+---------- Hotel 11 ----------
+State               : Perlis
+Area                : Padang Besar
+Name                : Padang Besar Green Inn
+Address             : No 82, Kampung Melayu, 02100 Padang Besar, Perlis
+
+---------- Hotel 12 ----------
+State               : Perlis
+Area                : Padang Besar
+Name                : SBS Hotel
+Address             : 12, Jalan Singgahsana 5, Taman Singgahsana, 02100 Padang Besar, Perlis
+
+---------- Hotel 13 ----------
+State               : Perlis
+Area                : Beseri
+Name                : ClubRock Perlis Signature Hotel
+Address             : Gua Kelam, Kaki Bukit, 02200 Kaki Bukit, Perlis
+
+---------- Hotel 14 ----------
+State               : Perlis
+Area                : Beseri
+Name                : Hotel O Panggas Village
+Address             : Lot 8048, Kampung Panggas Besar, 02500 Kangar, Perlis
+
+---------- Hotel 15 ----------
+State               : Perlis
+Area                : Beseri
+Name                : Tasoh Lake Resort
+Address             : Lot 3082, Jalan, Kampung Buit Manek, 02200 Kaki Bukit, Perlis
+
+---------- Hotel 16 ----------
+State               : Perlis
+Area                : Beseri
+Name                : Terinai Lake View Resort
+Address             : Jalan Kaki Bukit, 02400 Kangar, Perlis
+
+---------- Hotel 17 ----------
+State               : Perlis
+Area                : Pauh
+Name                : Vilana Hotel Pauh
+Address             : 1, Jalan Lapan Belas, Taman Pauh Indah, 02600 Arau, Perlis
+
+---------- Hotel 18 ----------
+State               : Kedah
+Area                : Kota Setar
+Name                : Hotel Fuller Alor Setar
+Address             : Unit 1, Kompleks Perniagaan Pintu 10, Jalan Pintu Sepuluh, Kampung Lubok Peringgi, 05100 Alor Setar, Kedah
+
+---------- Hotel 19 ----------
+State               : Kedah
+Area                : Kota Setar
+Name                : Hotel Seri Malaysia Alor Setar
+Address             : Jalan Stadium, City Center, 05150 Alor Setar, Kedah
+
+---------- Hotel 20 ----------
+State               : Kedah
+Area                : Kota Setar
+Name                : Royale Signature Hotel
+Address             : Jalan Lumpur, Kampung Lubok Peringgi, 05150 Alor Setar, Kedah
+
+---------- Hotel 21 ----------
+State               : Kedah
+Area                : Kota Setar
+Name                : The Grand Alora Hotel
+Address             : No. 888 Persiaran Bandar Baru Mergong, Lebuhraya Sultanah Bahiyah, 05150 Alor Setar, Kedah
+
+---------- Hotel 22 ----------
+State               : Kedah
+Area                : Langkawi
+Name                : Adya Hotel Langkawi
+Address             : No 1 PT 4001 Mukim Darul Aman Persiaran Mutiara 2 Mukim Kuah, 07000 Langkawi, Kedah
+
+---------- Hotel 23 ----------
+State               : Kedah
+Area                : Langkawi
+Name                : The Pelangi Beach Resort & Spa
+Address             : Pantai Cenang, 07000 Langkawi, Kedah
+
+---------- Hotel 24 ----------
+State               : Kedah
+Area                : Langkawi
+Name                : The Ritz-Carlton, Langkawi
+Address             : PT 313, Jalan Pantai Kok, Teluk Nibung, 07000 Langkawi, Kedah
+
+---------- Hotel 25 ----------
+State               : Kedah
+Area                : Kuala Muda
+Name                : Emerald Puteri Hotel
+Address             : 50, Jalan Permatang Gedong, Taman Sejati Indah, 08000 Sungai Petani, Kedah
+
+---------- Hotel 26 ----------
+State               : Kedah
+Area                : Kuala Muda
+Name                : Swiss-Inn Sungai Petani
+Address             : 1A, Jalan Pahlawan, 08000 Sungai Petani, Kedah
+
+---------- Hotel 27 ----------
+State               : Kedah
+Area                : Kuala Muda
+Name                : The Pure Hotel Sungai Petani
+Address             : No A2, 1, Jalan Indah 2, Taman Sejati Indah, 08000 Sungai Petani, Kedah
+
+---------- Hotel 28 ----------
+State               : Kedah
+Area                : Kulim
+Name                : E Hotel
+Address             : 190, Jalan Seluang, Taman Seluang, 09000 Kulim, Kedah
+
+---------- Hotel 29 ----------
+State               : Kedah
+Area                : Kulim
+Name                : Fuller Hotel
+Address             : 50, Jalan Kota Kenari 1, Taman Kenari, 09000 Kulim, Kedah
+
+---------- Hotel 30 ----------
+State               : Kedah
+Area                : Kulim
+Name                : Hotel Seri Malaysia Kulim
+Address             : No 2, Taman Tasik Putra, 09000 Kulim, Kedah
+
+---------- Hotel 31 ----------
+State               : Kedah
+Area                : Kubang Pasu
+Name                : EDC Hotel & Resorts UUM
+Address             : Universiti Utara Malaysia, Sintok, 06010 Bukit Kayu Hitam, Kedah
+
+---------- Hotel 32 ----------
+State               : Kedah
+Area                : Kubang Pasu
+Name                : Hotel Darulaman Jitra
+Address             : Bandar Darulaman, 06000 Jitra, Kedah
+
+---------- Hotel 33 ----------
+State               : Kedah
+Area                : Kubang Pasu
+Name                : Stay 365 Hotel
+Address             : 55, Jalan Teja 2, Taman Teja, 06010 Changlun, Kedah
+
+---------- Hotel 34 ----------
+State               : Kedah
+Area                : Yan
+Name                : The Jerai Hill Resort
+Address             : Jalan Kaki Bukit Lebuhraya Utara - Selatan, 08300 Gurun, Kedah
+
+---------- Hotel 35 ----------
+State               : Pulau Pinang
+Area                : George Town
+Name                : Cheong Fatt Tze - Blue Mansion
+Address             : 14, Lebuh Leith, 10200 George Town, Pulau Pinang
+
+---------- Hotel 36 ----------
+State               : Pulau Pinang
+Area                : George Town
+Name                : Eastern & Oriental (E&O) Hotel
+Address             : 10, Lebuh Farquhar, 10200 George Town, Pulau Pinang
+
+---------- Hotel 37 ----------
+State               : Pulau Pinang
+Area                : George Town
+Name                : Seven Terraces
+Address             : 14A, Stewart Lane, 10200 George Town, Pulau Pinang
+
+---------- Hotel 38 ----------
+State               : Pulau Pinang
+Area                : Batu Ferringhi
+Name                : Hard Rock Hotel Penang
+Address             : Batu Ferringhi Beach, 11100 Batu Ferringhi, Pulau Pinang
+
+---------- Hotel 39 ----------
+State               : Pulau Pinang
+Area                : Batu Ferringhi
+Name                : Shangri-La Rasa Sayang
+Address             : Jalan Batu Ferringhi, 11100 Batu Ferringhi, Pulau Pinang
+
+---------- Hotel 40 ----------
+State               : Pulau Pinang
+Area                : Gurney Drive
+Name                : G Hotel Gurney
+Address             : 168A, Persiaran Gurney, 10250 George Town, Pulau Pinang
+
+---------- Hotel 41 ----------
+State               : Pulau Pinang
+Area                : Gurney Drive
+Name                : The Millen Penang, Autograph Collection
+Address             : 55, Jln Sultan Ahmad Shah, 10050 George Town, Pulau Pinang
+
+---------- Hotel 42 ----------
+State               : Pulau Pinang
+Area                : Tanjung Bungah
+Name                : Hompton by the Beach Penang
+Address             : 533, Jalan C M Hashim, Tanjung Tokong, 11200 Tanjung Bungah, Pulau Pinang
+
+---------- Hotel 43 ----------
+State               : Pulau Pinang
+Area                : Tanjung Bungah
+Name                : Mercure Penang Beach
+Address             : 505, Jalan Tanjung Bungah, 11200 Tanjung Bungah, Pulau Pinang
+
+---------- Hotel 44 ----------
+State               : Pulau Pinang
+Area                : Bayan Lepas
+Name                : AC Hotel by Marriott Penang
+Address             : 213, Jalan Bukit Gambir, Kampung Seberang Paya, 11950 Bayan Lepas, Pulau Pinang
+
+---------- Hotel 45 ----------
+State               : Pulau Pinang
+Area                : Bayan Lepas
+Name                : Amari SPICE Penang
+Address             : 2, Persiaran Mahsuri, Bayan Baru, 11900 Bayan Lepas, Pulau Pinang
+
+---------- Hotel 46 ----------
+State               : Pulau Pinang
+Area                : Air Itam
+Name                : Bellevue The Penang Hill Hotel
+Address             : Jalan Bukit Bendera, Jalan Stesen, 11500 George Town, Pulau Pinang
+
+---------- Hotel 47 ----------
+State               : Pulau Pinang
+Area                : Butterworth
+Name                : The Light Hotel Penang
+Address             : Lebuh Tenggiri 2, 13700 Seberang Jaya, Pulau Pinang
+
+---------- Hotel 48 ----------
+State               : Pulau Pinang
+Area                : Bukit Mertajam
+Name                : Vangohh Eminent Hotel & Spa
+Address             : 3406, Jalan Machang Bubok 2, Taman Machang Bubok, 14000 Bukit Mertajam, Pulau Pinang
+
+---------- Hotel 49 ----------
+State               : Perak
+Area                : Kinta
+Name                : The Banjaran Hotsprings Retreat Ipoh
+Address             : 1, Persiaran Lagoon, Sunway 3, 31150 Ipoh, Perak
+
+---------- Hotel 50 ----------
+State               : Perak
+Area                : Kinta
+Name                : The Haven All Suite Resort Ipoh
+Address             : Persiaran Lembah Perpaduan, 31150 Ipoh, Perak
+
+---------- Hotel 51 ----------
+State               : Perak
+Area                : Kinta
+Name                : WEIL Hotel Ipoh
+Address             : 292, Jalan Sultan Idris Shah, 30000 Ipoh, Perak
+
+---------- Hotel 52 ----------
+State               : Perak
+Area                : Larut, Matang & Selama
+Name                : Flemington Hotel Taiping
+Address             : 1, Jalan Samanea Saman, 34000 Taiping, Perak
+
+---------- Hotel 53 ----------
+State               : Perak
+Area                : Larut, Matang & Selama
+Name                : Grand Baron Hotel Taiping
+Address             : 34000 Taiping, Perak
+
+---------- Hotel 54 ----------
+State               : Perak
+Area                : Larut, Matang & Selama
+Name                : Novotel Taiping
+Address             : 1, Jalan Tupai, 34000 Taiping, Perak
+
+---------- Hotel 55 ----------
+State               : Perak
+Area                : Manjung
+Name                : Marina Island Pangkor Resort & Hotel
+Address             : Block Laguna 2, KM 1, Jalan Utama Marina Island, Teluk Muroh, 32200 Lumut, Perak
+
+---------- Hotel 56 ----------
+State               : Perak
+Area                : Manjung
+Name                : Pangkor Laut Resort
+Address             : Pangkor Laut Island, 32200 Lumut, Perak
+
+---------- Hotel 57 ----------
+State               : Perak
+Area                : Manjung
+Name                : Swiss-Garden Beach Resort Damai Laut
+Address             : Persiaran Swiss-Garden, Jalan Damai Laut, 32200 Lumut, Perak
+
+---------- Hotel 58 ----------
+State               : Perak
+Area                : Hilir Perak
+Name                : Anson Hotel Teluk Intan
+Address             : Jalan Sekolah, Pekan Teluk Intan, 36000 Teluk Intan, Perak
+
+---------- Hotel 59 ----------
+State               : Perak
+Area                : Hilir Perak
+Name                : Grand Court Hotel Teluk Intan
+Address             : G-3, Menara GSM, Jalan Padang Tembak, 36000 Teluk Intan, Perak
+
+---------- Hotel 60 ----------
+State               : Perak
+Area                : Kuala Kangsar
+Name                : Hotel Seri Malaysia Kuala Kangsar
+Address             : 33, Jalan Daeng Selili, Kampung Penaga, 33000 Kuala Kangsar, Perak
+
+---------- Hotel 61 ----------
+State               : Perak
+Area                : Kuala Kangsar
+Name                : The Shop Hotel Kuala Kangsar
+Address             : 1, Persiaran Seri Delima, Taman Seri Delima, 33000 Kuala Kangsar, Perak
+
+---------- Hotel 62 ----------
+State               : Perak
+Area                : Muallim
+Name                : Sg Perak Resort Hotel
+Address             : 56A-B, Jalan Bunga Raya, 35900 Tanjong Malim, Perak
+
+---------- Hotel 63 ----------
+State               : Perak
+Area                : Kampar
+Name                : Grand Kampar Hotel
+Address             : 2188, Jalan Timah, Bandar Baru, 31900 Kampar, Perak
+
+---------- Hotel 64 ----------
+State               : Perak
+Area                : Kampar
+Name                : The Trails Of Kampar
+Address             : Jln Persiaran Residensi, 31900 Kampar, Perak
+
+---------- Hotel 65 ----------
+State               : Perak
+Area                : Hulu Perak
+Name                : Belum Rainforest Resort
+Address             : Lebuhraya Timur-Barat, Pulau Banding, 33300 Gerik, Perak
+
+---------- Hotel 66 ----------
+State               : Perak
+Area                : Kerian
+Name                : Damai Hotel Parit Buntar
+Address             : Lot 6298, Jln Taiping, 34200 Parit Buntar, Perak
+
+---------- Hotel 67 ----------
+State               : Selangor
+Area                : Petaling Jaya
+Name                : Le Meridien Petaling Jaya
+Address             : 1, Jalan SS 7/26a, SS 7, 47301 Petaling Jaya, Selangor
+
+---------- Hotel 68 ----------
+State               : Selangor
+Area                : Petaling Jaya
+Name                : One World Hotel
+Address             : City Centre, First Avenue, Lebuh Bandar Utama, Bandar Utama, 47800 Petaling Jaya, Selangor
+
+---------- Hotel 69 ----------
+State               : Selangor
+Area                : Petaling Jaya
+Name                : Sunway Resort Hotel
+Address             : 1, Persiaran Lagoon, Bandar Sunway, 47500 Petaling Jaya, Selangor
+
+---------- Hotel 70 ----------
+State               : Selangor
+Area                : Hulu Langat
+Name                : Bangi Resort Hotel
+Address             : Off Persiaran Bandar, Bangi Golf Club, 43650 Bandar Baru Bangi, Selangor
+
+---------- Hotel 71 ----------
+State               : Selangor
+Area                : Hulu Langat
+Name                : Grand Barakah Hotel
+Address             : Jalan Selaman 1, Palm Square, 68000 Ampang Jaya, Selangor
+
+---------- Hotel 72 ----------
+State               : Selangor
+Area                : Hulu Langat
+Name                : RHR Hotel
+Address             : Wisma MKH, Bandar Kajang, 43000 Kajang, Selangor
+
+---------- Hotel 73 ----------
+State               : Selangor
+Area                : Klang
+Name                : Crystal Crown Hotel Harbour View Klang
+Address             : 217, Persiaran Raja Muda Musa, 42000 Pelabuhan Klang, Selangor
+
+---------- Hotel 74 ----------
+State               : Selangor
+Area                : Klang
+Name                : Premiere Hotel Klang
+Address             : Bandar Bukit Tinggi 1/KS6, Jalan Langat, 41200 Klang, Selangor
+
+---------- Hotel 75 ----------
+State               : Selangor
+Area                : Klang
+Name                : Wyndham Acentria Klang Hotel
+Address             : 1-G-1, Persiaran Bukit Raja 2, KU1, 41150 Klang, Selangor
+
+---------- Hotel 76 ----------
+State               : Selangor
+Area                : Gombak
+Name                : Mercure Selangor Selayang
+Address             : No B G 12, Dataran Emerald, Jalan Ps 11, Prima Selayang, 68100 Batu Caves, Selangor
+
+---------- Hotel 77 ----------
+State               : Selangor
+Area                : Sepang
+Name                : Cyberview Resort & Spa
+Address             : The Lodge, Persiaran Multimedia, Cyber 7, 63000 Cyberjaya, Selangor
+
+---------- Hotel 78 ----------
+State               : Selangor
+Area                : Sepang
+Name                : Movenpick Hotel & Convention Centre KLIA
+Address             : Kompleks TH Sepang, Jalan Masjid KLIA, 64000 Sepang, Selangor
+
+---------- Hotel 79 ----------
+State               : Selangor
+Area                : Sepang
+Name                : Sama-sama Hotel KLIA
+Address             : 90, Jln CTA 4B, Kuala Lumpur International Airport, 64000 Sepang, Selangor
+
+---------- Hotel 80 ----------
+State               : Selangor
+Area                : Kuala Langat
+Name                : Amverton Cove Golf & Island Resort
+Address             : Jalan Pulau Carey, 42960 Pulau Carey, Selangor
+
+---------- Hotel 81 ----------
+State               : Selangor
+Area                : Kuala Langat
+Name                : Gold Coast Morib International Resort
+Address             : PT 294, Morib Beach, 42700 Banting, Selangor
+
+---------- Hotel 82 ----------
+State               : Selangor
+Area                : Kuala Selangor
+Name                : De Palma Resort Kuala Selangor
+Address             : Jalan Tanjung Keramat, 45000 Kuala Selangor, Selangor
+
+---------- Hotel 83 ----------
+State               : Selangor
+Area                : Kuala Selangor
+Name                : Padi Box Eco Resort
+Address             : Jalan Tali Air 4, Kampung Parit Empat, 45400 Sekinchan, Selangor
+
+---------- Hotel 84 ----------
+State               : Selangor
+Area                : Sabak Bernam
+Name                : Grand Court Hotel Sabak Bernam
+Address             : 1, Jalan 2, Taman Berkat, 45300 Sungai Besar, Selangor
+
+---------- Hotel 85 ----------
+State               : Kuala Lumpur
+Area                : KLCC
+Name                : Hotel Maya Kuala Lumpur
+Address             : 138, Jln Ampang, 50450 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 86 ----------
+State               : Kuala Lumpur
+Area                : KLCC
+Name                : Impiana KLCC Hotel
+Address             : 13, Jalan Pinang, 50450 Kuala Lumpur
+
+---------- Hotel 87 ----------
+State               : Kuala Lumpur
+Area                : KLCC
+Name                : Santa Grand Signature Kuala Lumpur
+Address             : 138, Jln Ampang, 50450 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 88 ----------
+State               : Kuala Lumpur
+Area                : Bukit Bintang
+Name                : ANSAR Hotel Kuala Lumpur
+Address             : 101, Jln Bukit Bintang, Bukit Bintang, 55100 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 89 ----------
+State               : Kuala Lumpur
+Area                : Bukit Bintang
+Name                : Izumi Hotel Bukit Bintang
+Address             : 85, Jalan Berangan, Off, Jln Bukit Bintang, Bukit Bintang, 50200 Kuala Lumpur
+
+---------- Hotel 90 ----------
+State               : Kuala Lumpur
+Area                : Bukit Bintang
+Name                : Pavilion Hotel Kuala Lumpur
+Address             : 170, Jln Bukit Bintang, Bukit Bintang, 55100 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 91 ----------
+State               : Kuala Lumpur
+Area                : Bukit Bintang
+Name                : WOLO Kuala Lumpur
+Address             : Corner of Jalan Bukit Bintang, Jln Sultan Ismail, 55100 Kuala Lumpur
+
+---------- Hotel 92 ----------
+State               : Kuala Lumpur
+Area                : Chinatown
+Name                : Else Kuala Lumpur
+Address             : 145, Jalan Tun H S Lee, City Centre, 50000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 93 ----------
+State               : Kuala Lumpur
+Area                : Chinatown
+Name                : Four Points by Sheraton Kuala Lumpur, Chinatown
+Address             : 2, Jalan Balai Polis, City Centre, 50000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 94 ----------
+State               : Kuala Lumpur
+Area                : Chinatown
+Name                : Space Hotel Chinatown
+Address             : 5, Jalan Petaling, City Centre, 50000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 95 ----------
+State               : Kuala Lumpur
+Area                : KL Sentral
+Name                : Easy Hotel KL Sentral
+Address             : 110, JALAN TUN SAMBANTHAN BRICKFIELD, Kuala Lumpur Sentral, 50470 Wilayah Persekutuan, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 96 ----------
+State               : Kuala Lumpur
+Area                : KL Sentral
+Name                : Hotel Sentral Kuala Lumpur
+Address             : 30, Jalan Thambipillay, Brickfields, 50470 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 97 ----------
+State               : Kuala Lumpur
+Area                : KL Sentral
+Name                : Le Meridien Kuala Lumpur
+Address             : 2, Jalan Stesen Sentral, KL Sentral, 50470 Kuala Lumpur
+
+---------- Hotel 98 ----------
+State               : Kuala Lumpur
+Area                : KL Sentral
+Name                : The St. Regis Kuala Lumpur
+Address             : 6, Jalan Stesen Sentral 2, Kuala Lumpur Sentral, 50470 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 99 ----------
+State               : Kuala Lumpur
+Area                : Bangsar / Mont Kiara
+Name                : Amari Kuala Lumpur
+Address             : 3, Jalan Bangsar, KL Eco City, 59200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 100 ----------
+State               : Kuala Lumpur
+Area                : Bangsar / Mont Kiara
+Name                : Hyatt House Kuala Lumpur, Mont Kiara
+Address             : G-2 Arcoris, 10, Jalan Kiara, Mont Kiara, 50480 Kuala Lumpur
+
+---------- Hotel 101 ----------
+State               : Kuala Lumpur
+Area                : Bangsar / Mont Kiara
+Name                : The Signature Hotel & Serviced Suites Hartamas
+Address             : 3, Jln Sri Hartamas 22, Desa Sri Hartamas, 50480 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 102 ----------
+State               : Kuala Lumpur
+Area                : Mid Valley City
+Name                : St Giles Mid Valley Kuala Lumpur
+Address             : The Gardens, Mid Valley City, Lingkaran Syed Putra, 59200 Kuala Lumpur
+
+---------- Hotel 103 ----------
+State               : Kuala Lumpur
+Area                : Kepong
+Name                : Crystal Crown Hotel Kuala Lumpur (Kepong)
+Address             : 3, Jalan Jambu Mawar, Off, Jln Kepong, 52000 Kuala Lumpur
+
+---------- Hotel 104 ----------
+State               : Kuala Lumpur
+Area                : Kepong
+Name                : KIP Hotel Kuala Lumpur
+Address             : 77, Jalan Seri Utara 1, Sri Utara Business Park, 68100 Kuala Lumpur, Selangor
+
+---------- Hotel 105 ----------
+State               : Kuala Lumpur
+Area                : Cheras
+Name                : Hotel Caliber
+Address             : 46-56, Jalan 5/101c, Cheras Business Centre, 56100 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 106 ----------
+State               : Kuala Lumpur
+Area                : Cheras
+Name                : Silka Cheras Kuala Lumpur
+Address             : 100, Jln Cheras, Phoenix Business Park, 56000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur
+
+---------- Hotel 107 ----------
+State               : Negeri Sembilan
+Area                : Port Dickson
+Name                : Avillion Port Dickson
+Address             : 3rd Mile, Jalan Pantai, 71000 Port Dickson, Negeri Sembilan
+
+---------- Hotel 108 ----------
+State               : Negeri Sembilan
+Area                : Port Dickson
+Name                : Grand Lexis Port Dickson
+Address             : Batu 2, Jalan Seremban, 71000 Port Dickson, Negeri Sembilan
+
+---------- Hotel 109 ----------
+State               : Negeri Sembilan
+Area                : Port Dickson
+Name                : Lexis Hibiscus Port Dickson
+Address             : 12th Mile, Jalan Pantai, 71250 Port Dickson, Negeri Sembilan
+
+---------- Hotel 110 ----------
+State               : Negeri Sembilan
+Area                : Port Dickson
+Name                : Thistle Port Dickson Resort
+Address             : KM16, Jalan Pantai Teluk Kemang, 71050 Port Dickson, Negeri Sembilan
+
+---------- Hotel 111 ----------
+State               : Negeri Sembilan
+Area                : Seremban
+Name                : Palm Seremban Hotel
+Address             : Jalan Toman 1, Kemayan Square, 70200 Seremban, Negeri Sembilan
+
+---------- Hotel 112 ----------
+State               : Negeri Sembilan
+Area                : Seremban
+Name                : Royale Chulan Seremban
+Address             : Jalan Dato A.S Dawood, 70100 Seremban, Negeri Sembilan
+
+---------- Hotel 113 ----------
+State               : Negeri Sembilan
+Area                : Nilai
+Name                : Nilai Springs Resort Hotel
+Address             : PT 4770, Bandar Baru Nilai, 71800 Nilai, Negeri Sembilan
+
+---------- Hotel 114 ----------
+State               : Negeri Sembilan
+Area                : Nilai
+Name                : Sri Enstek Hotel
+Address             : 61, Jln Timur 6/1B, Bandar Baru Enstek, 71800 Bandar Baru Enstek, Negeri Sembilan
+
+---------- Hotel 115 ----------
+State               : Negeri Sembilan
+Area                : Kuala Pilah
+Name                : Melang Inn
+Address             : PT 1, Jalan Melang, Taman Pilah Jaya, 72000 Kuala Pilah, Negeri Sembilan
+
+---------- Hotel 116 ----------
+State               : Negeri Sembilan
+Area                : Jelebu
+Name                : D'Inara @ Jelebu
+Address             : Lot 1830, Batu 19 1/2, Kampung Gedang, 71600 Kuala Klawang, Negeri Sembilan
+
+---------- Hotel 117 ----------
+State               : Negeri Sembilan
+Area                : Rembau
+Name                : Seri Rembau Hotel
+Address             : No. 31, Jalan RS2, Rembau Sentral, 71300 Rembau, Negeri Sembilan
+
+---------- Hotel 118 ----------
+State               : Negeri Sembilan
+Area                : Lukut
+Name                : Tasik Villa International Resort
+Address             : Jalan Tasik Villa, Kota Lukut, 71010 Port Dickson, Negeri Sembilan
+
+---------- Hotel 119 ----------
+State               : Negeri Sembilan
+Area                : Rantau
+Name                : OYO 44010 Royals Star Hotel
+Address             : Jalan Tuanku Antah, 70100 Seremban, Negeri Sembilan
+
+---------- Hotel 120 ----------
+State               : Melaka
+Area                : Historic Core
+Name                : Liu Men Hotel Melaka
+Address             : 46-56, Jalan Tokong, Kampung Dua, 75200 Melaka
+
+---------- Hotel 121 ----------
+State               : Melaka
+Area                : Historic Core
+Name                : Quayside Hotel Melaka
+Address             : Jln Merdeka, Banda Hilir, 75000 Melaka
+
+---------- Hotel 122 ----------
+State               : Melaka
+Area                : Historic Core
+Name                : TheBlanc Boutique Hotel
+Address             : 26-28, Jalan Kubu, 75300 Melaka
+
+---------- Hotel 123 ----------
+State               : Melaka
+Area                : Banda Hilir
+Name                : Estadia Hotel
+Address             : Jln Merdeka, Banda Hilir, 75000 Melaka
+
+---------- Hotel 124 ----------
+State               : Melaka
+Area                : Banda Hilir
+Name                : Hatten Hotel Melaka
+Address             : Jln Merdeka, Banda Hilir, 75000 Melaka
+
+---------- Hotel 125 ----------
+State               : Melaka
+Area                : Banda Hilir
+Name                : Holiday Inn Melaka
+Address             : Jln Syed Abdul Aziz, 75000 Melaka
+
+---------- Hotel 126 ----------
+State               : Melaka
+Area                : Melaka River Front
+Name                : Swiss Garden Hotel Melaka
+Address             : T2-4, The Shore @ Melaka River, Jalan Persisiran Bunga Raya, 75300 Melaka
+
+---------- Hotel 127 ----------
+State               : Melaka
+Area                : Melaka River Front
+Name                : The Shore Hotel & Residences
+Address             : Level GF, 193, Pinggiran Sungai Melaka, Jalan Persisiran Bunga Raya, 75100 Melaka
+
+---------- Hotel 128 ----------
+State               : Melaka
+Area                : Kota Laksamana
+Name                : Asteria Melaka by Attic Suite
+Address             : Jalan KSB 11A, 75200 Melaka
+
+---------- Hotel 129 ----------
+State               : Melaka
+Area                : Kota Laksamana
+Name                : The Stable Melaka Guest House
+Address             : Jalan Hang Kasturi, Taman Kota Laksamana, 75200 Melaka
+
+---------- Hotel 130 ----------
+State               : Melaka
+Area                : Alor Gajah
+Name                : A'Famosa Resort
+Address             : Jalan Kemus, Simpang Ampat, 78000 Alor Gajah, Melaka
+
+---------- Hotel 131 ----------
+State               : Melaka
+Area                : Ayer Keroh
+Name                : Ames Hotel
+Address             : Jalan Pkak 2, Pusat Komersial, 75450 Ayer Keroh, Melaka
+
+---------- Hotel 132 ----------
+State               : Melaka
+Area                : Pulau Melaka
+Name                : Birkin International Hotel
+Address             : LOT 12191, BANDAR XLV, 75200 Malacca
+
+---------- Hotel 133 ----------
+State               : Johor
+Area                : Johor Bahru
+Name                : Amari Johor Bahru
+Address             : 82C, Jalan Trus, Bandar Johor Bahru, 80000 Johor Bahru, Johor Darul Ta'zim
+
+---------- Hotel 134 ----------
+State               : Johor
+Area                : Johor Bahru
+Name                : Grand Paragon Hotel
+Address             : 18, Jalan Harimau, Taman Century, 80250 Johor Bahru, Johor Darul Ta'zim
+
+---------- Hotel 135 ----------
+State               : Johor
+Area                : Johor Bahru
+Name                : Holiday Inn Johor Bahru City Centre
+Address             : Jalan Tun Abdul Razak, 80000 Johor Bahru, Johor
+
+---------- Hotel 136 ----------
+State               : Johor
+Area                : Iskandar Puteri
+Name                : Ibis Styles Johor Iskandar Puteri
+Address             : 1 Nusa Sentrum Complex, Jalan SILC, 79200 Iskandar Puteri, Johor
+
+---------- Hotel 137 ----------
+State               : Johor
+Area                : Iskandar Puteri
+Name                : Legoland Hotel Malaysia
+Address             : No 7, Jln Legoland, Bandar, 79250 Johor Bahru, Johor
+
+---------- Hotel 138 ----------
+State               : Johor
+Area                : Desaru
+Name                : Hard Rock Hotel Desaru Coast
+Address             : Desaru Coast, Jln Pantai 3, 81930 Bandar Penawar, Johor
+
+---------- Hotel 139 ----------
+State               : Johor
+Area                : Desaru
+Name                : The Westin Desaru Coast Resort
+Address             : Desaru Coast, Jln Pantai 3, 81930 Bandar Penawar, Johor
+
+---------- Hotel 140 ----------
+State               : Johor
+Area                : Muar
+Name                : Classic Hotel
+Address             : 69, Jalan Ali, Pekan Muar, 84000 Muar, Johor Darul Ta'zim
+
+---------- Hotel 141 ----------
+State               : Johor
+Area                : Muar
+Name                : Muar Trader's Hotel
+Address             : No. 16, Pusat Perdagangan Muar, Jalan Peteri, Jalan Petrie, Taman Sri Tanjung, 84000 Muar, Johor Darul Ta'zim
+
+---------- Hotel 142 ----------
+State               : Johor
+Area                : Mersing
+Name                : Hotel Mersing Elite
+Address             : Jalan Dato Mohd Ali, Mersing Kechil, 86800 Mersing, Johor Darul Ta'zim
+
+---------- Hotel 143 ----------
+State               : Johor
+Area                : Mersing
+Name                : Mersing Merlin Inn
+Address             : Jalan Endau, Kampung Seri Lalang, 86800 Mersing, Johor Darul Ta'zim
+
+---------- Hotel 144 ----------
+State               : Johor
+Area                : Kluang
+Name                : Hotel Setia
+Address             : Jalan Setia Indah 1, 86000 Kluang, Johor Darul Ta'zim
+
+---------- Hotel 145 ----------
+State               : Johor
+Area                : Kluang
+Name                : Kluang Parade Hotel
+Address             : Blok D, Jalan Mata Kucing No 9AB- 14B, Kampung Masjid Lama, 86000 Kluang, Johor
+
+---------- Hotel 146 ----------
+State               : Johor
+Area                : Batu Pahat
+Name                : Pine Tree Hotel
+Address             : 36, Jalan Mengkudu, Taman Batu Pahat, 83000 Batu Pahat, Johor Darul Ta'zim
+
+---------- Hotel 147 ----------
+State               : Johor
+Area                : Batu Pahat
+Name                : The Katerina Hotel
+Address             : 8, Jln Zabedah, Kampung Pegawai, 83000 Batu Pahat, Johor Darul Ta'zim
+
+---------- Hotel 148 ----------
+State               : Johor
+Area                : Segamat
+Name                : Hotel VIP
+Address             : Jalan Buloh Kasap, Kampung Tengah, 85000 Segamat, Johor Darul Ta'zim
+
+---------- Hotel 149 ----------
+State               : Johor
+Area                : Segamat
+Name                : Segamat Hotel
+Address             : 14, Jalan Salim, Kampung Abdullah, 85000 Segamat, Johor Darul Ta'zim
+
+---------- Hotel 150 ----------
+State               : Pahang
+Area                : Genting Highlands
+Name                : Genting SkyWorlds Hotel
+Address             : Genting Highlands, 69000 Genting Highlands, Pahang
+
+---------- Hotel 151 ----------
+State               : Pahang
+Area                : Genting Highlands
+Name                : Swiss-Garden Hotel & Residences Genting Highlands
+Address             : Windmill Upon Hills, Jalan Permai, 69000 Genting Highlands, Pahang
+
+---------- Hotel 152 ----------
+State               : Pahang
+Area                : Genting Highlands
+Name                : Wyndham Ion Majestic Hotel
+Address             : Jalan Ion Delemen, 69000 Genting Highlands, Pahang
+
+---------- Hotel 153 ----------
+State               : Pahang
+Area                : Kuantan
+Name                : AC Hotel Marriott Kuantan
+Address             : Jln Teluk Sisek, 25000 Kuantan, Pahang
+
+---------- Hotel 154 ----------
+State               : Pahang
+Area                : Kuantan
+Name                : Hyatt Regency Kuantan Resort
+Address             : Teluk Cempedak, 25050 Kuantan, Pahang
+
+---------- Hotel 155 ----------
+State               : Pahang
+Area                : Kuantan
+Name                : Swiss-Belhotel Kuantan
+Address             : 1, Jalan Tanjung Lumpur, Tanjung Lumpur, 26060 Kuantan, Pahang
+
+---------- Hotel 156 ----------
+State               : Pahang
+Area                : Cameron Highlands
+Name                : Cameron Highlands Resort
+Address             : By The Golf Course, Brinchang, 39000 Tanah Rata, Pahang
+
+---------- Hotel 157 ----------
+State               : Pahang
+Area                : Cameron Highlands
+Name                : Hotel De'la Ferns
+Address             : Batu 39, Jalan Besar, Tanah Rata, 39000 Tanah Rata, Pahang
+
+---------- Hotel 158 ----------
+State               : Pahang
+Area                : Cameron Highlands
+Name                : Zenith Hotel Cameron
+Address             : Jln Majlis, Tanah Rata, 39000 Tanah Rata, Pahang
+
+---------- Hotel 159 ----------
+State               : Pahang
+Area                : Cherating
+Name                : Club Med Cherating
+Address             : 29th Mile, Jalan Kuantan-Kemaman, 26080 Kuantan, Pahang
+
+---------- Hotel 160 ----------
+State               : Pahang
+Area                : Cherating
+Name                : Royale Chulan Cherating Villas & Chalets
+Address             : Jalan Kampung Cherating Lama, 26100 Balok, Pahang
+
+---------- Hotel 161 ----------
+State               : Pahang
+Area                : Taman Negara
+Name                : Mutiara Taman Negara
+Address             : 27000 Kuala Tahan, Pahang
+
+---------- Hotel 162 ----------
+State               : Pahang
+Area                : Taman Negara
+Name                : Xcape Resort
+Address             : Lot 813, 27000 Kuala Tahan, Pahang
+
+---------- Hotel 163 ----------
+State               : Pahang
+Area                : Tioman Island
+Name                : ABC Chalet Tioman
+Address             : Kampung Air Batang, Pulau Tioman, 26800 Kuala Rompin, Pahang
+
+---------- Hotel 164 ----------
+State               : Pahang
+Area                : Tioman Island
+Name                : Paya Beach Spa & Dive Resort
+Address             : Lot 71 & 77, Kampong Paya, Pulau Tioman, Johor
+
+---------- Hotel 165 ----------
+State               : Pahang
+Area                : Tioman Island
+Name                : Tunamaya Beach & Spa Resort
+Address             : Lot 20 & 21, Sarang Burung, Kg. Mukut, 26800 Pulau Tioman, Pahang
+
+---------- Hotel 166 ----------
+State               : Pahang
+Area                : Fraser's Hill
+Name                : Shahzan Inn Fraser's Hill
+Address             : Jalan Lady Guillemard, 49000 Bukit Fraser, Pahang
+
+---------- Hotel 167 ----------
+State               : Pahang
+Area                : Bentong
+Name                : Bilut Hills Eco Resort
+Address             : PT59, Mukim Tras, 27600 Bentong, Pahang
+
+---------- Hotel 168 ----------
+State               : Pahang
+Area                : Bentong
+Name                : Colmar Tropicale (Bukit Tinggi)
+Address             : KM 48, Lebuhraya Karak, Bukit Tinggi, 28750 Bentong, Pahang
+
+---------- Hotel 169 ----------
+State               : Terengganu
+Area                : Kuala Terengganu
+Name                : Duyong Marina & Resort
+Address             : Pulau Duyong, 21300 Kuala Terengganu, Terengganu
+
+---------- Hotel 170 ----------
+State               : Terengganu
+Area                : Kuala Terengganu
+Name                : Primula Beach Hotel
+Address             : Jalan Persinggahan, 20400 Kuala Terengganu, Terengganu
+
+---------- Hotel 171 ----------
+State               : Terengganu
+Area                : Kuala Terengganu
+Name                : Raia Hotel & Convention Centre Terengganu
+Address             : Jalan Lapangan Terbang, Kampung Telaga Batin, 21300 Kuala Terengganu, Terengganu
+
+---------- Hotel 172 ----------
+State               : Terengganu
+Area                : Besut
+Name                : Mimpi Perhentian
+Address             : Long Beach, Pulau Perhentian Kecil, 22300 Besut, Terengganu
+
+---------- Hotel 173 ----------
+State               : Terengganu
+Area                : Besut
+Name                : Tuna Bay Island Resort
+Address             : Kampung Pulau Perhentian, 22300 Besut, Terengganu
+
+---------- Hotel 174 ----------
+State               : Terengganu
+Area                : Dungun
+Name                : Tanjong Jara Resort
+Address             : Batu 8, Off Jalan Dungun, 23000 Kuala Dungun, Terengganu
+
+---------- Hotel 175 ----------
+State               : Terengganu
+Area                : Kuala Nerus
+Name                : The Serai Cottage Transit Hotel
+Address             : Lot 29768 & 29769, Tingkat 1 Taman Bestari Jalan ILP, Kampung Gong Badak, 21300, Terengganu
+
+---------- Hotel 176 ----------
+State               : Terengganu
+Area                : Heritage Waterfront Area
+Name                : Felda Residence Kuala Terengganu
+Address             : Jalan Hiliran, 20300 Kuala Terengganu, Terengganu
+
+---------- Hotel 177 ----------
+State               : Terengganu
+Area                : Heritage Waterfront Area
+Name                : Ming Paragon Hotel
+Address             : 219D, Jalan Sultan Zainal Abidin, 20200 Kuala Terengganu, Terengganu
+
+---------- Hotel 178 ----------
+State               : Terengganu
+Area                : Hulu Terengganu
+Name                : Kenyir Eco Resort
+Address             : Jalan Pengkalan Utama, Tasik Kenyir, 21700 Kuala Berang, Terengganu
+
+---------- Hotel 179 ----------
+State               : Terengganu
+Area                : Kemaman
+Name                : Resort World Kijal
+Address             : KM 28, Jalan Kemaman-Dungun, Kampung Meraga Beris, 24210 Kijal, Terengganu
+
+---------- Hotel 180 ----------
+State               : Kelantan
+Area                : Kota Bharu
+Name                : Grand Renai Hotel
+Address             : Jalan Sultan Yahya Petra, Kota Sri Mutiara, 15150 Kota Bharu, Kelantan
+
+---------- Hotel 181 ----------
+State               : Kelantan
+Area                : Kota Bharu
+Name                : Perdana Kota Bharu
+Address             : Jln Mahmood, Bandar Kota Bharu, 15000 Kota Bharu, Kelantan
+
+---------- Hotel 182 ----------
+State               : Kelantan
+Area                : Bachok
+Name                : Andiana Beach & Resort
+Address             : Lot 1105, Kampung Pulau Belongan, 16300 Bachok, Kelantan
+
+---------- Hotel 183 ----------
+State               : Kelantan
+Area                : Bachok
+Name                : Villa Beau Rivage Bachok
+Address             : PT 22523, Kg Aur, 16300 Bachok, Kelantan
+
+---------- Hotel 184 ----------
+State               : Kelantan
+Area                : Pasir Puteh
+Name                : Aleesa Roomstay
+Address             : Lot 912, Kampung Gelam, 16800 Pasir Puteh, Kelantan
+
+---------- Hotel 185 ----------
+State               : Kelantan
+Area                : Pasir Puteh
+Name                : Tok Aman Bali Beach Resort
+Address             : 6264, 1, Pantai Bisikan Bayu, 16700 Cherang Ruku, Kelantan
+
+---------- Hotel 186 ----------
+State               : Kelantan
+Area                : Gua Musang
+Name                : Mines Inn Hotel
+Address             : PT 8214, Jalan Persiaran Raya, 18300 Gua Musang, Kelantan
+
+---------- Hotel 187 ----------
+State               : Kelantan
+Area                : Gua Musang
+Name                : Moonriver Lodge
+Address             : Jalan Gua Musang - Cameron Highlands, 18300 Lojing, Kelantan
+
+---------- Hotel 188 ----------
+State               : Kelantan
+Area                : Tanah Merah
+Name                : Humaira Hotel
+Address             : PT 833, Kompleks Perniagaan Humaira, Jalan Humaira 1, Tanah Merah, 17500 Tanah Merah, Kelantan
+
+---------- Hotel 189 ----------
+State               : Kelantan
+Area                : Jeli
+Name                : Jeli Inn
+Address             : PT 5623, Jeli inn, Lebuhraya Timur-Barat, Kg Gemang Baru, 17700 Ayer Lanas, Kelantan
+
+---------- Hotel 190 ----------
+State               : Kelantan
+Area                : Pasir Mas
+Name                : Mas Inn Hotel
+Address             : Lot 5200, Jalan Pasir Mas - Rantau Panjang, 17070 Pasir Mas, Kelantan
+
+---------- Hotel 191 ----------
+State               : Sabah
+Area                : Kota Kinabalu
+Name                : The Magellan Sutera Resort
+Address             : 1 Sutera Harbour Boulevard, Sutera Harbour, 88100 Kota Kinabalu, Sabah
+
+---------- Hotel 192 ----------
+State               : Sabah
+Area                : Kota Kinabalu
+Name                : The Pacific Sutera Hotel
+Address             : 1 Sutera Harbour Boulevard, Sutera Harbour, 88100 Kota Kinabalu, Sabah
+
+---------- Hotel 193 ----------
+State               : Sabah
+Area                : Sandakan
+Name                : Four Points by Sheraton Sandakan
+Address             : Harbour Square, Pusat Bandar Sandakan, 90000 Sandakan, Sabah
+
+---------- Hotel 194 ----------
+State               : Sabah
+Area                : Sandakan
+Name                : Sepilok Nature Resort
+Address             : 1.5KM, Jalan Sepilok, Sepilok, 90000 Sandakan, Sabah
+
+---------- Hotel 195 ----------
+State               : Sabah
+Area                : Tawau
+Name                : Borneo Royale Hotel
+Address             : Mile 1, Jalan Kuhara, 91000 Tawau, Sabah
+
+---------- Hotel 196 ----------
+State               : Sabah
+Area                : Tawau
+Name                : L A Hotel
+Address             : 38, Jalan Haji Karim, Bandar Tawau, 91000 Tawau, Sabah
+
+---------- Hotel 197 ----------
+State               : Sabah
+Area                : Semporna
+Name                : Sipadan Water Village Resort
+Address             : Mabul Island, 91031 Mabul, Sabah
+
+---------- Hotel 198 ----------
+State               : Sabah
+Area                : Kundasang
+Name                : Pine Resort
+Address             : Pekan Kundasang, 89308 Ranau, Sabah
+
+---------- Hotel 199 ----------
+State               : Sabah
+Area                : Kundasang
+Name                : Sutera Sanctuary Lodges at Kinabalu Park
+Address             : Kinabalu National Park, Kundasang, 89300 Ranau, Sabah
+
+---------- Hotel 200 ----------
+State               : Sabah
+Area                : Lahad Datu
+Name                : Borneo Rainforest Lodge
+Address             : Lot 20, Block 3, MDLD 3285, Ground Floor, Fajar Centre Fajar Lorong 9, 91120 Lahad Datu, Sabah
+
+---------- Hotel 201 ----------
+State               : Sabah
+Area                : Lahad Datu
+Name                : My Inn Hotel Lahad Datu
+Address             : 5th-8th Floor, Lot264, Lorong Bandar Perdana 6, Sarip, 91100 Lahad Datu, Sabah
+
+---------- Hotel 202 ----------
+State               : Sabah
+Area                : Keningau
+Name                : Hotel Perkasa Keningau
+Address             : 129, KM 0.2, Jalan Kampung, 89007 Keningau, Sabah
+
+---------- Hotel 203 ----------
+State               : Sabah
+Area                : Keningau
+Name                : Manis Manis Rooftop Resort
+Address             : 89000 Keningau, Sabah
+
+---------- Hotel 204 ----------
+State               : Sabah
+Area                : Kudat
+Name                : Kotak Kotak Cabin
+Address             : Jln Tanjung Simpang Mengayau, 89050 Kudat, Sabah
+
+---------- Hotel 205 ----------
+State               : Sabah
+Area                : Kudat
+Name                : Kudat Riviera
+Address             : Jln Pantai Kelambu, Kampung Bawang Jamal, 89050 Kudat, Sabah
+
+---------- Hotel 206 ----------
+State               : Sarawak
+Area                : Kuching
+Name                : Sheraton Kuching Hotel
+Address             : 2, Jln Padungan, 93100 Kuching, Sarawak
+
+---------- Hotel 207 ----------
+State               : Sarawak
+Area                : Kuching
+Name                : The Waterfront Hotel
+Address             : 68, Jalan Tun Abang Haji Openg, 93000 Kuching, Sarawak
+
+---------- Hotel 208 ----------
+State               : Sarawak
+Area                : Miri
+Name                : Merdeka Suite Hotel (Anfasar)
+Address             : Bintulu-Miri Hwy, 98000 Miri, Sarawak
+
+---------- Hotel 209 ----------
+State               : Sarawak
+Area                : Miri
+Name                : Miri Marriott Resort & Spa
+Address             : Jalan Temenggong Datuk Oyong Lawai, 98000 Miri, Sarawak
+
+---------- Hotel 210 ----------
+State               : Sarawak
+Area                : Sibu
+Name                : Kingwood Hotel Sibu
+Address             : No.12, Lorong Lanang 4, Pekan Sibu, 96000 Sibu, Sarawak
+
+---------- Hotel 211 ----------
+State               : Sarawak
+Area                : Sibu
+Name                : RH Hotel Sibu
+Address             : Jln Kampung Nyabor, Pekan Sibu, 96000 Sibu, Sarawak
+
+---------- Hotel 212 ----------
+State               : Sarawak
+Area                : Bintulu
+Name                : Imperial Hotel Bintulu
+Address             : Lot 483 Block, 31, Jalan Tanjung Batu, Kemena Land District, 97000 Bintulu, Sarawak
+
+---------- Hotel 213 ----------
+State               : Sarawak
+Area                : Bintulu
+Name                : Parkcity Everly Hotel Bintulu
+Address             : Jalan Tun Razak, 97000 Bintulu, Sarawak
+
+---------- Hotel 214 ----------
+State               : Sarawak
+Area                : Mulu
+Name                : Mulu Marriott Resort & Spa
+Address             : Sungai Melinau, 98008 Mulu, Sarawak
+
+---------- Hotel 215 ----------
+State               : Sarawak
+Area                : Kapit
+Name                : Hotel Orchard Kapit
+Address             : Kapit, Sarawak
+
+---------- Hotel 216 ----------
+State               : Sarawak
+Area                : Kapit
+Name                : Meligai Hotel Kapit
+Address             : 96800, Lot 334, Jalan Airport, 96800 Kapit, Sarawak
+
+---------- Hotel 217 ----------
+State               : Sarawak
+Area                : Sematan
+Name                : Sematan Palm Beach Resort
+Address             : Lot 295, Kpg Sungai Kilong, Pekan Sematan, 94100 Sematan, Sarawak

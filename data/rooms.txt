@@ -1,0 +1,166 @@
+========================================
+Grand Horizon Hotel
+Rooms
+========================================
+Total               : 23
+
+---------- Room 1 ----------
+Room Number         : 101
+Room Type           : Single
+Capacity            : 1
+Price               : 120.00
+Status              : Available
+
+---------- Room 2 ----------
+Room Number         : 102
+Room Type           : Single
+Capacity            : 1
+Price               : 120.00
+Status              : Available
+
+---------- Room 3 ----------
+Room Number         : 103
+Room Type           : Single
+Capacity            : 1
+Price               : 120.00
+Status              : Available
+
+---------- Room 4 ----------
+Room Number         : 104
+Room Type           : Single
+Capacity            : 1
+Price               : 120.00
+Status              : Available
+
+---------- Room 5 ----------
+Room Number         : 105
+Room Type           : Single
+Capacity            : 1
+Price               : 120.00
+Status              : Cleaning
+
+---------- Room 6 ----------
+Room Number         : 201
+Room Type           : Twin
+Capacity            : 2
+Price               : 150.00
+Status              : Available
+
+---------- Room 7 ----------
+Room Number         : 202
+Room Type           : Twin
+Capacity            : 2
+Price               : 150.00
+Status              : Available
+
+---------- Room 8 ----------
+Room Number         : 203
+Room Type           : Twin
+Capacity            : 2
+Price               : 150.00
+Status              : Available
+
+---------- Room 9 ----------
+Room Number         : 204
+Room Type           : Twin
+Capacity            : 2
+Price               : 150.00
+Status              : Available
+
+---------- Room 10 ----------
+Room Number         : 301
+Room Type           : Deluxe
+Capacity            : 2
+Price               : 180.00
+Status              : Available
+
+---------- Room 11 ----------
+Room Number         : 302
+Room Type           : Deluxe
+Capacity            : 2
+Price               : 180.00
+Status              : Available
+
+---------- Room 12 ----------
+Room Number         : 303
+Room Type           : Deluxe
+Capacity            : 2
+Price               : 180.00
+Status              : Available
+
+---------- Room 13 ----------
+Room Number         : 304
+Room Type           : Deluxe
+Capacity            : 2
+Price               : 180.00
+Status              : Available
+
+---------- Room 14 ----------
+Room Number         : 305
+Room Type           : Deluxe
+Capacity            : 2
+Price               : 180.00
+Status              : Cleaning
+
+---------- Room 15 ----------
+Room Number         : 401
+Room Type           : Family
+Capacity            : 4
+Price               : 250.00
+Status              : Available
+
+---------- Room 16 ----------
+Room Number         : 402
+Room Type           : Family
+Capacity            : 4
+Price               : 250.00
+Status              : Available
+
+---------- Room 17 ----------
+Room Number         : 403
+Room Type           : Family
+Capacity            : 4
+Price               : 250.00
+Status              : Available
+
+---------- Room 18 ----------
+Room Number         : 501
+Room Type           : Suite
+Capacity            : 4
+Price               : 320.00
+Status              : Available
+
+---------- Room 19 ----------
+Room Number         : 502
+Room Type           : Suite
+Capacity            : 4
+Price               : 320.00
+Status              : Available
+
+---------- Room 20 ----------
+Room Number         : 503
+Room Type           : Suite
+Capacity            : 4
+Price               : 320.00
+Status              : Available
+
+---------- Room 21 ----------
+Room Number         : 504
+Room Type           : Suite
+Capacity            : 4
+Price               : 320.00
+Status              : Maintenance
+
+---------- Room 22 ----------
+Room Number         : 601
+Room Type           : Presidential
+Capacity            : 6
+Price               : 580.00
+Status              : Available
+
+---------- Room 23 ----------
+Room Number         : 602
+Room Type           : Presidential
+Capacity            : 6
+Price               : 580.00
+Status              : Available
