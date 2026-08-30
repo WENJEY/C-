@@ -72,7 +72,7 @@ void staffMenu() {
 		boxRow(optionText(2) + "Manage locations");
 		boxRow(optionText(3) + "Reports and statistics");
 		boxRow(optionText(4) + "View all bookings");
-		boxRow(optionText(5) + "Search customer");
+		boxRow(optionText(5) + "View all customers");
 		boxRow(optionText(6) + "Today's check-ins");
 		boxRow(optionText(0) + "Logout");
 		boxLine();
