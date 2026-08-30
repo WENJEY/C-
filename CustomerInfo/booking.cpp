@@ -54,43 +54,9 @@ bool createOneBooking() {
 		return false;
 	}
 
-	int inD = 0;
-	int inM = 0;
-	int inY = 0;
-	if (!askCheckInDate(inD, inM, inY)) {
-		cout << " Booking cancelled." << endl;
-		pauseEnter();
-		return false;
-	}
-
-	cout << "\n Enter number of nights or 0 to cancel: ";
-	int nights = getIntInRange(0, 30);
-	if (nights == 0) {
-		cout << " Booking cancelled." << endl;
-		pauseEnter();
-		return false;
-	}
-
-	int outD = inD;
-	int outM = inM;
-	int outY = inY;
-	addDays(outD, outM, outY, nights);
-	string checkInDate = makeDate(inD, inM, inY);
-	string checkInTime = "Any time";
-	string checkOutDate = makeDate(outD, outM, outY);
-	string inWeek = weekdayName(inD, inM, inY);
-	string outWeek = weekdayName(outD, outM, outY);
-
-	showPage("Check-out");
-	boxRow("Please check out before 12:00 noon");
-	boxRow(outWeek + " " + checkOutDate);
-	boxLine();
-	pauseEnter();
-
-	int shown = displayBookableRoomsForDates(guests, inD, inM, inY, outD, outM, outY);
+	int shown = displayBookableRooms(guests);
 	if (shown == 0) {
-		cout << red << " No room is free for these dates." << original << endl;
-		cout << " Try different check-in dates or fewer nights." << endl;
+		cout << red << " No available room fits this number of guests." << original << endl;
 		pauseEnter();
 		return false;
 	}
@@ -99,7 +65,7 @@ bool createOneBooking() {
 	int roomIndex = -1;
 
 	while (true) {
-		cout << "\n Enter room number to book, v to view its booking calendar, or 0 to cancel: ";
+		cout << "\n Enter room number to book or 0 to cancel: ";
 		getline(cin, roomNumber);
 
 		cout << endl;
@@ -108,21 +74,6 @@ bool createOneBooking() {
 			cout << " Booking cancelled." << endl;
 			pauseEnter();
 			return false;
-		}
-		if (roomNumber == "v" || roomNumber == "V") {
-			cout << " Enter room number to view booked dates: ";
-			getline(cin, roomNumber);
-			cout << endl;
-			if (roomNumber == "0" || roomNumber.empty()) {
-				continue;
-			}
-			if (findRoomIndex(roomNumber) == -1) {
-				cout << red << " Room not found." << original << endl;
-				continue;
-			}
-			showRoomBookingCalendar(roomNumber);
-			pauseEnter();
-			continue;
 		}
 
 		roomIndex = findRoomIndex(roomNumber);
@@ -140,18 +91,19 @@ bool createOneBooking() {
 				 << " guest(s). Please choose another." << original << endl;
 			continue;
 		}
-		if (!isRoomAvailableForDates(roomNumber, inD, inM, inY, outD, outM, outY)) {
-			cout << red << " This room is already booked for part of your stay." << original << endl;
-			showRoomBookingCalendar(roomNumber);
-			pauseEnter();
-			continue;
-		}
 		break;
 	}
 
-	showRoomBookingCalendar(roomNumber);
-	cout << " Your chosen dates are free for Room " << roomNumber << "." << endl;
+	showRoomAvailabilityForBooking(roomNumber);
 	pauseEnter();
+
+	cout << "\n Enter number of nights or 0 to cancel: ";
+	int nights = getIntInRange(0, 30);
+	if (nights == 0) {
+		cout << " Booking cancelled." << endl;
+		pauseEnter();
+		return false;
+	}
 
 	int nowY = 0;
 	int nowM = 0;
@@ -160,6 +112,52 @@ bool createOneBooking() {
 	int nowMin = 0;
 	string bookingDate;
 	string bookingTime;
+
+	int inD = 0;
+	int inM = 0;
+	int inY = 0;
+	while (true) {
+		if (!askCheckInDate(inD, inM, inY)) {
+			cout << " Booking cancelled." << endl;
+			pauseEnter();
+			return false;
+		}
+
+		int outD = inD;
+		int outM = inM;
+		int outY = inY;
+		addDays(outD, outM, outY, nights);
+		if (isRoomAvailableForDates(roomNumber, inD, inM, inY, outD, outM, outY)) {
+			break;
+		}
+
+		cout << red << "\n Room " << roomNumber << " is already booked for part of that stay." << original << endl;
+		showRoomBookingCalendar(roomNumber);
+		cout << " Please pick different check-in dates, or 0 to cancel booking." << endl;
+		cout << "\n Enter 1 to try another check-in date, or 0 to cancel: ";
+		int retry = getIntInRange(0, 1);
+		if (retry == 0) {
+			cout << " Booking cancelled." << endl;
+			pauseEnter();
+			return false;
+		}
+	}
+
+	int outD = inD;
+	int outM = inM;
+	int outY = inY;
+	addDays(outD, outM, outY, nights);
+	string checkInDate = makeDate(inD, inM, inY);
+	string checkInTime = "Any time";
+	string checkOutDate = makeDate(outD, outM, outY);
+	string inWeek = weekdayName(inD, inM, inY);
+	string outWeek = weekdayName(outD, outM, outY);
+
+	showPage("Check-out");
+	boxRow("Please check out before 12:00 noon");
+	boxRow(outWeek + " " + checkOutDate);
+	boxLine();
+	pauseEnter();
 
 	double estimated = roundMoney(roomList[roomIndex].price * nights);
 

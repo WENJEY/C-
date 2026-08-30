@@ -165,6 +165,7 @@ int displayBookableRooms(int guests);
 int displayBookableRoomsForDates(int guests, int inD, int inM, int inY, int outD, int outM, int outY);
 int displayRoomsForModify(int guests, const string& currentRoomNumber, int inD, int inM, int inY, int outD, int outM, int outY, const string& skipReservationID);
 void showRoomBookingCalendar(const string& roomNumber);
+void showRoomAvailabilityForBooking(const string& roomNumber);
 void printRoomColumns();
 void printRoomDataRow(const string& number, const string& type, int capacity, double price, const string& status);
 vector<string> destinationStates();

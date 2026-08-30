@@ -75,14 +75,15 @@ int displayBookableRooms(int guests) {
 		boxWrapHang(currentHotelAddress, 0);
 		boxWrap(currentHotelArea + ", " + currentHotelState);
 	}
-	boxRow("Any Available room with enough space can be booked.");
-	boxRow("Occupied, cleaning and maintenance rooms stay hidden.");
+	boxRow("Rooms that fit your guest count are listed below.");
+	boxRow("After you pick a room, the system shows which dates are free.");
+	boxRow("Cleaning and maintenance rooms stay hidden.");
 	boxRow("");
 	printRoomColumns();
 	boxLine();
 
 	for (size_t i = 0; i < roomList.size(); i++) {
-		if (roomList[i].status != "Available") {
+		if (roomList[i].status == "Cleaning" || roomList[i].status == "Maintenance") {
 			continue;
 		}
 		if (roomList[i].capacity < guests) {
@@ -199,12 +200,32 @@ void showRoomBookingCalendar(const string& roomNumber) {
 	}
 
 	if (count == 0) {
-		boxRow("No bookings yet. This room is open for your dates.");
+		boxRow("No bookings yet. You can book any date from today onward.");
 	}
 	else {
 		boxRow("");
 		boxRow("Dates outside the booked ranges above are available to book.");
 	}
+	boxLine();
+}
+
+void showRoomAvailabilityForBooking(const string& roomNumber) {
+	showRoomBookingCalendar(roomNumber);
+
+	int nowY = 0;
+	int nowM = 0;
+	int nowD = 0;
+	int nowH = 0;
+	int nowMin = 0;
+	malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
+
+	showPage("Room " + roomNumber + " — when can you book?");
+	boxRow("Today: " + makeDate(nowD, nowM, nowY) + "  " + makeClockTime(nowH, nowMin));
+	boxRow("Check-in any time on your chosen day.");
+	boxRow("Check-out before 12:00 noon on the last day.");
+	boxRow("");
+	boxRow("Pick check-in and nights that do NOT overlap");
+	boxRow("the Booked / Ongoing / Upcoming dates shown above.");
 	boxLine();
 }
 
