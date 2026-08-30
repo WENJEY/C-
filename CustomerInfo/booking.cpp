@@ -54,6 +54,22 @@ bool createOneBooking() {
 		return false;
 	}
 
+	int browseD = 0;
+	int browseM = 0;
+	int browseY = 0;
+	if (!askAvailabilityBrowseDate(browseD, browseM, browseY)) {
+		cout << " Booking cancelled." << endl;
+		pauseEnter();
+		return false;
+	}
+
+	if (displayAvailabilityForDate(guests, browseD, browseM, browseY) == 0) {
+		cout << red << " No room fits this guest count." << original << endl;
+		pauseEnter();
+		return false;
+	}
+	pauseEnter();
+
 	int shown = displayBookableRooms(guests);
 	if (shown == 0) {
 		cout << red << " No available room fits this number of guests." << original << endl;
@@ -93,9 +109,6 @@ bool createOneBooking() {
 		}
 		break;
 	}
-
-	showRoomAvailabilityForBooking(roomNumber);
-	pauseEnter();
 
 	cout << "\n Enter number of nights or 0 to cancel: ";
 	int nights = getIntInRange(0, 30);

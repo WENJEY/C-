@@ -101,6 +101,50 @@ int displayBookableRooms(int guests) {
 	return shown;
 }
 
+int displayAvailabilityForDate(int guests, int day, int month, int year) {
+	int shown = 0;
+	string dateText = weekdayName(day, month, year) + " " + makeDate(day, month, year);
+
+	showPage("Room availability on " + makeDate(day, month, year));
+	if (!currentHotelName.empty()) {
+		boxWrap(currentHotelName);
+	}
+	boxRow("Date checked: " + dateText);
+	boxRow("Available = room is free to start a stay on this date");
+	boxRow("Booked    = someone already has this room on this date");
+	boxRow("You will choose check-in date again after picking room and nights.");
+	boxRow("");
+	printRoomColumns();
+	boxLine();
+
+	for (size_t i = 0; i < roomList.size(); i++) {
+		if (roomList[i].capacity < guests) {
+			continue;
+		}
+		if (roomList[i].status == "Cleaning" || roomList[i].status == "Maintenance") {
+			continue;
+		}
+
+		string statusText;
+		if (isRoomAvailableOnDate(roomList[i].roomNumber, day, month, year)) {
+			statusText = "Available";
+		}
+		else {
+			statusText = "Booked";
+		}
+
+		printRoomDataRow(roomList[i].roomNumber, roomList[i].roomType,
+			roomList[i].capacity, roomList[i].price, statusText);
+		shown++;
+	}
+
+	if (shown == 0) {
+		boxRow("No room fits this guest count.");
+	}
+	boxLine();
+	return shown;
+}
+
 int displayBookableRoomsForDates(int guests, int inD, int inM, int inY, int outD, int outM, int outY) {
 	int shown = 0;
 	string checkIn = makeDate(inD, inM, inY);

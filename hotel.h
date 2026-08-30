@@ -162,6 +162,7 @@ void staffMenu();
 void displayAvailableRoom();
 void displayRoomsByType(const string& typeFilter);
 int displayBookableRooms(int guests);
+int displayAvailabilityForDate(int guests, int day, int month, int year);
 int displayBookableRoomsForDates(int guests, int inD, int inM, int inY, int outD, int outM, int outY);
 int displayRoomsForModify(int guests, const string& currentRoomNumber, int inD, int inM, int inY, int outD, int outM, int outY, const string& skipReservationID);
 void showRoomBookingCalendar(const string& roomNumber);
@@ -230,6 +231,7 @@ string twoDigits(int value);
 string makeDate(int day, int month, int year);
 string makeClockTime(int hour, int minute);
 string weekdayName(int day, int month, int year);
+bool askAvailabilityBrowseDate(int& day, int& month, int& year);
 bool askCheckInDate(int& day, int& month, int& year);
 bool parseDate(const string& text, int& day, int& month, int& year);
 bool isValidDate(int day, int month, int year);
@@ -244,8 +246,7 @@ bool isRoomBookedForRange(const string& roomNumber,
 bool isRoomAvailableForDates(const string& roomNumber,
 	int inD, int inM, int inY, int outD, int outM, int outY,
 	const string& skipReservationID = "");
-bool isStayActiveOnDate(int inD, int inM, int inY, int outD, int outM, int outY,
-	int onD, int onM, int onY);
+bool isRoomAvailableOnDate(const string& roomNumber, int day, int month, int year);
 string generateReservationID();
 string padNumber(int value, int width);
 int findRoomIndex(const string& roomNumber);

@@ -443,6 +443,42 @@ bool isRoomAvailableForDates(const string& roomNumber,
 	return !isRoomBookedForRange(roomNumber, inD, inM, inY, outD, outM, outY, skipReservationID);
 }
 
+bool isRoomAvailableOnDate(const string& roomNumber, int day, int month, int year) {
+	int roomIndex = findRoomIndex(roomNumber);
+	if (roomIndex == -1) {
+		return false;
+	}
+	if (roomList[roomIndex].status == "Cleaning" || roomList[roomIndex].status == "Maintenance") {
+		return false;
+	}
+
+	for (size_t r = 0; r < reservations.size(); r++) {
+		if (reservations[r].status == "Cancelled") {
+			continue;
+		}
+		if (reservations[r].roomNumber != roomNumber) {
+			continue;
+		}
+
+		int inD = 0;
+		int inM = 0;
+		int inY = 0;
+		int outD = 0;
+		int outM = 0;
+		int outY = 0;
+		if (!parseDate(reservations[r].checkInDate, inD, inM, inY)) {
+			continue;
+		}
+		if (!parseDate(reservations[r].checkOutDate, outD, outM, outY)) {
+			continue;
+		}
+		if (isStayActiveOnDate(inD, inM, inY, outD, outM, outY, day, month, year)) {
+			return false;
+		}
+	}
+	return true;
+}
+
 string generateReservationID() {
 	return padNumber(nextReservationID, 4);
 }
