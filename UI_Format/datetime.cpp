@@ -198,3 +198,15 @@ int daysFromToday(int day, int month, int year) {
 	}
 	return count;
 }
+
+bool datesOverlap(int inD1, int inM1, int inY1, int outD1, int outM1, int outY1,
+	int inD2, int inM2, int inY2, int outD2, int outM2, int outY2) {
+	return dateCompare(inD1, inM1, inY1, outD2, outM2, outY2) < 0
+		&& dateCompare(inD2, inM2, inY2, outD1, outM1, outY1) < 0;
+}
+
+bool isStayActiveOnDate(int inD, int inM, int inY, int outD, int outM, int outY,
+	int onD, int onM, int onY) {
+	return dateCompare(onD, onM, onY, inD, inM, inY) >= 0
+		&& dateCompare(onD, onM, onY, outD, outM, outY) < 0;
+}

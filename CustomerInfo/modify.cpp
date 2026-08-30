@@ -233,9 +233,23 @@ void changeCheckInDate(int resIndex) {
 		return;
 	}
 
+	int outD = d;
+	int outM = m;
+	int outY = y;
+	addDays(outD, outM, outY, reservations[resIndex].nights);
+	if (!isRoomAvailableForDates(reservations[resIndex].roomNumber, d, m, y, outD, outM, outY,
+		reservations[resIndex].reservationID)) {
+		cout << red << " Room " << reservations[resIndex].roomNumber
+			 << " is already booked for part of the new stay." << original << endl;
+		showRoomBookingCalendar(reservations[resIndex].roomNumber);
+		pauseEnter();
+		return;
+	}
+
 	reservations[resIndex].checkInDate = makeDate(d, m, y);
 	reservations[resIndex].checkInTime = "Any time";
 	refreshCheckoutDate(resIndex);
+	syncRoomOccupancy();
 	saveStayChanges();
 	cout << " Check-in updated to " << weekdayName(d, m, y)
 		 << " " << reservations[resIndex].checkInDate << "." << endl;
@@ -254,8 +268,31 @@ void changeNights(int resIndex) {
 		return;
 	}
 
+	int oldNights = reservations[resIndex].nights;
+	string oldCheckOut = reservations[resIndex].checkOutDate;
+
 	reservations[resIndex].nights = nights;
 	refreshCheckoutDate(resIndex);
+
+	int inD = 0;
+	int inM = 0;
+	int inY = 0;
+	int outD = 0;
+	int outM = 0;
+	int outY = 0;
+	if (parseDate(reservations[resIndex].checkInDate, inD, inM, inY)
+		&& parseDate(reservations[resIndex].checkOutDate, outD, outM, outY)
+		&& !isRoomAvailableForDates(reservations[resIndex].roomNumber, inD, inM, inY, outD, outM, outY,
+			reservations[resIndex].reservationID)) {
+		reservations[resIndex].nights = oldNights;
+		reservations[resIndex].checkOutDate = oldCheckOut;
+		cout << red << " Room " << reservations[resIndex].roomNumber
+			 << " is already booked for part of the new stay." << original << endl;
+		showRoomBookingCalendar(reservations[resIndex].roomNumber);
+		pauseEnter();
+		return;
+	}
+
 	saveStayChanges();
 	cout << " Stay is now " << nights << " night(s)." << endl;
 	cout << " Check-out is now " << reservations[resIndex].checkOutDate
@@ -295,7 +332,22 @@ void changeGuests(int resIndex) {
 void changeRoom(int resIndex) {
 	int guests = reservations[resIndex].guests;
 	string oldRoom = reservations[resIndex].roomNumber;
-	int shown = displayRoomsForModify(guests, oldRoom);
+
+	int inD = 0;
+	int inM = 0;
+	int inY = 0;
+	int outD = 0;
+	int outM = 0;
+	int outY = 0;
+	if (!parseDate(reservations[resIndex].checkInDate, inD, inM, inY)
+		|| !parseDate(reservations[resIndex].checkOutDate, outD, outM, outY)) {
+		cout << red << " Could not read this booking's dates." << original << endl;
+		pauseEnter();
+		return;
+	}
+
+	int shown = displayRoomsForModify(guests, oldRoom, inD, inM, inY, outD, outM, outY,
+		reservations[resIndex].reservationID);
 	if (shown == 0) {
 		cout << red << " No other room fits this guest count." << original << endl;
 		pauseEnter();
@@ -320,9 +372,11 @@ void changeRoom(int resIndex) {
 			continue;
 		}
 		if (roomList[roomIndex].roomNumber != oldRoom
-			&& roomList[roomIndex].status != "Available") {
-			cout << red << " That room is not available. Status: "
-				 << roomList[roomIndex].status << original << endl;
+			&& !isRoomAvailableForDates(roomList[roomIndex].roomNumber, inD, inM, inY, outD, outM, outY,
+				reservations[resIndex].reservationID)) {
+			cout << red << " That room is already booked for your stay dates." << original << endl;
+			showRoomBookingCalendar(roomList[roomIndex].roomNumber);
+			pauseEnter();
 			continue;
 		}
 		if (roomList[roomIndex].capacity < guests) {
@@ -358,6 +412,7 @@ void changeRoom(int resIndex) {
 	reservations[resIndex].roomNumber = roomList[roomIndex].roomNumber;
 	reservations[resIndex].roomType = roomList[roomIndex].roomType;
 	reservations[resIndex].pricePerNight = roomList[roomIndex].price;
+	syncRoomOccupancy();
 	saveStayChanges();
 	cout << " Room changed to " << reservations[resIndex].roomNumber
 		 << " " << reservations[resIndex].roomType << "." << endl;

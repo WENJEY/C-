@@ -54,66 +54,18 @@ bool createOneBooking() {
 		return false;
 	}
 
-	int shown = displayBookableRooms(guests);
-	if (shown == 0) {
-		cout << red << " No available room fits this number of guests." << original << endl;
-		pauseEnter();
-		return false;
-	}
-
-	string roomNumber;
-	int roomIndex = -1;
-
-	while (true) {
-		cout << "\n Enter room number to book or 0 to cancel: ";
-		getline(cin, roomNumber);
-
-		cout << endl;
-
-		if (roomNumber == "0") {
-			cout << " Booking cancelled." << endl;
-			pauseEnter();
-			return false;
-		}
-
-		roomIndex = findRoomIndex(roomNumber);
-		if (roomIndex == -1) {
-			cout << red << " Room not found! Please try again." << original << endl;
-			continue;
-		}
-		if (roomList[roomIndex].status != "Available") {
-			cout << red << " This room is not available. Status: "
-				 << roomList[roomIndex].status << ". Please choose another." << original << endl;
-			continue;
-		}
-		if (roomList[roomIndex].capacity < guests) {
-			cout << red << " That room only fits " << roomList[roomIndex].capacity
-				 << " guest(s). Please choose another." << original << endl;
-			continue;
-		}
-		break;
-	}
-
-	cout << "\n Enter number of nights or 0 to cancel: ";
-	int nights = getIntInRange(0, 30);
-	if (nights == 0) {
+	int inD = 0;
+	int inM = 0;
+	int inY = 0;
+	if (!askCheckInDate(inD, inM, inY)) {
 		cout << " Booking cancelled." << endl;
 		pauseEnter();
 		return false;
 	}
 
-	int nowY = 0;
-	int nowM = 0;
-	int nowD = 0;
-	int nowH = 0;
-	int nowMin = 0;
-	string bookingDate;
-	string bookingTime;
-
-	int inD = 0;
-	int inM = 0;
-	int inY = 0;
-	if (!askCheckInDate(inD, inM, inY)) {
+	cout << "\n Enter number of nights or 0 to cancel: ";
+	int nights = getIntInRange(0, 30);
+	if (nights == 0) {
 		cout << " Booking cancelled." << endl;
 		pauseEnter();
 		return false;
@@ -134,6 +86,80 @@ bool createOneBooking() {
 	boxRow(outWeek + " " + checkOutDate);
 	boxLine();
 	pauseEnter();
+
+	int shown = displayBookableRoomsForDates(guests, inD, inM, inY, outD, outM, outY);
+	if (shown == 0) {
+		cout << red << " No room is free for these dates." << original << endl;
+		cout << " Try different check-in dates or fewer nights." << endl;
+		pauseEnter();
+		return false;
+	}
+
+	string roomNumber;
+	int roomIndex = -1;
+
+	while (true) {
+		cout << "\n Enter room number to book, v to view its booking calendar, or 0 to cancel: ";
+		getline(cin, roomNumber);
+
+		cout << endl;
+
+		if (roomNumber == "0") {
+			cout << " Booking cancelled." << endl;
+			pauseEnter();
+			return false;
+		}
+		if (roomNumber == "v" || roomNumber == "V") {
+			cout << " Enter room number to view booked dates: ";
+			getline(cin, roomNumber);
+			cout << endl;
+			if (roomNumber == "0" || roomNumber.empty()) {
+				continue;
+			}
+			if (findRoomIndex(roomNumber) == -1) {
+				cout << red << " Room not found." << original << endl;
+				continue;
+			}
+			showRoomBookingCalendar(roomNumber);
+			pauseEnter();
+			continue;
+		}
+
+		roomIndex = findRoomIndex(roomNumber);
+		if (roomIndex == -1) {
+			cout << red << " Room not found! Please try again." << original << endl;
+			continue;
+		}
+		if (roomList[roomIndex].status == "Cleaning" || roomList[roomIndex].status == "Maintenance") {
+			cout << red << " This room is under " << roomList[roomIndex].status
+				 << ". Please choose another." << original << endl;
+			continue;
+		}
+		if (roomList[roomIndex].capacity < guests) {
+			cout << red << " That room only fits " << roomList[roomIndex].capacity
+				 << " guest(s). Please choose another." << original << endl;
+			continue;
+		}
+		if (!isRoomAvailableForDates(roomNumber, inD, inM, inY, outD, outM, outY)) {
+			cout << red << " This room is already booked for part of your stay." << original << endl;
+			showRoomBookingCalendar(roomNumber);
+			pauseEnter();
+			continue;
+		}
+		break;
+	}
+
+	showRoomBookingCalendar(roomNumber);
+	cout << " Your chosen dates are free for Room " << roomNumber << "." << endl;
+	pauseEnter();
+
+	int nowY = 0;
+	int nowM = 0;
+	int nowD = 0;
+	int nowH = 0;
+	int nowMin = 0;
+	string bookingDate;
+	string bookingTime;
 
 	double estimated = roundMoney(roomList[roomIndex].price * nights);
 
@@ -213,7 +239,7 @@ bool createOneBooking() {
 
 	reservations.push_back(newBooking);
 	currentSessionIDs.push_back(newBooking.reservationID);
-	roomList[roomIndex].status = "Occupied";
+	syncRoomOccupancy();
 
 	cout << "\n Reservation confirmed! Your reservation ID is "
 		 << newBooking.reservationID << "." << endl;
@@ -238,8 +264,9 @@ void offerRoomUpgrade(int& roomIndex, int guests) {
 	int upgradeIndex = -1;
 	for (size_t i = 0; i < roomList.size(); i++) {
 		if (roomList[i].roomType == nextType
-			&& roomList[i].status == "Available"
-			&& roomList[i].capacity >= guests) {
+			&& roomList[i].capacity >= guests
+			&& roomList[i].status != "Cleaning"
+			&& roomList[i].status != "Maintenance") {
 			upgradeIndex = static_cast<int>(i);
 			break;
 		}
