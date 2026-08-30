@@ -82,8 +82,7 @@ bool requireHotelSelected() {
 	if (!currentHotelName.empty()) {
 		return true;
 	}
-	cout << "\n Please choose a state, area and hotel first." << endl;
-	pauseEnter();
+	loadingPause();
 	return findHotelByDestination();
 }
 

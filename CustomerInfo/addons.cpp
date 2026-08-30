@@ -60,7 +60,7 @@ void afterBookingMenu() {
 		boxRow("Includes service charge and 8% SST.");
 		boxLine();
 		boxRow("1. Hotel Add-ons");
-		boxRow("2. View Bill / Make Payment");
+		boxRow("2. View Bill / Proceed to Payment");
 		boxRow("3. Book Another Room");
 		boxRow("4. Special Requests");
 		boxRow("5. Apply Promo Code");
