@@ -60,14 +60,14 @@ public:
 CenterStreamBuf centerBuf;
 
 int screenWidth() {
-	CONSOLE_SCREEN_BUFFER_INFO info;
-	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info)) {
-		int cols = info.srWindow.Right - info.srWindow.Left + 1;
-		if (cols > 40) {
-			return cols;
-		}
-	}
-	return 120;
+    CONSOLE_SCREEN_BUFFER_INFO info;
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    if (GetConsoleScreenBufferInfo(hConsole, &info)) {
+        return info.srWindow.Right - info.srWindow.Left + 1;
+    }
+
+    return 120;
 }
 
 int screenHeight() {
@@ -107,8 +107,9 @@ void enableColors() {
 }
 
 void clearScreen() {
-	system("cls");
-	centerBuf.atStart = true;
+    system("cls");
+    Sleep(50);
+    centerBuf.atStart = true;
 }
 
 void showBanner() {
