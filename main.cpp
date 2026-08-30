@@ -3,7 +3,12 @@
 int main() {
 	enableColors();
 	srand(static_cast<unsigned int>(time(0)));
+	ensureDataFolder();
 	loadCustomersFromFile();
+	loadRoomsFromFile();
+	loadReservationsFromFile();
+	loadHotelsFromFile();
+	syncRoomOccupancy();
 
 	while (true) {
 		clearScreen();
@@ -25,6 +30,7 @@ int main() {
 				boxRow("Thank you for using Grand Horizon Hotel.");
 				boxRow("Have a nice day!");
 				boxLine();
+				saveStayChanges();
 				pauseEnter();
 				return 0;
 		}

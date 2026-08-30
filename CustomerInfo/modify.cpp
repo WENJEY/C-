@@ -198,8 +198,9 @@ void refreshCheckoutDate(int resIndex) {
 }
 
 void saveStayChanges() {
-	// Bookings and room status stay in memory only.
-	// Closing the program restores the original room list in data.cpp.
+	saveRoomsToFile();
+	saveReservationsToFile();
+	saveHotelsToFile();
 }
 
 void remindPaidChange(int resIndex) {

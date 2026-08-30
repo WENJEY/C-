@@ -1,4 +1,8 @@
 
 *.exe
 cmake-build-debug/
+build/
 output/
+CMakeUserPresets.json
+.cache/
+

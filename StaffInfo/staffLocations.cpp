@@ -78,6 +78,7 @@ void staffAddHotel() {
 	}
 
 	hotelBranches.push_back(hotel);
+	saveStayChanges();
 	showPage("Hotel added");
 	boxField("Hotel   : ", hotel.name);
 	boxField("Area    : ", hotel.area + ", " + hotel.state);
@@ -120,6 +121,7 @@ void staffEditHotel() {
 			if (currentHotelName == oldName) {
 				currentHotelName = name;
 			}
+			saveStayChanges();
 			cout << " Name updated." << endl;
 			pauseEnter();
 		}
@@ -131,6 +133,7 @@ void staffEditHotel() {
 			if (currentHotelName == hotelBranches[static_cast<size_t>(idx)].name) {
 				currentHotelAddress = address;
 			}
+			saveStayChanges();
 			cout << " Address updated." << endl;
 			pauseEnter();
 		}
@@ -150,6 +153,7 @@ void staffEditHotel() {
 			currentHotelState = newState;
 			currentHotelArea = newArea;
 		}
+		saveStayChanges();
 		cout << " Location updated." << endl;
 		pauseEnter();
 	}
@@ -181,6 +185,7 @@ void staffDeleteHotel() {
 	if (currentHotelName == removedName) {
 		clearCurrentHotel();
 	}
+	saveStayChanges();
 	cout << " Hotel deleted. Old bookings still keep this hotel name in history." << endl;
 	pauseEnter();
 }

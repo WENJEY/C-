@@ -198,6 +198,7 @@ void cancelOneReservation(int resIndex) {
 	reservations[resIndex].status = "Cancelled";
 	setRoomStatus(roomNumber, "Available");
 	removeFromCurrentSession(reservations[resIndex].reservationID);
+	saveStayChanges();
 
 	if (refund > 0.0) {
 		int toRemove = static_cast<int>(refund / 10.0) * POINTS_PER_RM10;

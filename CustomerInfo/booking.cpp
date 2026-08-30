@@ -218,6 +218,7 @@ bool createOneBooking() {
 	cout << "\n Reservation confirmed! Your reservation ID is "
 		 << newBooking.reservationID << "." << endl;
 	maybeGiveWelcomeGift(static_cast<int>(reservations.size()) - 1);
+	saveStayChanges();
 	loadingPause();
 	return true;
 }

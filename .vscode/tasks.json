@@ -1,0 +1,58 @@
+{
+    "version": "2.0.0",
+    "options": {
+        "cwd": "${workspaceFolder}"
+    },
+    "tasks": [
+        {
+            "label": "CMake Configure",
+            "type": "shell",
+            "command": "cmake --preset vscode",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": ["/d", "/c"]
+                    }
+                },
+                "command": "call \"${workspaceFolder}\\scripts\\windows-dev-env.cmd\" && cmake --preset vscode"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake Build",
+            "type": "shell",
+            "command": "cmake --build --preset vscode",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": ["/d", "/c"]
+                    }
+                },
+                "command": "call \"${workspaceFolder}\\scripts\\windows-dev-env.cmd\" && cmake --build --preset vscode"
+            },
+            "dependsOn": "CMake Configure",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc", "$msCompile"]
+        },
+        {
+            "label": "Run C_",
+            "type": "shell",
+            "command": "${workspaceFolder}/build/C_",
+            "windows": {
+                "command": "\"${workspaceFolder}\\build\\C_.exe\""
+            },
+            "dependsOn": "CMake Build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "focus": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}
