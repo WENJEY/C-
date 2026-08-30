@@ -89,6 +89,44 @@ int pageIndent() {
 	return pad;
 }
 
+int centerPad(int contentWidth) {
+	int pad = (screenWidth() - contentWidth) / 2;
+	if (pad < 0) {
+		return 0;
+	}
+	return pad;
+}
+
+int artWidth(const string& art) {
+	int maxWidth = 0;
+	stringstream ss(art);
+	string line;
+	while (getline(ss, line)) {
+		int width = static_cast<int>(line.length());
+		if (width > maxWidth) {
+			maxWidth = width;
+		}
+	}
+	return maxWidth;
+}
+
+void printArtCentered(const string& art, int blockWidth) {
+	int pad = centerPad(blockWidth);
+	stringstream ss(art);
+	string line;
+	while (getline(ss, line)) {
+		cout << string(pad, ' ') << line << '\n';
+	}
+}
+
+void printFullWidthBar() {
+	int width = screenWidth();
+	if (width < 1) {
+		width = 1;
+	}
+	cout << string(width, '=') << '\n';
+}
+
 void enableCenteredOutput() {
 	if (centerBuf.dest != nullptr) {
 		return;
@@ -151,21 +189,17 @@ void logo() {
  |_| / \ | |_ |    |_) |_ (_  |_ |_) \  / /\  |   |  / \ |\ |   (_ \_/ (_   | |_ |\/|
  | | \_/ | |_ |_   | \ |_ __) |_ | \  \/ /--\ |  _|_ \_/ | \|   __) |  __)  | |_ |  |
                                                                                       )";
-	stringstream ss(logoArt), s(systemArt);
-	string line;
+	int grandWidth = artWidth(logoArt);
+	int systemWidth = artWidth(systemArt);
 
 	centerBuf.skipPad = true;
 	centerBuf.atStart = true;
-	cout << string(22, '=') << setw(window_width) << setfill('=') << "=" << string(22, '=') << endl;
+	printFullWidthBar();
 	cout << red;
-	while (getline(ss, line)) {
-		cout << string(22, ' ') << setw(2) << setfill(' ') << " " << line << '\n';
-	}
+	printArtCentered(logoArt, grandWidth);
 	cout << original;
-	while (getline(s, line)) {
-		cout << string(25, ' ') << setw(10) << setfill(' ') << " " << line << '\n';
-	}
-	cout << string(22, '=') << setw(window_width) << setfill('=') << "=" << string(22, '=') << endl;
+	printArtCentered(systemArt, systemWidth);
+	printFullWidthBar();
 	cout << setfill(' ') << left;
 	centerBuf.skipPad = false;
 	centerBuf.atStart = true;
