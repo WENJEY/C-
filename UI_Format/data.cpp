@@ -354,23 +354,129 @@ void removeFromCurrentSession(const string& reservationID) {
 }
 
 void syncRoomOccupancy() {
+	int nowY = 0;
+	int nowM = 0;
+	int nowD = 0;
+	int nowH = 0;
+	int nowMin = 0;
+	malaysiaNow(nowY, nowM, nowD, nowH, nowMin);
+
 	for (size_t i = 0; i < roomList.size(); i++) {
 		if (roomList[i].status == "Cleaning" || roomList[i].status == "Maintenance") {
 			continue;
 		}
 
-		bool used = false;
+		bool activeNow = false;
 		for (size_t r = 0; r < reservations.size(); r++) {
 			if (reservations[r].status == "Cancelled") {
 				continue;
 			}
-			if (reservations[r].roomNumber == roomList[i].roomNumber) {
-				used = true;
+			if (reservations[r].roomNumber != roomList[i].roomNumber) {
+				continue;
+			}
+
+			int inD = 0;
+			int inM = 0;
+			int inY = 0;
+			int outD = 0;
+			int outM = 0;
+			int outY = 0;
+			if (!parseDate(reservations[r].checkInDate, inD, inM, inY)) {
+				continue;
+			}
+			if (!parseDate(reservations[r].checkOutDate, outD, outM, outY)) {
+				continue;
+			}
+			if (isStayActiveOnDate(inD, inM, inY, outD, outM, outY, nowD, nowM, nowY)) {
+				activeNow = true;
 				break;
 			}
 		}
-		roomList[i].status = used ? "Occupied" : "Available";
+		roomList[i].status = activeNow ? "Occupied" : "Available";
 	}
+}
+
+bool isRoomBookedForRange(const string& roomNumber,
+	int inD, int inM, int inY, int outD, int outM, int outY,
+	const string& skipReservationID) {
+	for (size_t r = 0; r < reservations.size(); r++) {
+		if (reservations[r].status == "Cancelled") {
+			continue;
+		}
+		if (reservations[r].roomNumber != roomNumber) {
+			continue;
+		}
+		if (!skipReservationID.empty() && reservations[r].reservationID == skipReservationID) {
+			continue;
+		}
+
+		int rInD = 0;
+		int rInM = 0;
+		int rInY = 0;
+		int rOutD = 0;
+		int rOutM = 0;
+		int rOutY = 0;
+		if (!parseDate(reservations[r].checkInDate, rInD, rInM, rInY)) {
+			continue;
+		}
+		if (!parseDate(reservations[r].checkOutDate, rOutD, rOutM, rOutY)) {
+			continue;
+		}
+		if (datesOverlap(inD, inM, inY, outD, outM, outY,
+			rInD, rInM, rInY, rOutD, rOutM, rOutY)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool isRoomAvailableForDates(const string& roomNumber,
+	int inD, int inM, int inY, int outD, int outM, int outY,
+	const string& skipReservationID) {
+	int roomIndex = findRoomIndex(roomNumber);
+	if (roomIndex == -1) {
+		return false;
+	}
+	if (roomList[roomIndex].status == "Cleaning" || roomList[roomIndex].status == "Maintenance") {
+		return false;
+	}
+	return !isRoomBookedForRange(roomNumber, inD, inM, inY, outD, outM, outY, skipReservationID);
+}
+
+bool isRoomAvailableOnDate(const string& roomNumber, int day, int month, int year) {
+	int roomIndex = findRoomIndex(roomNumber);
+	if (roomIndex == -1) {
+		return false;
+	}
+	if (roomList[roomIndex].status == "Cleaning" || roomList[roomIndex].status == "Maintenance") {
+		return false;
+	}
+
+	for (size_t r = 0; r < reservations.size(); r++) {
+		if (reservations[r].status == "Cancelled") {
+			continue;
+		}
+		if (reservations[r].roomNumber != roomNumber) {
+			continue;
+		}
+
+		int inD = 0;
+		int inM = 0;
+		int inY = 0;
+		int outD = 0;
+		int outM = 0;
+		int outY = 0;
+		if (!parseDate(reservations[r].checkInDate, inD, inM, inY)) {
+			continue;
+		}
+		if (!parseDate(reservations[r].checkOutDate, outD, outM, outY)) {
+			continue;
+		}
+		if (isStayActiveOnDate(inD, inM, inY, outD, outM, outY, day, month, year)) {
+			return false;
+		}
+	}
+	return true;
 }
 
 string generateReservationID() {

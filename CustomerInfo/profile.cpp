@@ -7,6 +7,7 @@ void editEmail(int idx);
 void editPhone(int idx);
 void editIcPassport(int idx);
 void changePassword(int idx);
+void editUsername(int idx);
 void deleteMyAccount(int idx);
 
 void viewMyProfile() {
@@ -25,11 +26,12 @@ void viewMyProfile() {
 		boxRow(optionText(4) + "Edit phone");
 		boxRow(optionText(5) + "Edit IC / Passport");
 		boxRow(optionText(6) + "Change password");
-		boxRow(optionText(7) + "Delete account");
+		boxRow(optionText(7) + "Edit username");
+		boxRow(optionText(8) + "Delete account");
 		boxRow(optionText(0) + "Back to Menu Page");
 		boxLine();
-		cout << " Please choose 0-7: ";
-		int choice = getIntInRange(0, 7);
+		cout << " Please choose 0-8: ";
+		int choice = getIntInRange(0, 8);
 
 		if (choice == 0) {
 			return;
@@ -53,6 +55,9 @@ void viewMyProfile() {
 			changePassword(idx);
 		}
 		else if (choice == 7) {
+			editUsername(idx);
+		}
+		else if (choice == 8) {
 			deleteMyAccount(idx);
 			if (currentLoggedInCustomer.empty()) {
 				return;
@@ -95,7 +100,7 @@ void showProfileCard(const Customer& c) {
 		boxField("Next tier   : ", "Highest tier");
 	}
 	boxField("Perks       : ", "Silver 5% off, Gold 10% off");
-	boxRow("Username, member tier and points cannot be typed here.");
+	boxRow("Member tier and points cannot be typed here.");
 	boxLine();
 }
 
@@ -250,6 +255,63 @@ void changePassword(int idx) {
 	customers[idx].password = nextPassword;
 	saveCustomersToFile();
 	cout << " Password updated." << endl;
+	pauseEnter();
+}
+
+void editUsername(int idx) {
+	cout << "\n Current username: " << customers[idx].username << endl;
+	cout << " Enter new username (3-20 letters/numbers or 0 to cancel): ";
+	string newUsername;
+	getline(cin, newUsername);
+	cout << endl;
+
+	if (newUsername == "0" || newUsername.empty()) {
+		cout << " Username not changed." << endl;
+		pauseEnter();
+		return;
+	}
+	if (!isValidUsername(newUsername)) {
+		cout << red << " Username must be 3-20 characters, letters and numbers only." << original << endl;
+		pauseEnter();
+		return;
+	}
+	if (newUsername == customers[idx].username) {
+		cout << " That is already your username." << endl;
+		pauseEnter();
+		return;
+	}
+	if (usernameTakenExcept(newUsername, idx)) {
+		cout << red << " Username already taken. Please choose another." << original << endl;
+		pauseEnter();
+		return;
+	}
+
+	cout << " Enter current password to confirm (or 0 to cancel): ";
+	string current = getSecurePassword(false);
+	if (current == "0") {
+		cout << " Username not changed." << endl;
+		pauseEnter();
+		return;
+	}
+	if (current != customers[idx].password) {
+		cout << " Current password is wrong." << endl;
+		pauseEnter();
+		return;
+	}
+
+	string oldUsername = customers[idx].username;
+	customers[idx].username = newUsername;
+	currentLoggedInCustomer = newUsername;
+
+	for (size_t i = 0; i < reservations.size(); i++) {
+		if (reservations[i].customerUsername == oldUsername) {
+			reservations[i].customerUsername = newUsername;
+		}
+	}
+
+	saveCustomersToFile();
+	saveReservationsToFile();
+	cout << " Username updated to " << newUsername << "." << endl;
 	pauseEnter();
 }
 
