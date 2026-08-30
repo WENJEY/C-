@@ -111,6 +111,7 @@ void afterBookingMenu() {
 			if (idx != -1) {
 				confirmAndCancelReservation(idx);
 				if (currentSessionIDs.empty()) {
+					cout << endl;
 					cout << " Returning to Menu Page." << endl;
 					pauseEnter();
 					return;
