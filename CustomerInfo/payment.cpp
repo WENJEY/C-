@@ -34,34 +34,34 @@ void applyPromoCode() {
 		sessionPromoFlat = 0;
 		sessionPromoCode = "";
 
-		if (code == "TERENCE") {
+		if (code == "Terence") {
 			sessionPromoPercent = 0.10;
 			sessionPromoCode = "Terence";
 			break;
 		}
-		else if (code == "XINHONG") {
+		else if (code == "Xinhong") {
 			if (totalNights < 3) {
-				cout << red << " XinHong needs at least 3 nights in this stay." << original << endl;
+				cout << red << " Xinhong needs at least 3 nights in this stay." << original << endl;
 				pauseEnter();
 				continue;
 			}
 			sessionPromoPercent = 0.15;
-			sessionPromoCode = "XinHong";
+			sessionPromoCode = "Xinhong";
 			break;
 
 		}
-		else if (code == "EASON") {
+		else if (code == "Eason") {
 			sessionPromoPercent = 0.20;
 			sessionPromoCode = "Eason";
 			break;
 		}
-		else if (code == "WENJET") {
+		else if (code == "Wenjet") {
 			sessionPromoFlat = 5.00;
 			sessionPromoCode = "WenJet";
 			break;
 
 		}
-		else if (code == "KAW KAW DEAL") {
+		else if (code == "Kaw Kaw Deal") {
 			if (roomCharge < 400.00) {
 				cout << red << " Kaw Kaw Deal needs a subtotal of RM 400.00 or more." << original << endl;
 				pauseEnter();
