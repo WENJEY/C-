@@ -20,13 +20,13 @@ void viewMyProfile() {
 		}
 
 		showProfileCard(customers[idx]);
-		boxRow(optionText(1) + "Edit full name");
-		boxRow(optionText(2) + "Edit age");
-		boxRow(optionText(3) + "Edit email");
-		boxRow(optionText(4) + "Edit phone");
-		boxRow(optionText(5) + "Edit IC / Passport");
-		boxRow(optionText(6) + "Change password");
-		boxRow(optionText(7) + "Edit username");
+		boxRow(optionText(1) + "Edit username");
+		boxRow(optionText(2) + "Edit full name");
+		boxRow(optionText(3) + "Edit age");
+		boxRow(optionText(4) + "Edit email");
+		boxRow(optionText(5) + "Edit phone");
+		boxRow(optionText(6) + "Edit IC / Passport");
+		boxRow(optionText(7) + "Change password");
 		boxRow(optionText(8) + "Delete account");
 		boxRow(optionText(0) + "Back to Menu Page");
 		boxLine();
@@ -37,25 +37,25 @@ void viewMyProfile() {
 			return;
 		}
 		if (choice == 1) {
+			editUsername(idx);
+		}
+		if (choice == 2) {
 			editFullName(idx);
 		}
-		else if (choice == 2) {
+		else if (choice == 3) {
 			editAge(idx);
 		}
-		else if (choice == 3) {
+		else if (choice == 4) {
 			editEmail(idx);
 		}
-		else if (choice == 4) {
+		else if (choice == 5) {
 			editPhone(idx);
 		}
-		else if (choice == 5) {
+		else if (choice == 6) {
 			editIcPassport(idx);
 		}
-		else if (choice == 6) {
-			changePassword(idx);
-		}
 		else if (choice == 7) {
-			editUsername(idx);
+			changePassword(idx);
 		}
 		else if (choice == 8) {
 			deleteMyAccount(idx);
