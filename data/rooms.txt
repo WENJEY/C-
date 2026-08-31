@@ -44,7 +44,7 @@ Room Number         : 201
 Room Type           : Twin
 Capacity            : 2
 Price               : 150.00
-Status              : Occupied
+Status              : Available
 
 ---------- Room 7 ----------
 Room Number         : 202

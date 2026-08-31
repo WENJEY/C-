@@ -2,8 +2,8 @@
 Grand Horizon Hotel
 Reservations
 ========================================
-Total               : 3
-Next Reservation ID : 4
+Total               : 4
+Next Reservation ID : 5
 Next Invoice No     : 4
 
 ---------- Reservation 1 ----------
@@ -92,4 +92,33 @@ Loyalty Discount    : 0.00
 Service Charge      : 45.00
 SST                 : 39.60
 Total Amount        : 534.60
+Add-on Count        : 0
+
+---------- Reservation 4 ----------
+Reservation ID      : 0004
+Customer            : 222
+Hotel Name          : Hotel Setia
+Hotel Address       : Jalan Setia Indah 1, 86000 Kluang, Johor Darul Ta'zim
+Hotel Area          : Kluang
+Hotel State         : Johor
+Room Number         : 201
+Room Type           : Twin
+Price Per Night     : 150.00
+Nights              : 2
+Guests              : 2
+Booking Date        : 30/08/2026
+Booking Time        : 21:52
+Check-in Date       : 31/08/2026
+Check-in Time       : Any time
+Check-out Date      : 02/09/2026
+Status              : Cancelled
+Payment Status      : Unpaid
+Payment Method      : -
+Promo Code          : 
+Special Request     : -
+Discount            : 0.00
+Loyalty Discount    : 0.00
+Service Charge      : 0.00
+SST                 : 0.00
+Total Amount        : 0.00
 Add-on Count        : 0
