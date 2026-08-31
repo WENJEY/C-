@@ -15,11 +15,11 @@ void staffLogin() {
 			boxLine();
 		}
 		else {
-			boxRow("Enter 0 on username to cancel");
+			boxRow("Enter 0 on staffID to cancel");
 			boxLine();
 		}
 
-		cout << " Username or 0 to cancel: ";
+		cout << " StaffID or 0 to cancel: ";
 		getline(cin, id);
 		cout << endl;
 		if (id == "0") {
@@ -45,7 +45,7 @@ void staffLogin() {
 
 		attempts++;
 		if (attempts < MAX_ATTEMPTS) {
-			cout << red << " Login failed! Invalid username or password." << original << endl;
+			cout << red << " Login failed! Invalid staffID or password." << original << endl;
 			cout << " You have " << (MAX_ATTEMPTS - attempts) << " attempt(s) remaining." << endl;
 			if (!confirmYesNo(" Would you like to try again? y/n: ")) {
 				cout << " Login cancelled." << endl;
